@@ -19,7 +19,6 @@ Moonshot is an indie app accelerator concept - a business that partners with ind
 
 ```
 moonshot/
-├── one-pager/index.html                           # Static landing page
 └── research/
     ├── index.html                                 # Research dashboard (start here)
     └── step-{NN}-{slug}/                          # Per-step directories (01-15)
@@ -86,10 +85,16 @@ The only code files are static HTML pages. No build tools, dependencies, or test
 
 To preview:
 ```bash
-open one-pager/index.html                        # Landing page
 open research/index.html                         # Research dashboard
 open research/step-01-market-validation/step1-market-validation.html  # Example report
 ```
+
+### HTML Report Style
+
+All HTML reports are self-contained with embedded CSS. The design uses:
+- Dark theme with gradient backgrounds
+- System font stack (no external fonts)
+- No external dependencies (no CDNs, frameworks, or JavaScript libraries)
 
 ## Quality Standards
 
