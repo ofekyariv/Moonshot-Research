@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 4 | Developer Personas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #667eea 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .persona-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .persona-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .persona-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .persona-title h2 {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .persona-title p {
+            color: #a0aec0;
+            font-size: 16px;
+        }
+
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .persona-section h3 {
+            font-size: 16px;
+            color: #a5b4fc;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .persona-section ul {
+            list-style: none;
+        }
+
+        .persona-section li {
+            color: #e2e8f0;
+            font-size: 15px;
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .persona-section li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+        }
+
+        .quote-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quote-box p {
+            font-style: italic;
+            color: #a5b4fc;
+            font-size: 15px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-box .label {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-table th {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-table td {
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .tag-high { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+        .tag-medium { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .tag-low { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .tag-fast { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+        .tag-slow { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .insight-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .insight-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #a5b4fc;
+        }
+
+        .insight-card p {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .sources ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sources li {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .persona-grid { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .insights-grid { grid-template-columns: 1fr; }
+            .sources ul { grid-template-columns: 1fr; }
+        }
+
+        /* Navigation Bar */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>›</span>
+            <a href="../index.html">Phase 2: Customer Discovery</a>
+            <span>›</span>
+            Step 4
+        </div>
+        <header>
+            <div class="logo">Moonshot Research</div>
+            <div class="badge">STEP 4</div>
+        </header>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Developer Personas</h1>
+            <p class="tagline">Four distinct profiles of indie developers who match Moonshot's partnership model.</p>
+            <p class="subtitle">Research Date: December 28, 2025 | Sources: Indie Hackers, Reddit, Stack Overflow, Industry Analysis</p>
+        </div>
+    </section>
+
+    <!-- Key Stats Section -->
+    <section class="section" style="padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <div class="stats-row" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stat-box">
+                    <div class="value" style="background: linear-gradient(90deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">#1</div>
+                    <div class="label">Autonomy is the top driver of developer happiness</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" style="background: linear-gradient(90deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">~50%</div>
+                    <div class="label">Developers experiencing burnout</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" style="background: linear-gradient(90deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">70/30</div>
+                    <div class="label">Industry standard revenue share (developer favor)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Persona 1: Burned Out Solo Dev -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <div class="persona-card" style="border-color: rgba(34, 197, 94, 0.3);">
+                <div class="persona-header">
+                    <div class="persona-icon" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));">
+                        🔥
+                    </div>
+                    <div class="persona-title">
+                        <h2>The Burned Out Solo Dev</h2>
+                        <p>"I just want my life back." — <span class="tag tag-high">Best Fit</span></p>
+                    </div>
+                </div>
+
+                <div class="persona-grid">
+                    <div class="persona-section">
+                        <h3>Demographics</h3>
+                        <ul>
+                            <li>Age: 28-42 years old</li>
+                            <li>Location: US, UK, Germany, tech hubs</li>
+                            <li>Full-time engineer ($80-150K)</li>
+                            <li>5-10 years experience</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Their App</h3>
+                        <ul>
+                            <li>50K-300K MAU, productivity/utility</li>
+                            <li>$0-500/month (under-monetized)</li>
+                            <li>React Native, Flutter, or native</li>
+                            <li>Updates slowing (every 2-3 months)</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say YES When</h3>
+                        <ul>
+                            <li>"Set it and forget it" promise</li>
+                            <li>Minimal time (2 hrs/month max)</li>
+                            <li>Partner handles ALL operations</li>
+                            <li>Easy exit if it doesn't work</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say NO When</h3>
+                        <ul>
+                            <li>Required to do more dev work</li>
+                            <li>IP transfer or ownership changes</li>
+                            <li>Complex, long-term contracts</li>
+                            <li>High-pressure sales tactics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    <p>"After intense cognitive work, finding energy for side projects is difficult... The transition from enjoyment to dread signals unsustainability."</p>
+                </div>
+
+                <div class="stats-row" style="margin-top: 24px;">
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">2-4 weeks</div>
+                        <div class="label">Decision Timeline</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-high">Highest</span></div>
+                        <div class="label">Partnership Openness</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-high">Low</span></div>
+                        <div class="label">Control Priority</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">Freedom</div>
+                        <div class="label">Key Motivation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Persona 2: The Accidental Success -->
+            <div class="persona-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                <div class="persona-header">
+                    <div class="persona-icon" style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));">
+                        🎨
+                    </div>
+                    <div class="persona-title">
+                        <h2>The Accidental Success</h2>
+                        <p>"I built this for myself and somehow people love it." — <span class="tag tag-medium">Good Fit</span></p>
+                    </div>
+                </div>
+
+                <div class="persona-grid">
+                    <div class="persona-section">
+                        <h3>Demographics</h3>
+                        <ul>
+                            <li>Age: 25-38 years old</li>
+                            <li>Location: Global, often non-US</li>
+                            <li>Developer (employed or freelance)</li>
+                            <li>Started as personal project</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Their App</h3>
+                        <ul>
+                            <li>15K-100K MAU, niche utilities</li>
+                            <li>$0-200/month (usually free)</li>
+                            <li>Flutter, Expo, or native</li>
+                            <li>Sporadic updates based on interest</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say YES When</h3>
+                        <ul>
+                            <li>Proof of competence (case studies)</li>
+                            <li>Respect for their creation and users</li>
+                            <li>Transparent, simple terms</li>
+                            <li>Low-risk trial period</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say NO When</h3>
+                        <ul>
+                            <li>Partner seems profit-motivated only</li>
+                            <li>Aggressive monetization plans</li>
+                            <li>IP ownership transfer</li>
+                            <li>Condescending attitude</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    <p>"I cannot find time to develop this more (and also market it honestly) so I've decided to sell... I really liked working on this one project."</p>
+                </div>
+
+                <div class="stats-row" style="margin-top: 24px;">
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">4-8 weeks</div>
+                        <div class="label">Decision Timeline</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-medium">Medium</span></div>
+                        <div class="label">Partnership Openness</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-medium">Medium</span></div>
+                        <div class="label">Control Priority</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">Passive $</div>
+                        <div class="label">Key Motivation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Persona 3: The Aspiring Entrepreneur -->
+            <div class="persona-card" style="border-color: rgba(102, 126, 234, 0.3);">
+                <div class="persona-header">
+                    <div class="persona-icon" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(102, 126, 234, 0.1));">
+                        🚀
+                    </div>
+                    <div class="persona-title">
+                        <h2>The Aspiring Entrepreneur</h2>
+                        <p>"I'm building a business, not just an app." — <span class="tag tag-low">Selective Fit</span></p>
+                    </div>
+                </div>
+
+                <div class="persona-grid">
+                    <div class="persona-section">
+                        <h3>Demographics</h3>
+                        <ul>
+                            <li>Age: 26-40 years old</li>
+                            <li>Location: US, Western Europe, tech hubs</li>
+                            <li>Senior developer or recently indie</li>
+                            <li>Strong technical skills</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Their App</h3>
+                        <ul>
+                            <li>20K-200K MAU, productivity/SaaS-like</li>
+                            <li>$200-800/month (some monetization)</li>
+                            <li>Native or modern frameworks</li>
+                            <li>Regular updates (monthly+)</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say YES When</h3>
+                        <ul>
+                            <li>Partner is "business co-founder"</li>
+                            <li>Learning opportunity included</li>
+                            <li>Collaborative decision-making</li>
+                            <li>Performance-based terms</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say NO When</h3>
+                        <ul>
+                            <li>Treated like a contractor</li>
+                            <li>No input on strategy</li>
+                            <li>Micromanagement or control loss</li>
+                            <li>Long lock-in, no renegotiation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    <p>"Success in entrepreneurship is not just about having technical expertise, but also about being able to effectively communicate and promote your product."</p>
+                </div>
+
+                <div class="stats-row" style="margin-top: 24px;">
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">2-4 weeks</div>
+                        <div class="label">Decision Timeline</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-medium">Selective</span></div>
+                        <div class="label">Partnership Openness</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-low">High</span></div>
+                        <div class="label">Control Priority</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">Growth</div>
+                        <div class="label">Key Motivation</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Persona 4: The Emerging Market Builder -->
+            <div class="persona-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                <div class="persona-header">
+                    <div class="persona-icon" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));">
+                        🌍
+                    </div>
+                    <div class="persona-title">
+                        <h2>The Emerging Market Builder</h2>
+                        <p>"My app has users but the geography kills revenue." — <span class="tag tag-medium">Good Fit</span></p>
+                    </div>
+                </div>
+
+                <div class="persona-grid">
+                    <div class="persona-section">
+                        <h3>Demographics</h3>
+                        <ul>
+                            <li>Age: 24-32 years old</li>
+                            <li>Location: India, Brazil, Eastern Europe</li>
+                            <li>Mid-level developer ($20-50K)</li>
+                            <li>4-8 years experience</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Their App</h3>
+                        <ul>
+                            <li>30K-200K MAU, education/utilities</li>
+                            <li>$100-500/month (ARPU 4x lower)</li>
+                            <li>Native Android or Flutter</li>
+                            <li>Regular updates, maintained</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say YES When</h3>
+                        <ul>
+                            <li>Legitimate business (verified identity)</li>
+                            <li>USD payments, transparent terms</li>
+                            <li>Respects their creation and users</li>
+                            <li>Evidence of international partnerships</li>
+                        </ul>
+                    </div>
+                    <div class="persona-section">
+                        <h3>Say NO When</h3>
+                        <ul>
+                            <li>Vague about Western market access</li>
+                            <li>Unclear payment terms</li>
+                            <li>No verifiable track record</li>
+                            <li>Condescending about origin market</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    <p>"My app has 100K users but makes $300/month because they're all in India."</p>
+                </div>
+
+                <div class="stats-row" style="margin-top: 24px;">
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">2-4 weeks</div>
+                        <div class="label">Decision Timeline</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-medium">Medium-High</span></div>
+                        <div class="label">Partnership Openness</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;"><span class="tag tag-low">Very High</span></div>
+                        <div class="label">Trust Barrier</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="font-size: 20px;">Market Access</div>
+                        <div class="label">Key Motivation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Persona Comparison</h2>
+            <p class="section-subtitle">Quick reference for targeting and outreach strategy.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Burned Out Solo Dev</th>
+                        <th>Accidental Success</th>
+                        <th>Aspiring Entrepreneur</th>
+                        <th>Emerging Market Builder</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Primary Motivation</td>
+                        <td>Get time back</td>
+                        <td>Monetize without learning business</td>
+                        <td>Build real business with help</td>
+                        <td>Access Western market ARPU</td>
+                    </tr>
+                    <tr>
+                        <td>Partnership Openness</td>
+                        <td><span class="tag tag-high">Highest</span></td>
+                        <td><span class="tag tag-medium">Medium</span></td>
+                        <td><span class="tag tag-medium">Selective</span></td>
+                        <td><span class="tag tag-medium">Medium-High</span></td>
+                    </tr>
+                    <tr>
+                        <td>Control Priority</td>
+                        <td><span class="tag tag-high">Low</span></td>
+                        <td><span class="tag tag-medium">Medium</span></td>
+                        <td><span class="tag tag-low">High</span></td>
+                        <td><span class="tag tag-medium">Medium</span></td>
+                    </tr>
+                    <tr>
+                        <td>Key Fear</td>
+                        <td>Forced to keep working</td>
+                        <td>Ruining app with monetization</td>
+                        <td>Losing creative vision</td>
+                        <td>Getting scammed by foreigners</td>
+                    </tr>
+                    <tr>
+                        <td>Deal-Maker</td>
+                        <td>"We handle everything"</td>
+                        <td>Proof of ethical competence</td>
+                        <td>Business co-founder role</td>
+                        <td>Verified identity + USD payments</td>
+                    </tr>
+                    <tr>
+                        <td>Deal-Breaker</td>
+                        <td>Required dev work</td>
+                        <td>Aggressive monetization</td>
+                        <td>Micromanagement</td>
+                        <td>Unclear payment terms</td>
+                    </tr>
+                    <tr>
+                        <td>Decision Speed</td>
+                        <td><span class="tag tag-fast">Fast (2-4 wks)</span></td>
+                        <td><span class="tag tag-slow">Slow (4-8 wks)</span></td>
+                        <td><span class="tag tag-medium">Medium (2-4 wks)</span></td>
+                        <td><span class="tag tag-fast">Fast (2-4 wks)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Universal Trust Signals</h2>
+            <p class="section-subtitle">What ALL developers look for before partnering.</p>
+
+            <div class="insights-grid">
+                <div class="insight-card" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3);">
+                    <h3 style="color: #86efac;">Must-Haves</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="color: #e2e8f0; padding: 6px 0;">Developer retains 100% IP ownership</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Proven track record with case studies</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Transparent terms and payment schedules</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Responsive communication</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Verifiable business identity</li>
+                    </ul>
+                </div>
+                <div class="insight-card" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                    <h3 style="color: #fca5a5;">Red Flags (Deal-Breakers)</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="color: #e2e8f0; padding: 6px 0;">IP ownership transfer of any kind</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Vague "recoupable costs" clauses</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">High share without minimum guarantee</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Automatic sequel/DLC rights</li>
+                        <li style="color: #e2e8f0; padding: 6px 0;">Pressure to sign quickly</li>
+                    </ul>
+                </div>
+                <div class="insight-card">
+                    <h3>Revenue Share Reality</h3>
+                    <p style="margin-bottom: 12px;"><strong style="color: #fff;">70/30</strong> is industry standard (developer favor)</p>
+                    <p style="margin-bottom: 12px;"><strong style="color: #fff;">50/50</strong> requires substantial justification</p>
+                    <p><strong style="color: #fff;">Consider:</strong> Pilot at 70/30, move to 50/50 after proving value</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 60px; margin-bottom: 24px; color: #a5b4fc;">Messaging by Persona</h3>
+
+            <div style="display: grid; gap: 20px;">
+                <div style="background: rgba(34, 197, 94, 0.1); border: 2px solid rgba(34, 197, 94, 0.5); border-radius: 12px; padding: 24px;">
+                    <h4 style="color: #86efac; margin-bottom: 8px;">For Burned Out Solo Dev (Best Fit):</h4>
+                    <p style="color: #e2e8f0; font-size: 18px;">"You've been carrying this alone for too long. Hand off the burden and get your life back."</p>
+                </div>
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 24px;">
+                    <h4 style="color: #fcd34d; margin-bottom: 8px;">For Accidental Success:</h4>
+                    <p style="color: #e2e8f0; font-size: 18px;">"You built something people love, but you're leaving money on the table. We'll monetize it thoughtfully."</p>
+                </div>
+                <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 24px;">
+                    <h4 style="color: #a5b4fc; margin-bottom: 8px;">For Aspiring Entrepreneur:</h4>
+                    <p style="color: #e2e8f0; font-size: 18px;">"You're building a business, not just an app. Partner with us as your business co-founder."</p>
+                </div>
+                <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 24px;">
+                    <h4 style="color: #c4b5fd; margin-bottom: 8px;">For Emerging Market Builder:</h4>
+                    <p style="color: #e2e8f0; font-size: 18px;">"Your app has 100K users making $300/month? Let us help you unlock Western market ARPU—4x higher revenue from the same app."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <div class="sources">
+                <h3>Sources & References</h3>
+                <ul>
+                    <li><a href="https://www.indiehackers.com/post/i-decided-to-sell-my-mvp-d8ec99b73d" target="_blank">Indie Hackers: Selling My MVP</a></li>
+                    <li><a href="https://www.indiehackers.com/post/hacker-mindset-6-months-journey-as-an-indie-hacker-26a0c1e749" target="_blank">Indie Hackers: 6 Month Journey</a></li>
+                    <li><a href="https://dev.to/bengreenberg/tips-for-maintaining-a-side-project-with-a-full-time-developer-job-5e71" target="_blank">Dev.to: Maintaining Side Projects</a></li>
+                    <li><a href="https://thetechpanda.com/autonomy-trumps-all-greater-autonomy-makes-developers-happier-at-work-finds-survey/36612/" target="_blank">TechPanda: Autonomy Makes Developers Happier</a></li>
+                    <li><a href="https://stackoverflow.blog/2024/08/06/2024-developer-survey/" target="_blank">Stack Overflow Developer Survey 2024</a></li>
+                    <li><a href="https://sideprojects.dev/blog/indie-hacker-analysis" target="_blank">SideProjects.dev: Indie Hacker Analysis</a></li>
+                    <li><a href="https://kotaku.com/dev-reveals-exploitative-nature-of-most-game-contracts-1847497090" target="_blank">Kotaku: Exploitative Publishing Contracts</a></li>
+                    <li><a href="https://www.gamedeveloper.com/marketing/five-key-publishing-contract-pitfalls-for-indies-to-avoid" target="_blank">Game Developer: Contract Pitfalls</a></li>
+                    <li><a href="https://gameworldobserver.com/2022/07/28/indie-developers-publishers-debate-predatory-contracts-revenue" target="_blank">Game World Observer: Revenue Share Debate</a></li>
+                    <li><a href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore: App Revenue Case Studies</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <a href="../step-03-swot-analysis/step3-swot-analysis.html">
+                    <span>←</span>
+                    <span>Previous: SWOT Analysis</span>
+                </a>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 4 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-05-partnership-sentiment/step5-partnership-sentiment.html">
+                    <span>Next: Partnership Sentiment</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p style="margin-top: 20px;">Moonshot Research | Step 4: Developer Personas | December 2025</p>
+        </div>
+    </footer>
+</body>
+</html>

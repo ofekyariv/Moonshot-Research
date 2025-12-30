@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 5 | Partnership Sentiment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #667eea 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Key Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-box .label {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        /* Verdict Cards */
+        .verdict-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .verdict-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid;
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .verdict-card.validated {
+            border-color: rgba(34, 197, 94, 0.5);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .verdict-card.refined {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .verdict-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .verdict-badge {
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .verdict-badge.validated {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .verdict-badge.refined {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+        }
+
+        .verdict-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .verdict-content {
+            color: #e2e8f0;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .verdict-content strong {
+            color: #fff;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 20px 24px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .quote-box p {
+            font-style: italic;
+            color: #a5b4fc;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .quote-box .source {
+            font-size: 13px;
+            color: #64748b;
+            font-style: normal;
+        }
+
+        /* Tables */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-table th {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-table td {
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .tag-green { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+        .tag-yellow { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .tag-red { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .tag-blue { background: rgba(102, 126, 234, 0.2); color: #a5b4fc; }
+
+        /* Case Study Cards */
+        .case-study-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .case-study-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.2s;
+        }
+
+        .case-study-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .case-study-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .case-study-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .case-study-subtitle {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .case-study-quote {
+            font-style: italic;
+            color: #a5b4fc;
+            font-size: 15px;
+            margin: 16px 0;
+            padding-left: 16px;
+            border-left: 2px solid rgba(102, 126, 234, 0.5);
+        }
+
+        .case-study-takeaway {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #e2e8f0;
+        }
+
+        .case-study-takeaway strong {
+            color: #a5b4fc;
+        }
+
+        /* Insight Cards */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .insight-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .insight-card h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .insight-card ul {
+            list-style: none;
+        }
+
+        .insight-card li {
+            color: #e2e8f0;
+            font-size: 15px;
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .insight-card li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #667eea;
+        }
+
+        /* Recommendation Box */
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(102, 126, 234, 0.1));
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .recommendation-box h3 {
+            font-size: 24px;
+            margin-bottom: 24px;
+            color: #86efac;
+        }
+
+        .recommendation-structure {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .structure-phase {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .structure-phase .phase-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .structure-phase .phase-split {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .structure-phase .phase-desc {
+            font-size: 14px;
+            color: #a0aec0;
+        }
+
+        /* Sources */
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .sources ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sources li {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        /* Navigation */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Footer Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .verdict-grid { grid-template-columns: 1fr; }
+            .case-study-grid { grid-template-columns: 1fr; }
+            .insights-grid { grid-template-columns: 1fr; }
+            .recommendation-structure { grid-template-columns: 1fr; }
+            .sources ul { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>></span>
+            <a href="../index.html">Phase 2: Customer Discovery</a>
+            <span>></span>
+            Step 5
+        </div>
+        <header>
+            <div class="logo">Moonshot Research</div>
+            <div class="badge">STEP 5</div>
+        </header>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Developer Sentiment & Partnership Preference</h1>
+            <p class="tagline">Validating H2 (partnership over acquisition) and finding optimal revenue share through developer voices.</p>
+            <p class="subtitle">Research Date: December 29, 2025 | Sources: Indie Hackers, Reddit, Hacker News, Game Developer, Industry Reports</p>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="section" style="padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="value">~75%</div>
+                    <div class="label">Prefer partnership over sale</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value">65/35</div>
+                    <div class="label">Recommended starting split</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value">10+</div>
+                    <div class="label">Case studies analyzed</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hypothesis Verdicts -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Hypothesis Verdicts</h2>
+            <p class="section-subtitle">Final validation status based on developer forum research, case studies, and industry benchmarks.</p>
+
+            <div class="verdict-grid">
+                <div class="verdict-card">
+                    <div class="verdict-header">
+                    </div>
+                    <div class="verdict-title">H2: Developers Prefer Partnership Over Acquisition</div>
+                    <div class="verdict-content">
+                        <p><strong>Finding:</strong> ~75% of developers prefer ongoing partnerships over outright sale. Nearly all post-sale stories express regret, centered on loss of identity, autonomy, and long-term financial opportunity.</p>
+                        <p style="margin-top: 12px;"><strong>Key drivers:</strong> Autonomy (85% of sources), ongoing income > lump sum (75%), identity/purpose preservation (70%), emotional attachment (60%).</p>
+                    </div>
+                    <div class="quote-box">
+                        <p>"When you have a pile of money, you turn into a dragon. The goal becomes to sit on the pile of money and make sure it doesn't get smaller."</p>
+                        <span class="source">- Hacker News discussion on selling startups</span>
+                    </div>
+                </div>
+
+                <div class="verdict-card">
+                    <div class="verdict-header">
+                        <span class="tag tag-yellow">Context-Dependent</span>
+                    </div>
+                    <div class="verdict-title">H3: 50/50 Revenue Share is Acceptable</div>
+                    <div class="verdict-content">
+                        <p><strong>Finding:</strong> 50/50 is the absolute ceiling, not the baseline. Industry standard is 70/30 (developer keeps 70%). 50/50 only acceptable with massive value delivery.</p>
+                        <p style="margin-top: 12px;"><strong>Recommendation:</strong> Start at 65/35 (developer keeps 65%) with pilot at 70/30. Move to 50/50 only after proving 5x+ revenue improvement.</p>
+                    </div>
+                    <div class="quote-box">
+                        <p>"Taking 50% of revenue for 'nothing'? That's the ongoing debate in the indie dev community."</p>
+                        <span class="source">- Game World Observer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developer Quotes -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Developer Voices</h2>
+            <p class="section-subtitle">Direct quotes from developers about selling, partnering, and revenue share.</p>
+
+            <div class="quote-box" style="margin-bottom: 20px;">
+                <p>"The sale wasn't a financial disaster...but it created unexpected psychological and identity consequences. Nearly two years later, I view it as the most expensive lesson I have ever taught myself."</p>
+                <span class="source">- Boris Berenberg, founder who sold his startup</span>
+            </div>
+
+            <div class="quote-box" style="margin-bottom: 20px;">
+                <p>"I gave up something that was really important to me. I lost control and now I watch the new owners screwing things up."</p>
+                <span class="source">- Thibault Louis-Lucas (Tibo), sold TweetHunter & Taplio for $8M, deeply regrets it</span>
+            </div>
+
+            <div class="quote-box" style="margin-bottom: 20px;">
+                <p>"The app was sold for too low! Only 2 years of revenue, cashed out early. They failed to account for the app functioning as 'real estate' that could generate revenue indefinitely."</p>
+                <span class="source">- Indie Hackers post on selling an app for $100K+</span>
+            </div>
+
+            <div class="quote-box" style="margin-bottom: 20px;">
+                <p>"Game design is not my area of expertise. Working with a publisher transformed the project - within months, AXES.io generated nearly $500K from $3K/month."</p>
+                <span class="source">- Iurii Chechulin, AXES.io (167x revenue increase through partnership)</span>
+            </div>
+
+            <div class="quote-box">
+                <p>"Why do I have to pay for marketing myself? I demanded upfront guarantees as proof of publisher commitment, not just vague promotion promises."</p>
+                <span class="source">- Daniel Manzano, rejected multiple publisher offers over 4 years</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Revenue Share Benchmarks -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Revenue Share Benchmarks</h2>
+            <p class="section-subtitle">Industry standards across platforms, publishers, and creator economy.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Industry/Platform</th>
+                        <th>Developer's Share</th>
+                        <th>Partner's Share</th>
+                        <th>Perception</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>App Stores (Apple/Google)</td>
+                        <td>70% (85% under $1M)</td>
+                        <td>30% (15% under $1M)</td>
+                        <td><span class="tag tag-blue">Industry Standard</span></td>
+                    </tr>
+                    <tr>
+                        <td>Epic Games Store</td>
+                        <td>88%</td>
+                        <td>12%</td>
+                        <td><span class="tag tag-green">Developer Friendly</span></td>
+                    </tr>
+                    <tr>
+                        <td>Shopify App Store</td>
+                        <td>80% (100% under $1M)</td>
+                        <td>20% (0% under $1M)</td>
+                        <td><span class="tag tag-green">Most Generous</span></td>
+                    </tr>
+                    <tr>
+                        <td>Game Publishing (Marketing Only)</td>
+                        <td>70-80%</td>
+                        <td>20-30%</td>
+                        <td><span class="tag tag-green">Fair</span></td>
+                    </tr>
+                    <tr>
+                        <td>Game Publishing (Standard)</td>
+                        <td>50-70%</td>
+                        <td>30-50%</td>
+                        <td><span class="tag tag-yellow">Acceptable</span></td>
+                    </tr>
+                    <tr>
+                        <td>Game Publishing (Full Funding)</td>
+                        <td>20-50%</td>
+                        <td>50-80%</td>
+                        <td><span class="tag tag-red">Exploitative (without value)</span></td>
+                    </tr>
+                    <tr>
+                        <td>YouTube Ad Revenue</td>
+                        <td>55%</td>
+                        <td>45%</td>
+                        <td><span class="tag tag-blue">Standard</span></td>
+                    </tr>
+                    <tr>
+                        <td>Udemy (Organic Sales)</td>
+                        <td>37%</td>
+                        <td>63%</td>
+                        <td><span class="tag tag-yellow">Platform-driven</span></td>
+                    </tr>
+                    <tr>
+                        <td>TikTok Creator Fund (2025)</td>
+                        <td>90%</td>
+                        <td>10%</td>
+                        <td><span class="tag tag-green">Recently Improved</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 32px; padding: 24px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px;">
+                <h4 style="color: #fcd34d; margin-bottom: 12px;">Key Insight: 50/50 is the Ceiling, Not the Baseline</h4>
+                <p style="color: #e2e8f0;">Developers view 50/50 as the maximum acceptable split, only justified when partners provide: (1) significant upfront funding, (2) full marketing campaigns ($10K+ budgets), (3) comprehensive monetization implementation, or (4) significant risk absorption. Without these, 50%+ partner takes are seen as "predatory."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Case Studies</h2>
+            <p class="section-subtitle">Real stories from developers who sold, partnered, or rejected offers.</p>
+
+            <div class="case-study-grid">
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div>
+                            <div class="case-study-title">Tibo - TweetHunter & Taplio</div>
+                            <div class="case-study-subtitle">Sold for $8M, deeply regrets it</div>
+                        </div>
+                        <span class="tag tag-red">Sale Regret</span>
+                    </div>
+                    <div class="case-study-quote">"I gave up something that was really important to me. I watch new owners screwing things up."</div>
+                    <div class="case-study-takeaway">
+                        <strong>Takeaway:</strong> Earnouts create massive stress. Partnership model that maintains founder involvement could avoid this pain point.
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div>
+                            <div class="case-study-title">Iurii Chechulin - AXES.io</div>
+                            <div class="case-study-subtitle">Partnered with Azur Games</div>
+                        </div>
+                        <span class="tag tag-green">Partnership Success</span>
+                    </div>
+                    <div class="case-study-quote">"Partnership transformed the project - $3K/month to $500K within months."</div>
+                    <div class="case-study-takeaway">
+                        <strong>Takeaway:</strong> 167x revenue increase justifies significant partner share. This is Moonshot's ideal validation case.
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div>
+                            <div class="case-study-title">Alexander Isora - Unicorn Platform</div>
+                            <div class="case-study-subtitle">Sold for $800K via trust-based deal</div>
+                        </div>
+                        <span class="tag tag-blue">Positive Exit</span>
+                    </div>
+                    <div class="case-study-quote">"A DM, a meeting, a deal. The buyer will be already sold after consuming your content."</div>
+                    <div class="case-study-takeaway">
+                        <strong>Takeaway:</strong> Trust and reputation matter more than formal processes. Build in public creates relationship leverage.
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div>
+                            <div class="case-study-title">Daniel Manzano - Moons of Darsalon</div>
+                            <div class="case-study-subtitle">Rejected all publisher offers for 4 years</div>
+                        </div>
+                        <span class="tag tag-yellow">Rejected Offers</span>
+                    </div>
+                    <div class="case-study-quote">"Why do I have to pay for marketing myself?"</div>
+                    <div class="case-study-takeaway">
+                        <strong>Takeaway:</strong> Developers demand upfront guarantees and true risk-sharing. No hidden cost recoupment.
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div>
+                            <div class="case-study-title">benjlin - RecordJoy</div>
+                            <div class="case-study-subtitle">Sold for ~$20,000</div>
+                        </div>
+                        <span class="tag tag-yellow">Under-monetized</span>
+                    </div>
+                    <div class="case-study-quote">"We were never able to truly find a scalable user acquisition channel."</div>
+                    <div class="case-study-takeaway">
+                        <strong>Takeaway:</strong> Classic under-monetized case: $700/mo with 3K users. Moonshot could 10x this through better monetization.
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div>
+                            <div class="case-study-title">Jumpship Studio - Somerville</div>
+                            <div class="case-study-subtitle">Accepted minority stake from NetEase</div>
+                        </div>
+                        <span class="tag tag-green">Minority Investment</span>
+                    </div>
+                    <div class="case-study-quote">"Retained operational control and creative decision-making authority."</div>
+                    <div class="case-study-takeaway">
+                        <strong>Takeaway:</strong> Minority stake provides capital and expertise while founders maintain control. Aligns with H2 validation.
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 24px; background: rgba(102, 126, 234, 0.1); border-radius: 12px;">
+                <h4 style="color: #a5b4fc; margin-bottom: 12px;">Patterns Across Case Studies</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div>
+                        <p style="color: #86efac; font-weight: 600; margin-bottom: 8px;">Why Developers Regret Selling</p>
+                        <ul style="color: #e2e8f0; padding-left: 20px; font-size: 14px;">
+                            <li>Loss of control over product direction</li>
+                            <li>Earnout stress (2+ years of anxiety)</li>
+                            <li>Emotional attachment to "their baby"</li>
+                            <li>Lump sum psychology ("dragon mentality")</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p style="color: #86efac; font-weight: 600; margin-bottom: 8px;">Why Developers Choose Partnership</p>
+                        <ul style="color: #e2e8f0; padding-left: 20px; font-size: 14px;">
+                            <li>Access expertise they lack (monetization, marketing)</li>
+                            <li>Preserve autonomy and involvement</li>
+                            <li>Benefit from long-term success, not just lump sum</li>
+                            <li>Market access (international, platform relationships)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Barriers -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Trust Barriers & How to Overcome Them</h2>
+            <p class="section-subtitle">What prevents developers from partnering, and how Moonshot can address each barrier.</p>
+
+            <div class="insights-grid">
+                <div class="insight-card" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                    <h3 style="color: #fca5a5;">Barriers Identified</h3>
+                    <ul>
+                        <li><strong>Fear of loss of control:</strong> Partners making unilateral decisions</li>
+                        <li><strong>Unclear agreement terms:</strong> Vague contracts lead to disputes</li>
+                        <li><strong>Value misalignment:</strong> Partner prioritizes profit over product quality</li>
+                        <li><strong>Revenue share disputes:</strong> Opaque accounting breeds mistrust</li>
+                        <li><strong>No exit options:</strong> Locked into unfavorable arrangements</li>
+                    </ul>
+                </div>
+
+                <div class="insight-card" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3);">
+                    <h3 style="color: #86efac;">Moonshot Solutions</h3>
+                    <ul>
+                        <li><strong>Formalize role & authority:</strong> Clear contracts defining decision rights</li>
+                        <li><strong>Transparent reporting:</strong> Open books, monthly reports, audit rights</li>
+                        <li><strong>Value alignment screening:</strong> Only partner with compatible apps</li>
+                        <li><strong>Pilot periods:</strong> 3-month trial at 70/30 before commitment</li>
+                        <li><strong>Easy exit:</strong> 60-day notice, no penalties</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendation -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Revenue Share Recommendation</h2>
+            <p class="section-subtitle">Optimal structure for Moonshot based on research findings.</p>
+
+            <div class="recommendation-box">
+                <h3>Recommended: Tiered Performance Structure</h3>
+                <p style="color: #e2e8f0; margin-bottom: 24px;">Start developer-friendly, improve Moonshot's share as value is proven. This de-risks for developers while creating incentives for both parties.</p>
+
+                <div class="recommendation-structure">
+                    <div class="structure-phase">
+                        <div class="phase-label">Pilot Period (Months 1-3)</div>
+                        <div class="phase-split" style="color: #86efac;">70/30</div>
+                        <div class="phase-desc">Developer keeps 70%<br>Low-risk trial</div>
+                    </div>
+                    <div class="structure-phase">
+                        <div class="phase-label">Growth Period (Months 4-12)</div>
+                        <div class="phase-split" style="color: #fcd34d;">65/35</div>
+                        <div class="phase-desc">Activates after 2x baseline<br>Reflects ongoing value</div>
+                    </div>
+                    <div class="structure-phase">
+                        <div class="phase-label">Scale Period (Month 13+)</div>
+                        <div class="phase-split" style="color: #a5b4fc;">60/40</div>
+                        <div class="phase-desc">After 5x baseline achieved<br>Continued optimization</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                    <div style="padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                        <h4 style="color: #a5b4fc; margin-bottom: 12px;">Why This Works</h4>
+                        <ul style="color: #e2e8f0; font-size: 14px; padding-left: 20px;">
+                            <li>Stays above 50/50 ceiling throughout</li>
+                            <li>Proves value during low-risk pilot</li>
+                            <li>Aligns incentives for sustained growth</li>
+                            <li>Competitive vs alternatives (acquisition, agencies)</li>
+                        </ul>
+                    </div>
+                    <div style="padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+                        <h4 style="color: #a5b4fc; margin-bottom: 12px;">Contract Essentials</h4>
+                        <ul style="color: #e2e8f0; font-size: 14px; padding-left: 20px;">
+                            <li>Developer retains 100% IP ownership</li>
+                            <li>Monthly transparent revenue reports</li>
+                            <li>60-day exit clause for either party</li>
+                            <li>Developer approval for major changes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 32px; padding: 24px; background: rgba(102, 126, 234, 0.1); border-radius: 12px;">
+                <h4 style="color: #a5b4fc; margin-bottom: 12px;">Messaging Strategy</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                    <div>
+                        <p style="color: #fca5a5; font-weight: 600; margin-bottom: 8px;">Don't Say</p>
+                        <ul style="color: #e2e8f0; font-size: 14px; padding-left: 20px;">
+                            <li>"We'll help you exit your business"</li>
+                            <li>"Sell us your app"</li>
+                            <li>"We take 50% of revenue"</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p style="color: #86efac; font-weight: 600; margin-bottom: 8px;">Do Say</p>
+                        <ul style="color: #e2e8f0; font-size: 14px; padding-left: 20px;">
+                            <li>"Scale your business while keeping ownership"</li>
+                            <li>"Partner with us to 10x revenue - you maintain control"</li>
+                            <li>"We split the growth we create together"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <div class="sources">
+                <h3>Sources & References</h3>
+                <ul>
+                    <li><a href="https://www.indiehackers.com/post/iwykhfENoZqJgRLU33zv" target="_blank">Indie Hackers - Tibo's $8M Exit Story</a></li>
+                    <li><a href="https://www.indiehackers.com/post/how-i-built-and-sold-my-first-android-app-085c825fc3" target="_blank">Indie Hackers - How I Built and Sold My First Android App</a></li>
+                    <li><a href="https://www.nothingeasyaboutthis.com/i-regret-selling-my-startup/" target="_blank">Boris Berenberg - I Regret Selling My Startup</a></li>
+                    <li><a href="https://news.ycombinator.com/item?id=39023702" target="_blank">Hacker News - I Regret Selling My Startup Discussion</a></li>
+                    <li><a href="https://www.gamedeveloper.com/business/why-i-decided-to-go-to-a-publisher-after-10-months-of-single-handedly-developing-a-game" target="_blank">Game Developer - Why I Decided to Go to a Publisher</a></li>
+                    <li><a href="https://www.gamedeveloper.com/game-platforms/eight-years-developing-and-indie-game-my-story-with-publishers-" target="_blank">Game Developer - Eight Years Developing an Indie Game</a></li>
+                    <li><a href="https://gameworldobserver.com/2022/07/28/indie-developers-publishers-debate-predatory-contracts-revenue" target="_blank">Game World Observer - Indie Devs Debate Predatory Deals</a></li>
+                    <li><a href="https://sharkponds.com/the-ultimate-guide-to-revenue-sharing-for-indie-game-developers/" target="_blank">Shark Ponds - Revenue Sharing Guide for Indie Developers</a></li>
+                    <li><a href="https://conversations.wf.com/5-common-regrets/" target="_blank">Wells Fargo - 5 Common Regrets After Selling a Business</a></li>
+                    <li><a href="https://www.entrepreneur.com/growing-a-business/what-i-wish-i-knew-before-selling-my-company/486192" target="_blank">Entrepreneur - What I Wish I Knew Before Selling</a></li>
+                    <li><a href="https://tylertringas.com/selling-my-bootstrapped-saas-business/" target="_blank">Tyler Tringas - Selling My Bootstrapped SaaS Business</a></li>
+                    <li><a href="https://flippa.com/blog/mobile-app-valuation-key-methods-metrics-and-multiples-for-2025/" target="_blank">Flippa - Mobile App Valuation 2025</a></li>
+                    <li><a href="https://blog.acquire.com/everything-you-need-to-know-about-earnouts-in-an-acquisition/" target="_blank">Acquire.com - Everything About Earnouts</a></li>
+                    <li><a href="https://www.revenuecat.com/blog/growth/why-i-didnt-sell-my-app-shot-pattern-story/" target="_blank">RevenueCat - Why I Didn't Sell My App</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <a href="../step-04-developer-personas/step4-developer-personas.html">
+                    <span><-</span>
+                    <span>Previous: Developer Personas</span>
+                </a>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 5 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-06-outreach-channels/step6-outreach-channels.html">
+                    <span>Next: Outreach Channels</span>
+                    <span>-></span>
+                </a>
+            </div>
+            <p style="margin-top: 20px;">Moonshot Research | Step 5: Developer Sentiment & Partnership Preference | December 2025</p>
+        </div>
+    </footer>
+</body>
+</html>

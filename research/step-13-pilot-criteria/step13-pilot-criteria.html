@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 13 | Pilot Partner Criteria</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation Bar */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        /* Big Stats */
+        .big-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .big-stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .big-stat-number.green {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-number.purple {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-number.yellow {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-label {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 700px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .cards-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cards-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card.green {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .card.yellow {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .card.red {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #a5b4fc;
+        }
+
+        .card.green h3 {
+            color: #86efac;
+        }
+
+        .card.yellow h3 {
+            color: #fcd34d;
+        }
+
+        .card.red h3 {
+            color: #fca5a5;
+        }
+
+        .card p {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        .card .highlight {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .card.green .highlight {
+            color: #22c55e;
+        }
+
+        .card.yellow .highlight {
+            color: #f59e0b;
+        }
+
+        .card.red .highlight {
+            color: #ef4444;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* Scorecard */
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .scorecard-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .scorecard-item h4 {
+            font-size: 14px;
+            color: #a5b4fc;
+            margin-bottom: 12px;
+        }
+
+        .score-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .score-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            color: #64748b;
+        }
+
+        .score-dot.active-1 { background: #22c55e; color: #fff; }
+        .score-dot.active-2 { background: #84cc16; color: #fff; }
+        .score-dot.active-3 { background: #f59e0b; color: #fff; }
+        .score-dot.active-4 { background: #f97316; color: #fff; }
+        .score-dot.active-5 { background: #ef4444; color: #fff; }
+
+        .score-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        /* Weight Badge */
+        .weight-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(102, 126, 234, 0.2);
+            color: #a5b4fc;
+            margin-left: 8px;
+        }
+
+        /* Decision Tree */
+        .decision-tree {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #a0aec0;
+            overflow-x: auto;
+        }
+
+        .decision-tree .green { color: #22c55e; }
+        .decision-tree .red { color: #ef4444; }
+        .decision-tree .yellow { color: #f59e0b; }
+        .decision-tree .purple { color: #a5b4fc; }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: #e2e8f0;
+        }
+
+        .checklist li::before {
+            content: "✓";
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .checklist.must li::before {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .checklist.nice li::before {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            content: "○";
+        }
+
+        .checklist.avoid li::before {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            content: "✕";
+        }
+
+        /* Tier Cards */
+        .tier-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .tier-card {
+            border-radius: 16px;
+            padding: 32px;
+            transition: transform 0.2s;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .tier-card.priority-1 {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .tier-card.priority-2 {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .tier-card.priority-3 {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .tier-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tier-badge {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .tier-badge.priority-1 {
+            background: rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .tier-badge.priority-2 {
+            background: rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+        }
+
+        .tier-badge.priority-3 {
+            background: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .tier-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .tier-card.priority-1 .tier-title { color: #22c55e; }
+        .tier-card.priority-2 .tier-title { color: #f59e0b; }
+        .tier-card.priority-3 .tier-title { color: #ef4444; }
+
+        .tier-criteria {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .tier-criteria li {
+            color: #a0aec0;
+            font-size: 14px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* App Profiles */
+        .app-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .app-profile:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .app-rank {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .app-info {
+            flex: 1;
+        }
+
+        .app-info h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .app-info p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .app-tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        .app-tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .app-tag.green { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+        .app-tag.purple { background: rgba(102, 126, 234, 0.2); color: #a5b4fc; }
+        .app-tag.yellow { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+
+        /* Sources */
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .sources ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sources li {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .big-stats, .cards, .tier-cards, .scorecard-grid { grid-template-columns: 1fr; }
+            .cards-2, .cards-4 { grid-template-columns: 1fr; }
+            .sources ul { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>›</span>
+            <a href="../index.html">Phase 5: Launch Prep</a>
+            <span>›</span>
+            Step 13
+        </div>
+        <header>
+            <div class="logo">Moonshot Research</div>
+            <div class="badge">STEP 13 COMPLETE</div>
+        </header>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Pilot Partner Criteria</h1>
+            <p class="tagline">A clear rubric for evaluating and selecting the first 3-5 partner apps. Designed for de-risked pilots with high learning velocity.</p>
+            <p class="subtitle">Research Date: December 29, 2025 | Based on Steps 1-12 Findings + B2B Pilot Best Practices</p>
+        </div>
+    </section>
+
+    <section class="big-stats">
+        <div class="container" style="display: contents;">
+            <div class="big-stat">
+                <div class="big-stat-number green">3-5</div>
+                <div class="big-stat-label">First Cohort Partners</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number purple">60 days</div>
+                <div class="big-stat-label">Pilot Duration</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number yellow">70/30</div>
+                <div class="big-stat-label">Pilot Revenue Split</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number green">30%+</div>
+                <div class="big-stat-label">Target Revenue Lift</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ideal Pilot Profile -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Ideal First Partner Profile</h2>
+            <p class="section-subtitle">Based on findings from Steps 4, 7, and 8, here's what makes the best pilot partner.</p>
+
+            <div class="cards">
+                <div class="card green">
+                    <div class="highlight">50K-150K</div>
+                    <h3>Monthly Active Users</h3>
+                    <p>Sweet spot: enough users to see meaningful results, not so large that complexity overwhelms. Based on Step 7 unit economics.</p>
+                </div>
+                <div class="card green">
+                    <div class="highlight">&lt;$1K/mo</div>
+                    <h3>Current Revenue</h3>
+                    <p>Under-monetized apps have room for 3-5x lift. Apps already earning $5K+/mo have less upside for dramatic improvement.</p>
+                </div>
+                <div class="card green">
+                    <div class="highlight">Tier 1</div>
+                    <h3>Technical Complexity</h3>
+                    <p>6-8 week implementation timeline. Simple CRUD, BaaS backend, single platform. Score 8-16 on the complexity scorecard.</p>
+                </div>
+            </div>
+
+            <div class="cards cards-2" style="margin-top: 24px;">
+                <div class="card" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.4);">
+                    <h3 style="color: #86efac;">Best Fit Persona: Burned Out Solo Dev</h3>
+                    <p style="margin-bottom: 16px;">From Step 4 research, this persona is most likely to partner:</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 6px 0; color: #e2e8f0;">Wants "set it and forget it" passive income</li>
+                        <li style="padding: 6px 0; color: #e2e8f0;">Low control priority — willing to hand off operations</li>
+                        <li style="padding: 6px 0; color: #e2e8f0;">Fast decision timeline (2-4 weeks)</li>
+                        <li style="padding: 6px 0; color: #e2e8f0;">Key message: "We handle everything"</li>
+                    </ul>
+                </div>
+                <div class="card" style="background: rgba(102, 126, 234, 0.1); border-color: rgba(102, 126, 234, 0.4);">
+                    <h3 style="color: #a5b4fc;">Target Categories</h3>
+                    <p style="margin-bottom: 16px;">App types with proven monetization potential and low complexity:</p>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 6px 0; color: #e2e8f0;">Productivity (timers, focus apps, trackers)</li>
+                        <li style="padding: 6px 0; color: #e2e8f0;">Utilities (converters, calculators, tools)</li>
+                        <li style="padding: 6px 0; color: #e2e8f0;">Education (flashcards, study aids, quizzes)</li>
+                        <li style="padding: 6px 0; color: #e2e8f0;">Lifestyle (journals, habit trackers, planners)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weighted Scoring Rubric -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Weighted Scoring Rubric</h2>
+            <p class="section-subtitle">Score each criterion 1-5. Apply weights. Total score determines priority tier.</p>
+
+            <h3 style="color: #a5b4fc; margin-bottom: 24px; font-size: 20px;">User & Business Metrics <span class="weight-badge">40% of total</span></h3>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Criterion</th>
+                        <th>1 (Poor)</th>
+                        <th>3 (Average)</th>
+                        <th>5 (Excellent)</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Monthly Active Users</td>
+                        <td>&lt;15K</td>
+                        <td>50K-100K</td>
+                        <td>100K-300K</td>
+                        <td><span class="weight-badge">2x</span></td>
+                    </tr>
+                    <tr>
+                        <td>D30 Retention</td>
+                        <td>&lt;15%</td>
+                        <td>25-35%</td>
+                        <td>40%+</td>
+                        <td><span class="weight-badge">1.5x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Monetization Gap</td>
+                        <td>&lt;2x potential</td>
+                        <td>3-5x potential</td>
+                        <td>5-10x potential</td>
+                        <td><span class="weight-badge">2x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Revenue Potential</td>
+                        <td>&lt;$3K/mo</td>
+                        <td>$5K-$15K/mo</td>
+                        <td>$15K+/mo</td>
+                        <td><span class="weight-badge">2x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Platform</td>
+                        <td>Both platforms</td>
+                        <td>Android-primary</td>
+                        <td>iOS-primary</td>
+                        <td><span class="weight-badge">1x</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="color: #a5b4fc; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Technical Complexity <span class="weight-badge">30% of total</span></h3>
+
+            <p style="color: #a0aec0; margin-bottom: 24px;">Use the 8-point scorecard from Step 8. Lower scores = better (simpler apps).</p>
+
+            <div class="scorecard-grid">
+                <div class="scorecard-item">
+                    <h4>Core Features</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>1-2 features</span>
+                        <span>5+ features</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>Backend</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>BaaS only</span>
+                        <span>Custom</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>Data Model</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>Simple CRUD</span>
+                        <span>Complex</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>UI Complexity</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>Standard</span>
+                        <span>Custom</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>Integrations</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>0-1 APIs</span>
+                        <span>4+ APIs</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>User Base</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>&lt;10K</span>
+                        <span>&gt;100K</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>Compliance</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>None</span>
+                        <span>HIPAA/PCI</span>
+                    </div>
+                </div>
+                <div class="scorecard-item">
+                    <h4>Migration</h4>
+                    <div class="score-bar">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>Greenfield</span>
+                        <span>Complex</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards cards-4" style="margin-top: 32px;">
+                <div class="card green">
+                    <div class="highlight">8-16</div>
+                    <h3>Tier 1</h3>
+                    <p>Proceed — Primary target</p>
+                </div>
+                <div class="card yellow">
+                    <div class="highlight">17-24</div>
+                    <h3>Tier 2</h3>
+                    <p>Scope aggressively</p>
+                </div>
+                <div class="card" style="border-color: rgba(249, 115, 22, 0.3);">
+                    <div class="highlight" style="color: #f97316;">25-32</div>
+                    <h3 style="color: #fdba74;">Tier 3</h3>
+                    <p>Consider declining</p>
+                </div>
+                <div class="card red">
+                    <div class="highlight">33-40</div>
+                    <h3>Reject</h3>
+                    <p>Too complex</p>
+                </div>
+            </div>
+
+            <h3 style="color: #a5b4fc; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Developer Fit <span class="weight-badge">30% of total</span></h3>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Criterion</th>
+                        <th>1 (Poor)</th>
+                        <th>3 (Average)</th>
+                        <th>5 (Excellent)</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Motivation</td>
+                        <td>Wants full exit</td>
+                        <td>Undecided</td>
+                        <td>Wants passive income</td>
+                        <td><span class="weight-badge">2x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Responsiveness</td>
+                        <td>&gt;7 days reply</td>
+                        <td>2-5 days</td>
+                        <td>&lt;48 hours</td>
+                        <td><span class="weight-badge">1.5x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Expectations</td>
+                        <td>Unrealistic (10x/30 days)</td>
+                        <td>Reasonable</td>
+                        <td>Aligned (3-5x/60 days)</td>
+                        <td><span class="weight-badge">1x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Involvement Preference</td>
+                        <td>Heavy control</td>
+                        <td>Flexible</td>
+                        <td>Hands-off</td>
+                        <td><span class="weight-badge">1.5x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Analytics Access</td>
+                        <td>Refuses to share</td>
+                        <td>Partial access</td>
+                        <td>Full access</td>
+                        <td><span class="weight-badge">2x</span></td>
+                    </tr>
+                    <tr>
+                        <td>Persona Match</td>
+                        <td>Aspiring Entrepreneur</td>
+                        <td>Accidental/Emerging</td>
+                        <td>Burned Out Solo</td>
+                        <td><span class="weight-badge">1x</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Must-Haves vs Nice-to-Haves -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Must-Haves vs Nice-to-Haves</h2>
+            <p class="section-subtitle">Absolute requirements versus preferential criteria for pilot selection.</p>
+
+            <div class="cards cards-2">
+                <div class="card" style="background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.4);">
+                    <h3 style="color: #86efac; font-size: 22px; margin-bottom: 20px;">Must-Haves (Non-Negotiable)</h3>
+                    <ul class="checklist must">
+                        <li>MAU: 25K-150K (enough for meaningful results)</li>
+                        <li>Current revenue: &lt;$1K/month (clear upside)</li>
+                        <li>D30 retention: &gt;25% (proves product-market fit)</li>
+                        <li>Technical complexity: Tier 1 or 2 (score 8-24)</li>
+                        <li>Single platform focus (iOS OR Android)</li>
+                        <li>Non-gaming category</li>
+                        <li>Solo developer or team of 2 max</li>
+                        <li>Not VC-backed or venture-funded</li>
+                        <li>Willing to share full analytics access</li>
+                        <li>Responds to outreach within 7 days</li>
+                        <li>Available for weekly 30-min sync calls</li>
+                        <li>Willing to sign 60-day pilot agreement</li>
+                    </ul>
+                </div>
+                <div class="card" style="background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.4);">
+                    <h3 style="color: #fcd34d; font-size: 22px; margin-bottom: 20px;">Nice-to-Haves (Preferential)</h3>
+                    <ul class="checklist nice">
+                        <li>Warm introduction or existing relationship</li>
+                        <li>iOS-primary (5.4x higher subscription ARPU)</li>
+                        <li>App in top categories: productivity, utilities, education</li>
+                        <li>Developer has technical blog/Twitter presence</li>
+                        <li>App has 4.0+ star rating</li>
+                        <li>App updated within last 90 days</li>
+                        <li>Developer timezone overlap with US</li>
+                        <li>Previous experience with analytics tools</li>
+                        <li>Existing but underoptimized monetization</li>
+                        <li>App has been live 6+ months</li>
+                        <li>Developer has positive community reputation</li>
+                        <li>App has growing (not declining) user base</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Assessment Framework -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Risk Assessment Framework</h2>
+            <p class="section-subtitle">Identify, categorize, and mitigate risks before committing to a pilot.</p>
+
+            <div class="tier-cards">
+                <div class="tier-card priority-1">
+                    <div class="tier-header">
+                        <span class="tier-badge priority-1">LOW RISK</span>
+                    </div>
+                    <div class="tier-title">Proceed Confidently</div>
+                    <ul class="tier-criteria">
+                        <li>Tier 1 technical complexity (8-16 score)</li>
+                        <li>Burned Out Solo Dev persona</li>
+                        <li>Warm introduction from trusted source</li>
+                        <li>Full analytics access provided</li>
+                        <li>Clear product-market fit (D30 &gt;35%)</li>
+                        <li>iOS-primary, US user base</li>
+                        <li>Developer responds within 24 hours</li>
+                    </ul>
+                </div>
+                <div class="tier-card priority-2">
+                    <div class="tier-header">
+                        <span class="tier-badge priority-2">MEDIUM RISK</span>
+                    </div>
+                    <div class="tier-title">Proceed with Caution</div>
+                    <ul class="tier-criteria">
+                        <li>Tier 2 technical complexity (17-24 score)</li>
+                        <li>Accidental Success or Emerging Market persona</li>
+                        <li>Cold outreach (no warm intro)</li>
+                        <li>Analytics access promised but not verified</li>
+                        <li>Moderate retention (D30 25-35%)</li>
+                        <li>Android-primary or mixed platform</li>
+                        <li>Developer responds within 3-5 days</li>
+                    </ul>
+                </div>
+                <div class="tier-card priority-3">
+                    <div class="tier-header">
+                        <span class="tier-badge priority-3">HIGH RISK</span>
+                    </div>
+                    <div class="tier-title">Avoid or Reject</div>
+                    <ul class="tier-criteria">
+                        <li>Tier 3 technical complexity (25+ score)</li>
+                        <li>Aspiring Entrepreneur persona (high control)</li>
+                        <li>Refuses to share analytics</li>
+                        <li>Unrealistic expectations (10x in 30 days)</li>
+                        <li>Low retention (D30 &lt;25%)</li>
+                        <li>Both platforms required simultaneously</li>
+                        <li>Developer slow to respond (&gt;7 days)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="color: #fca5a5; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Deal-Breakers (Automatic Rejection)</h3>
+
+            <div class="cards cards-4">
+                <div class="card red">
+                    <h3>Technical</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                        <li style="padding: 4px 0;">Real-time multiplayer</li>
+                        <li style="padding: 4px 0;">Video/photo editing</li>
+                        <li style="padding: 4px 0;">Offline-first with sync</li>
+                        <li style="padding: 4px 0;">HIPAA/PCI compliance</li>
+                    </ul>
+                </div>
+                <div class="card red">
+                    <h3>Business</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                        <li style="padding: 4px 0;">Expensive third-party APIs</li>
+                        <li style="padding: 4px 0;">Ongoing content creation</li>
+                        <li style="padding: 4px 0;">UGC with moderation</li>
+                        <li style="padding: 4px 0;">Marketplace/e-commerce</li>
+                    </ul>
+                </div>
+                <div class="card red">
+                    <h3>Developer</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                        <li style="padding: 4px 0;">Refuses analytics access</li>
+                        <li style="padding: 4px 0;">Wants upfront guarantee</li>
+                        <li style="padding: 4px 0;">Ghosts or misses calls</li>
+                        <li style="padding: 4px 0;">Negative community rep</li>
+                    </ul>
+                </div>
+                <div class="card red">
+                    <h3>Legal</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                        <li style="padding: 4px 0;">IP/trademark issues</li>
+                        <li style="padding: 4px 0;">VC-backed or funded</li>
+                        <li style="padding: 4px 0;">Won't sign agreement</li>
+                        <li style="padding: 4px 0;">Direct competitor in portfolio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pilot Terms Recommendation -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Pilot Terms Recommendation</h2>
+            <p class="section-subtitle">Structured terms based on B2B pilot best practices and Step 4/10 findings.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Revenue Split</th>
+                        <th>Minimum Floor</th>
+                        <th>Duration</th>
+                        <th>Exit Terms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: rgba(34, 197, 94, 0.1);">
+                        <td><strong style="color: #86efac;">Pilot</strong></td>
+                        <td>70/30 (dev keeps 70%)</td>
+                        <td>$500/month floor</td>
+                        <td>60 days</td>
+                        <td>30-day mutual no-fault</td>
+                    </tr>
+                    <tr style="background: rgba(102, 126, 234, 0.1);">
+                        <td><strong style="color: #a5b4fc;">Full Partnership</strong></td>
+                        <td>50/50</td>
+                        <td>None after proving value</td>
+                        <td>Ongoing</td>
+                        <td>60-day notice</td>
+                    </tr>
+                    <tr style="background: rgba(245, 158, 11, 0.1);">
+                        <td><strong style="color: #fcd34d;">Scaled (6+ months)</strong></td>
+                        <td>Tiered: 50%/40%/30%</td>
+                        <td>None</td>
+                        <td>Ongoing</td>
+                        <td>90-day notice</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="color: #a5b4fc; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">60-Day Pilot Timeline</h3>
+
+            <div class="cards cards-4">
+                <div class="card">
+                    <div class="highlight" style="font-size: 20px;">Days 0-14</div>
+                    <h3>Onboarding</h3>
+                    <p>Analytics audit, baseline metrics, integration setup, initial discoveries</p>
+                </div>
+                <div class="card">
+                    <div class="highlight" style="font-size: 20px;">Days 15-35</div>
+                    <h3>Implementation</h3>
+                    <p>Monetization improvements, A/B tests, paywall optimization, ad placement</p>
+                </div>
+                <div class="card">
+                    <div class="highlight" style="font-size: 20px;">Days 36-55</div>
+                    <h3>Optimization</h3>
+                    <p>Iterate on results, refine strategies, measure uplift, document learnings</p>
+                </div>
+                <div class="card">
+                    <div class="highlight" style="font-size: 20px;">Days 56-60</div>
+                    <h3>Decision</h3>
+                    <p>Final metrics review, go/no-go on full partnership, transition planning</p>
+                </div>
+            </div>
+
+            <div class="cards cards-2" style="margin-top: 32px;">
+                <div class="card" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.4);">
+                    <h3 style="color: #86efac;">Success Criteria (Convert to Full Partnership)</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; color: #e2e8f0;">Revenue lift: 30%+ improvement from baseline</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Implementation: 3+ monetization improvements shipped</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Satisfaction: Developer NPS 8+ / 10</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Engagement: Attended 80%+ of sync calls</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Learning: 10+ documented insights</li>
+                    </ul>
+                </div>
+                <div class="card" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.4);">
+                    <h3 style="color: #fca5a5;">Exit Criteria (Friendly Termination)</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0; color: #e2e8f0;">Revenue lift: &lt;15% improvement after 60 days</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Technical blockers: Unforeseen complexity emerged</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Misalignment: Goals or expectations diverged</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Communication: Developer disengaged or unresponsive</li>
+                        <li style="padding: 8px 0; color: #e2e8f0;">Mutual agreement: Either party can exit with 30 days notice</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Decision Tree -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Decision Tree for Go/No-Go</h2>
+            <p class="section-subtitle">Visual flowchart for evaluating potential pilot partners.</p>
+
+            <div class="decision-tree">
+<pre style="margin: 0;">
+<span class="purple">START:</span> Does app have 25K+ MAU?
+├── <span class="red">NO → REJECT</span> (too small for pilot)
+└── <span class="green">YES</span> → Is app non-gaming?
+    ├── <span class="red">NO → REJECT</span> (out of scope)
+    └── <span class="green">YES</span> → Is developer responsive (&lt;7 days)?
+        ├── <span class="yellow">NO → NURTURE</span> (re-engage in 30 days)
+        └── <span class="green">YES</span> → What is technical complexity score?
+            ├── <span class="red">33+ → REJECT</span> (too complex)
+            ├── <span class="yellow">25-32 → CONDITIONAL</span> (needs aggressive scoping)
+            └── <span class="green">8-24</span> → Will developer share analytics?
+                ├── <span class="red">NO → REJECT</span> (deal-breaker)
+                └── <span class="green">YES</span> → What is revenue potential?
+                    ├── <span class="red">&lt;$3K/mo → REJECT</span> (insufficient upside)
+                    └── <span class="green">$3K+/mo → PILOT CANDIDATE</span>
+                        └── <span class="purple">Final:</span> Match persona profile?
+                            ├── <span class="green">Burned Out Solo → PRIORITY 1</span>
+                            ├── <span class="yellow">Accidental Success → PRIORITY 2</span>
+                            ├── <span class="yellow">Emerging Market → PRIORITY 2</span>
+                            └── <span class="red">Aspiring Entrepreneur → PRIORITY 3</span>
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top 10 Target App Profiles -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Top 10 Target App Profiles</h2>
+            <p class="section-subtitle">Based on combined research from Steps 1-12, these app types are ideal for first pilots.</p>
+
+            <div class="app-profile">
+                <div class="app-rank">1</div>
+                <div class="app-info">
+                    <h4>Habit Tracker (iOS)</h4>
+                    <p>50-100K MAU, utility category, simple CRUD, strong subscription potential</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Productivity</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">2</div>
+                <div class="app-info">
+                    <h4>Focus/Pomodoro Timer</h4>
+                    <p>75-150K MAU, productivity, minimal backend, proven freemium model</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Productivity</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">3</div>
+                <div class="app-info">
+                    <h4>Expense Tracker</h4>
+                    <p>50-100K MAU, finance utility, no compliance issues, subscription + ads</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Utility</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">4</div>
+                <div class="app-info">
+                    <h4>Flashcard/Study App</h4>
+                    <p>100K+ MAU, education, proven subscription models, high engagement</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag yellow">Education</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">5</div>
+                <div class="app-info">
+                    <h4>Workout Timer/Tracker</h4>
+                    <p>50-150K MAU, fitness utility, static content library, premium upgrades</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Fitness</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">6</div>
+                <div class="app-info">
+                    <h4>Meditation Timer</h4>
+                    <p>75-200K MAU, wellness, premium content upsell, high ARPU potential</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Wellness</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">7</div>
+                <div class="app-info">
+                    <h4>Note-Taking (Text Only)</h4>
+                    <p>100K+ MAU, productivity, simple sync, subscription model fits well</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag yellow">Tier 2</span>
+                    <span class="app-tag purple">Productivity</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">8</div>
+                <div class="app-info">
+                    <h4>Unit/Currency Converter</h4>
+                    <p>100K+ MAU, utility, ad optimization opportunity, minimal complexity</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Utility</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">9</div>
+                <div class="app-info">
+                    <h4>Daily Journal</h4>
+                    <p>50-100K MAU, lifestyle, subscription + premium themes, high retention</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag green">Tier 1</span>
+                    <span class="app-tag purple">Lifestyle</span>
+                </div>
+            </div>
+
+            <div class="app-profile">
+                <div class="app-rank">10</div>
+                <div class="app-info">
+                    <h4>Recipe Manager</h4>
+                    <p>75-150K MAU, lifestyle, provided database (not UGC), subscription potential</p>
+                </div>
+                <div class="app-tags">
+                    <span class="app-tag yellow">Tier 2</span>
+                    <span class="app-tag purple">Lifestyle</span>
+                </div>
+            </div>
+
+            <!-- Prospecting Resources Section -->
+            <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 16px; padding: 32px; margin-top: 48px;">
+                <h3 style="color: #a5b4fc; font-size: 20px; margin-bottom: 20px;">Prospecting Resources</h3>
+                <p style="color: #a0aec0; margin-bottom: 24px;">Tools and strategies for finding target apps that match the ideal profile above.</p>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px;">
+                        <h4 style="color: #e2e8f0; font-size: 16px; margin-bottom: 12px;">App Intelligence Tools</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                            <li style="padding: 6px 0;"><strong>AppBrain.com</strong> - Filter by 50K-500K downloads, updated within 6 months</li>
+                            <li style="padding: 6px 0;"><strong>AppStorespy.com</strong> - iOS app analytics and download estimates</li>
+                            <li style="padding: 6px 0;"><strong>Sensor Tower / data.ai</strong> - Paid tools for deeper metrics</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px;">
+                        <h4 style="color: #e2e8f0; font-size: 16px; margin-bottom: 12px;">Community Outreach</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                            <li style="padding: 6px 0;"><strong>r/androiddev</strong> - Reddit Android developers</li>
+                            <li style="padding: 6px 0;"><strong>r/iOSProgramming</strong> - Reddit iOS developers</li>
+                            <li style="padding: 6px 0;"><strong>Indie Hackers</strong> - Developers self-reporting revenue</li>
+                            <li style="padding: 6px 0;"><strong>GitHub</strong> - Open-source apps with monetized versions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; margin-top: 20px;">
+                    <h4 style="color: #86efac; font-size: 14px; margin-bottom: 8px;">Sample Lead Found</h4>
+                    <p style="color: #e2e8f0; font-size: 14px;"><strong>Itemlist</strong> (iOS home inventory app) - Developer: Damjan Dabo (<a href="https://twitter.com/DamjanDabo" style="color: #667eea;">@DamjanDabo</a>) - ~$1,400/mo peak revenue on Indie Hackers. Likely fits pilot criteria.</p>
+                </div>
+            </div>
+
+            <h3 style="color: #fca5a5; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Categories to Avoid for Pilot</h3>
+
+            <div class="cards" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="card red">
+                    <h3>Social</h3>
+                    <p>Social networks, dating apps, community platforms</p>
+                </div>
+                <div class="card red">
+                    <h3>Commerce</h3>
+                    <p>Marketplace, e-commerce, multi-vendor platforms</p>
+                </div>
+                <div class="card red">
+                    <h3>Media</h3>
+                    <p>Photo/video editing, streaming, content creation</p>
+                </div>
+                <div class="card red">
+                    <h3>Compliance</h3>
+                    <p>Healthcare (HIPAA), fintech (PCI), news aggregation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <div class="sources">
+                <h3>Sources & References</h3>
+                <ul>
+                    <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
+                    <li><a href="https://www.headway.io/blog/how-to-run-a-software-pilot-program-b2b-dos-and-donts" target="_blank">Headway: How to Run Software Pilot Programs</a></li>
+                    <li><a href="https://medium.com/@fayehayes/7-reasons-why-startups-should-conduct-paid-pilots-af56868a056a" target="_blank">Medium: 7 Reasons for Paid Pilots</a></li>
+                    <li><a href="https://www.prefinery.com/blog/revenue-sharing-models-explained-guide-and-examples/" target="_blank">Prefinery: Revenue Sharing Models Explained</a></li>
+                    <li><a href="https://blog.player2.game/p/we-are-sharing-2m-revenue-with-1000" target="_blank">Player2: Indie Developer Revenue Share Model</a></li>
+                    <li><a href="https://fastercapital.com/articles/How-to-Use-B2B-Partnership-Strategies-for-Risk-Mitigation.html" target="_blank">FasterCapital: B2B Partnership Risk Mitigation</a></li>
+                    <li><a href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore: App Revenue Case Studies</a></li>
+                    <li><a href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle: App Monetization Case Studies</a></li>
+                    <li><a href="../step-08-technical-feasibility/step8-technical-feasibility.html" target="_blank">Moonshot Step 8: Technical Feasibility</a></li>
+                    <li><a href="../step-04-developer-personas/step4-developer-personas.html" target="_blank">Moonshot Step 4: Developer Personas</a></li>
+                    <li><a href="../step-07-unit-economics/step7-unit-economics.html" target="_blank">Moonshot Step 7: Unit Economics</a></li>
+                </ul>
+            </div>
+
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <a href="../step-12-positioning/step12-positioning.html">
+                    <span>←</span>
+                    <span>Previous: Positioning</span>
+                </a>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 13 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-14-funding-strategy/step14-funding-strategy.html">
+                    <span>Next: Funding Strategy</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Moonshot Research | Step 13: Pilot Partner Criteria | December 2025</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 10 | Legal Structure Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 20px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        /* Key Stats */
+        .key-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .stat-label {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 700px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .cards-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            color: #a0aec0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .card-highlight {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .card-highlight .card-title {
+            color: #a5b4fc;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .highlight-row td {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .highlight-row td:first-child {
+            border-left: 3px solid #22c55e;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .tag-green {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .tag-yellow {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+        }
+
+        .tag-blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .tag-purple {
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+
+        /* Callout */
+        .callout {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 20px 24px;
+            border-radius: 0 12px 12px 0;
+            margin: 24px 0;
+        }
+
+        .callout-warning {
+            background: rgba(234, 179, 8, 0.1);
+            border-left-color: #eab308;
+        }
+
+        .callout-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: #3b82f6;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .callout-text {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+
+        /* Framework Diagram */
+        .framework {
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            gap: 24px;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .framework-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .framework-box h4 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .framework-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .framework-box li {
+            padding: 8px 0;
+            color: #cbd5e1;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .framework-box li:last-child {
+            border-bottom: none;
+        }
+
+        .framework-arrow {
+            text-align: center;
+            color: #667eea;
+            font-size: 32px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -33px;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid #1a1a2e;
+        }
+
+        .timeline-content {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .timeline-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+
+        /* Sources */
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .source-category {
+            margin-bottom: 24px;
+        }
+
+        .source-category h4 {
+            color: #a5b4fc;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .source-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .source-link {
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .source-link:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .key-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            .framework {
+                grid-template-columns: 1fr;
+            }
+            .framework-arrow {
+                transform: rotate(90deg);
+            }
+            .source-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Navigation Bar */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav .disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>›</span>
+            <a href="../index.html">Phase 4: Operations</a>
+            <span>›</span>
+            Step 10
+        </div>
+        <!-- Header -->
+        <header>
+            <div>
+                <div class="logo">Moonshot</div>
+            </div>
+            <a href="../index.html" class="back-link">&larr; Back to Dashboard</a>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <span class="badge">Step 10 Complete</span>
+            <h1>Legal Structure Research</h1>
+            <p class="tagline">A framework for structuring revenue-sharing partnerships with indie developers, covering agreements, IP, international compliance, and costs.</p>
+            <p class="subtitle">Research completed December 2025 | 70+ sources analyzed</p>
+        </section>
+
+        <!-- Key Stats -->
+        <div class="key-stats">
+            <div class="stat">
+                <div class="stat-number">60/40</div>
+                <div class="stat-label">Recommended Initial Split<br>(Developer/Moonshot)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">$2.4K</div>
+                <div class="stat-label">Year 1 Legal Costs<br>(DIY Approach)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">2-3yr</div>
+                <div class="stat-label">Standard Term<br>with Auto-Renewal</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">LLC</div>
+                <div class="stat-label">Recommended Entity<br>(Delaware)</div>
+            </div>
+        </div>
+
+        <!-- Revenue Share Section -->
+        <section class="section">
+            <h2 class="section-title">Revenue Share Structures</h2>
+            <p class="section-subtitle">Industry benchmarks from creator platforms, game publishers, and SaaS partnerships inform our recommended approach.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform / Model</th>
+                            <th>Creator/Developer Share</th>
+                            <th>Platform/Partner Share</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Patreon</strong></td>
+                            <td>80-95%</td>
+                            <td>5-20%</td>
+                            <td>Low-touch; creator handles content</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Substack</strong></td>
+                            <td>90%</td>
+                            <td>10%</td>
+                            <td>Newsletter platform; minimal support</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Indie Game Publishers</strong></td>
+                            <td>70%</td>
+                            <td>30%</td>
+                            <td>Marketing, QA, publishing services</td>
+                        </tr>
+                        <tr>
+                            <td><strong>YouTube</strong></td>
+                            <td>55%</td>
+                            <td>45%</td>
+                            <td>Full platform + distribution + monetization</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Full-Service Game Publisher</strong></td>
+                            <td>50%</td>
+                            <td>50%</td>
+                            <td>Porting, marketing, QA, localization</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>Moonshot (Recommended)</strong></td>
+                            <td>60% (pilot) &rarr; 50%</td>
+                            <td>40% (pilot) &rarr; 50%</td>
+                            <td>Full app rewrite + monetization + ops</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">Recommendation</div>
+                <div class="callout-text">Start with <strong>60/40 (developer-favored)</strong> for first 3-5 partnerships to attract early adopters and build track record. Move to 50/50 once value proposition is proven. For high-potential apps (500K+ users), consider 70/30 to win competitive deals.</div>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">Net Revenue Definition</h3>
+            <div class="cards cards-2">
+                <div class="card">
+                    <div class="card-title">What's Included</div>
+                    <div class="card-desc">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">In-app purchases (consumables & non-consumables)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Subscription revenue (monthly/annual)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Ad revenue (AdMob, FAN, etc.)</li>
+                            <li style="padding: 8px 0;">Paid app downloads</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Deductions Before Split</div>
+                    <div class="card-desc">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Platform fees (Apple/Google 15-30%)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Refunds and chargebacks</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Payment processing fees</li>
+                            <li style="padding: 8px 0;">Taxes collected (sales tax, VAT)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-info" style="margin-top: 24px;">
+                <div class="callout-title">Critical Clause</div>
+                <div class="callout-text">Revenue share should be calculated on <strong>"proceeds actually received"</strong> by the operating entity, not on gross sales reported by app stores. This protects both parties from disputes over money never collected.</div>
+            </div>
+        </section>
+
+        <!-- IP Framework Section -->
+        <section class="section">
+            <h2 class="section-title">IP & Ownership Framework</h2>
+            <p class="section-subtitle">A dual-ownership model protects both parties while enabling Moonshot to build reusable infrastructure across partnerships.</p>
+
+            <div class="framework">
+                <div class="framework-box">
+                    <h4>Developer Owns</h4>
+                    <ul>
+                        <li>Original app concept & design</li>
+                        <li>Original codebase (if any)</li>
+                        <li>App name & trademark</li>
+                        <li>Brand assets & identity</li>
+                        <li>User data & relationships</li>
+                    </ul>
+                </div>
+                <div class="framework-arrow">&harr;</div>
+                <div class="framework-box">
+                    <h4>Moonshot Owns</h4>
+                    <ul>
+                        <li>Newly written code (rewrite)</li>
+                        <li>Shared infrastructure & SDKs</li>
+                        <li>Monetization implementations</li>
+                        <li>Analytics integrations</li>
+                        <li>Operational playbooks</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">License Structure</h3>
+            <div class="cards cards-2">
+                <div class="card card-highlight">
+                    <span class="tag tag-green">Developer Gets</span>
+                    <div class="card-title" style="margin-top: 12px;">Exclusive Perpetual License</div>
+                    <div class="card-desc">
+                        Developer receives an exclusive, perpetual, royalty-free license to use Moonshot's code for their app. This ensures the developer can always operate their app, even if the partnership ends.
+                    </div>
+                </div>
+                <div class="card card-highlight">
+                    <span class="tag tag-purple">Moonshot Gets</span>
+                    <div class="card-title" style="margin-top: 12px;">Non-Exclusive Reuse License</div>
+                    <div class="card-desc">
+                        Moonshot receives a non-exclusive license to reuse generic/framework code components in other partnerships (not app-specific logic). This enables building scalable shared infrastructure.
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">App Store Account Strategy</h3>
+            <div class="callout callout-info">
+                <div class="callout-title">Recommended Approach</div>
+                <div class="callout-text">App stays in developer's account. Moonshot added as Admin/App Manager + Sales role. Developer remits Moonshot's share monthly. This preserves developer control and reduces legal complexity while giving Moonshot full operational access.</div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Transfer Possible?</th>
+                            <th>Shared Access Roles</th>
+                            <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Apple App Store</strong></td>
+                            <td>Yes, with restrictions</td>
+                            <td>Admin, App Manager, Developer, Marketing, Sales</td>
+                            <td>Add Moonshot as App Manager + Sales</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Google Play</strong></td>
+                            <td>Yes, straightforward</td>
+                            <td>Owner, Admin, App Manager, Developer, Finances</td>
+                            <td>Add Moonshot as Admin + Finances</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-warning" style="margin-top: 24px;">
+                <div class="callout-title">Revenue Verification</div>
+                <div class="callout-text">Use third-party analytics (AppFigures, RevenueCat) that both parties can access. This builds trust through transparency and avoids disputes over self-reported revenue figures.</div>
+            </div>
+        </section>
+
+        <!-- Contract Clauses Section -->
+        <section class="section">
+            <h2 class="section-title">Key Contract Clauses</h2>
+            <p class="section-subtitle">Essential provisions for a revenue-sharing partnership agreement, with recommended terms based on industry research.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon">&#128197;</div>
+                    <div class="card-title">Term & Renewal</div>
+                    <div class="card-desc">
+                        <strong>Initial term:</strong> 2-3 years<br>
+                        <strong>Auto-renewal:</strong> 1-year terms<br>
+                        <strong>Notice period:</strong> 90 days before renewal<br>
+                        <strong>Performance clause:</strong> Either party can terminate if revenue falls below agreed threshold for 6+ months
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">&#128275;</div>
+                    <div class="card-title">Termination</div>
+                    <div class="card-desc">
+                        <strong>For convenience:</strong> 90-180 days notice after initial term<br>
+                        <strong>For cause:</strong> 30-day cure period for material breach<br>
+                        <strong>Immediate:</strong> Non-payment, IP infringement, criminal activity<br>
+                        <strong>Effect:</strong> Licenses survive per agreement terms
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">&#128176;</div>
+                    <div class="card-title">Buyout Provisions</div>
+                    <div class="card-desc">
+                        <strong>Formula:</strong> 6-12 months trailing revenue &times; 1.5-3x multiple<br>
+                        <strong>Payment:</strong> Allow 12-24 month installments<br>
+                        <strong>ROFR:</strong> If developer sells app, Moonshot gets first right to buy<br>
+                        <strong>Code transfer:</strong> Developer can buy code at termination
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">&#128683;</div>
+                    <div class="card-title">Non-Compete</div>
+                    <div class="card-desc">
+                        <strong>During term:</strong> Developer won't partner with competing accelerators for same app<br>
+                        <strong>Post-term:</strong> 12-month limitation on competing services only<br>
+                        <strong>Scope:</strong> Narrow geographic/service focus for enforceability<br>
+                        <strong>Note:</strong> Overly broad non-competes may be unenforceable
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">&#9878;</div>
+                    <div class="card-title">Dispute Resolution</div>
+                    <div class="card-desc">
+                        <strong>Step 1:</strong> 30-day informal negotiation<br>
+                        <strong>Step 2:</strong> Non-binding mediation ($5-10K)<br>
+                        <strong>Step 3:</strong> Binding arbitration via JAMS/AAA<br>
+                        <strong>Jurisdiction:</strong> Delaware law (business-friendly)<br>
+                        <strong>Why arbitration:</strong> Faster, cheaper, private vs litigation
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">&#128737;</div>
+                    <div class="card-title">Indemnification</div>
+                    <div class="card-desc">
+                        <strong>Mutual:</strong> Each party indemnifies for their breaches<br>
+                        <strong>IP-specific:</strong> Developer indemnifies for original app IP; Moonshot for new code IP<br>
+                        <strong>Cap:</strong> Liability limited to 12 months revenue (or $50K min)<br>
+                        <strong>Carve-outs:</strong> Gross negligence, willful misconduct
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">Representations & Warranties</h3>
+            <div class="cards cards-2">
+                <div class="card">
+                    <div class="card-title">Developer Represents</div>
+                    <div class="card-desc">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Owns all rights to original app and can enter agreement</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">App doesn't infringe third-party IP</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Has rights to use all third-party libraries/APIs</li>
+                            <li style="padding: 8px 0;">No existing agreements prevent this partnership</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Moonshot Represents</div>
+                    <div class="card-desc">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Will write professional-quality code following industry standards</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">New code won't infringe third-party IP</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Will maintain app security and comply with store guidelines</li>
+                            <li style="padding: 8px 0;">Has expertise to execute monetization strategy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- International Section -->
+        <section class="section">
+            <h2 class="section-title">International Considerations</h2>
+            <p class="section-subtitle">Key compliance requirements when partnering with developers in different regions.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Region</th>
+                            <th>Entity / Tax</th>
+                            <th>Compliance Requirements</th>
+                            <th>Payment Considerations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>United States</strong></td>
+                            <td>
+                                <span class="tag tag-green">LLC Recommended</span><br>
+                                Delaware LLC: $300 filing + $90/year
+                            </td>
+                            <td>
+                                Issue 1099-NEC for payments $600+/year<br>
+                                Developer handles own taxes (15.3% SE tax)
+                            </td>
+                            <td>
+                                ACH transfer (free/low cost)<br>
+                                Wise, Mercury, or traditional bank
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>European Union</strong></td>
+                            <td>
+                                <span class="tag tag-blue">GDPR Required</span><br>
+                                No entity needed; developers are contractors
+                            </td>
+                            <td>
+                                Data Processing Agreement (DPA) required<br>
+                                Avoid contractor misclassification<br>
+                                VAT may apply on services
+                            </td>
+                            <td>
+                                SEPA transfer (low cost)<br>
+                                Pay in EUR or USD<br>
+                                Wise recommended
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>India</strong></td>
+                            <td>
+                                <span class="tag tag-yellow">TDS Withholding</span><br>
+                                10% under US-India tax treaty
+                            </td>
+                            <td>
+                                Collect Form 15CA/15CB from developer<br>
+                                File TDS returns (or use platform like Deel)<br>
+                                Default rate 20% without treaty docs
+                            </td>
+                            <td>
+                                SWIFT wire ($25-50 fee)<br>
+                                Wise or Payoneer preferred<br>
+                                Pay in USD; developer converts
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Canada</strong></td>
+                            <td>
+                                <span class="tag tag-green">Straightforward</span><br>
+                                Similar to US contractor rules
+                            </td>
+                            <td>
+                                No withholding for services<br>
+                                Developer handles own taxes<br>
+                                T4A slip equivalent to 1099
+                            </td>
+                            <td>
+                                ACH or wire (low cost)<br>
+                                Pay in USD or CAD
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Other Regions</strong></td>
+                            <td>
+                                <span class="tag tag-purple">Case by Case</span><br>
+                                Verify local requirements
+                            </td>
+                            <td>
+                                Collect W-8BEN form (foreign status)<br>
+                                Developer handles local tax obligations<br>
+                                Agreement clause: developer responsible
+                            </td>
+                            <td>
+                                Use Deel, Remote, or Payoneer<br>
+                                Handles compliance for $49/month
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">Recommended Solution for International Developers</div>
+                <div class="callout-text">Use <strong>Deel</strong> or <strong>Remote.com</strong> ($49/contractor/month) to handle international payments and tax compliance. They manage withholding, currency conversion, and local labor law compliance. This removes significant administrative burden and legal risk.</div>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">Entity Structure Decision</h3>
+            <div class="cards cards-2">
+                <div class="card card-highlight">
+                    <span class="tag tag-green">Recommended</span>
+                    <div class="card-title" style="margin-top: 12px;">Delaware LLC</div>
+                    <div class="card-desc">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>Cost:</strong> $300 filing + $90/year franchise tax</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>Tax:</strong> Pass-through (avoid double taxation)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>Admin:</strong> Low (annual report only)</li>
+                            <li style="padding: 8px 0;"><strong>Best for:</strong> Bootstrapped, profitable from start</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="tag tag-blue">If Raising VC</span>
+                    <div class="card-title" style="margin-top: 12px;">Delaware C-Corp</div>
+                    <div class="card-desc">
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>Cost:</strong> $1,000-3,000 to form</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>Tax:</strong> Double taxation (corporate + dividend)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);"><strong>Admin:</strong> High (board meetings, minutes)</li>
+                            <li style="padding: 8px 0;"><strong>Required for:</strong> VC funding (preferred stock)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal Costs Section -->
+        <section class="section">
+            <h2 class="section-title">Legal Cost Estimates</h2>
+            <p class="section-subtitle">A phased approach to legal costs, starting lean and investing as the model proves itself.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Approach</th>
+                            <th>Cost</th>
+                            <th>What You Get</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight-row">
+                            <td><strong>DIY - Rocket Lawyer</strong></td>
+                            <td>$40/month (~$480/year)</td>
+                            <td>Unlimited documents, free attorney consultations, customizable templates</td>
+                            <td>First 2-3 partnerships to test model</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DIY - LegalZoom</strong></td>
+                            <td>$199-399 per template</td>
+                            <td>Good templates, attorney review add-on ($39/month)</td>
+                            <td>One-off documents, less customization needed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Attorney - Template</strong></td>
+                            <td>$3,000-5,000 (one-time)</td>
+                            <td>Custom partnership agreement tailored to your model, reusable for all deals</td>
+                            <td>After model proven with 3+ partnerships</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Attorney - Per Deal</strong></td>
+                            <td>$500-1,500 per partnership</td>
+                            <td>Review and customize for specific deal, handle complex situations</td>
+                            <td>High-value deals, international partners, complex IP</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ongoing Counsel</strong></td>
+                            <td>$200-400/hour</td>
+                            <td>Amendments, disputes, ongoing legal questions</td>
+                            <td>As needed basis</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px;">Recommended Phased Approach</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Year 1: Validate with DIY</div>
+                        <div class="timeline-desc">
+                            Use Rocket Lawyer ($40/month) for first 2-3 partnerships. Customize their revenue sharing template. Document any issues or gaps for future template. <strong>Total: ~$2,400</strong> (platform + 2 attorney reviews for complex deals)
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Year 2: Invest in Custom Template</div>
+                        <div class="timeline-desc">
+                            Hire business attorney to draft custom partnership template based on lessons learned. Create state-specific versions if needed (US, India, EU). <strong>Total: ~$5,000</strong> (template + ongoing reviews)
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Ongoing: Per-Deal Reviews</div>
+                        <div class="timeline-desc">
+                            Attorney review only for high-value ($100K+ potential) or complex situations (international, unusual IP). Standard deals use proven template. <strong>Budget: $500-1,500 per complex deal</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout callout-info">
+                <div class="callout-title">Documents Needed</div>
+                <div class="callout-text">
+                    <strong>Required:</strong> Master Partnership Agreement, NDA (for initial discussions), Code Access Agreement<br>
+                    <strong>Optional:</strong> App Store Transfer Documentation, Privacy Policy Template, Terms of Service Template (often use standard versions)
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Section -->
+        <section class="section">
+            <h2 class="section-title">Next Steps</h2>
+            <p class="section-subtitle">Actionable steps to set up the legal foundation for Moonshot partnerships.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <span class="tag tag-green">Immediate</span>
+                    <div class="card-title" style="margin-top: 12px;">Form Delaware LLC</div>
+                    <div class="card-desc">
+                        File Delaware LLC ($300). Obtain EIN from IRS (free). Open business bank account (Mercury or Wise). Set up QuickBooks Self-Employed ($15/month).
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="tag tag-green">Immediate</span>
+                    <div class="card-title" style="margin-top: 12px;">Set Up Rocket Lawyer</div>
+                    <div class="card-desc">
+                        Subscribe to Rocket Lawyer ($40/month). Customize revenue sharing agreement template with key clauses from this research. Create NDA template for initial developer conversations.
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="tag tag-blue">Before First Deal</span>
+                    <div class="card-title" style="margin-top: 12px;">Payment Infrastructure</div>
+                    <div class="card-desc">
+                        Set up ACH payment capability. Subscribe to AppFigures ($99/month) for revenue tracking. Create revenue tracking spreadsheet template for transparency.
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="tag tag-blue">Before First Deal</span>
+                    <div class="card-title" style="margin-top: 12px;">IP Protection</div>
+                    <div class="card-desc">
+                        Register Moonshot trademark ($250-350). Include IP audit in partnership onboarding checklist. Use GitHub/GitLab for code escrow (both parties have access).
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="tag tag-purple">After 3 Partnerships</span>
+                    <div class="card-title" style="margin-top: 12px;">Custom Legal Template</div>
+                    <div class="card-desc">
+                        Hire business attorney to draft custom template based on lessons learned. Budget $3,000-5,000. Create state-specific versions for India and EU developers.
+                    </div>
+                </div>
+                <div class="card">
+                    <span class="tag tag-purple">If International Scale</span>
+                    <div class="card-title" style="margin-top: 12px;">Deel/Remote Setup</div>
+                    <div class="card-desc">
+                        Partner with Deel or Remote.com ($49/contractor/month) for international payment compliance. Handles TDS, withholding, and local labor law automatically.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sources Section -->
+        <section class="section">
+            <h2 class="section-title">Sources</h2>
+
+            <div class="callout callout-info" style="margin-bottom: 32px;">
+                <div class="callout-title">Related Research</div>
+                <div class="callout-text">
+                    <a href="partnership-agreement-templates.html" style="color: #60a5fa;">Partnership Agreement Templates →</a><br>
+                    Deep dive into specific contract templates, including Genie AI and Raw Fury examples.
+                </div>
+            </div>
+
+            <div class="sources">
+                <div class="source-category">
+                    <h4>Revenue Share Structures</h4>
+                    <div class="source-list">
+                        <a href="https://fastercapital.com/articles/Revenue-share-agreements--Trends-and-best-practices-for-2025.html" class="source-link" target="_blank">Revenue Share Agreements: Trends and Best Practices</a>
+                        <a href="https://www.upcounsel.com/revenue-share-partnership-agreement" class="source-link" target="_blank">Revenue Sharing Agreement Basics - UpCounsel</a>
+                        <a href="https://www.prefinery.com/blog/revenue-sharing-models-explained-guide-and-examples/" class="source-link" target="_blank">Revenue Sharing Models Explained</a>
+                        <a href="https://gamedevelopermarketing.com/how-profitable-are-indie-games/" class="source-link" target="_blank">How Profitable Are Indie Games</a>
+                        <a href="https://medium.com/@samrahafeez002/how-does-the-youtube-revenue-split-between-creators-and-the-platform-99c21ff9b57d" class="source-link" target="_blank">YouTube Revenue Split Explained</a>
+                        <a href="https://www.podcastvideos.com/articles/creator-platform-payouts-onlyfans-patreon-youtube/" class="source-link" target="_blank">Creator Platform Payouts Comparison</a>
+                    </div>
+                </div>
+
+                <div class="source-category">
+                    <h4>IP Ownership & Licensing</h4>
+                    <div class="source-list">
+                        <a href="https://mikeyounglaw.com/software-development-agreement-code-ownership/" class="source-link" target="_blank">Software Development Agreement: Code Ownership</a>
+                        <a href="https://fastercapital.com/content/IP-co-ownership-and-partnership--Building-Strategic-Partnerships--Leveraging-IP-Co-Ownership.html" class="source-link" target="_blank">IP Co-Ownership and Partnership</a>
+                        <a href="https://patentpc.com/blog/how-to-use-trademark-licensing-for-strategic-brand-partnerships" class="source-link" target="_blank">Trademark Licensing for Brand Partnerships</a>
+                        <a href="https://www.gfrlaw.com/what-we-do/insights/software-development-agreements-should-parse-who-owns-which-rights" class="source-link" target="_blank">Software Development IP Rights</a>
+                    </div>
+                </div>
+
+                <div class="source-category">
+                    <h4>Partnership Agreement Clauses</h4>
+                    <div class="source-list">
+                        <a href="https://www.manifest.ly/blog/free-partnership-agreement-template-key-clauses-you-need/" class="source-link" target="_blank">Partnership Agreement Template: Key Clauses</a>
+                        <a href="https://www.nolo.com/legal-encyclopedia/withdrawing-from-partnership.html" class="source-link" target="_blank">Partnership Withdrawal and Buyout - Nolo</a>
+                        <a href="https://aaronhall.com/buyout-clauses-in-shareholder-and-partnership-agreements/" class="source-link" target="_blank">Buyout Clauses in Partnership Agreements</a>
+                        <a href="https://www.genieai.co/en-us/template/non-compete-partnership-agreement" class="source-link" target="_blank">Non-Compete Partnership Agreement Template</a>
+                        <a href="https://mondaq.com/india/trials-appeals-compensation/1500216/understanding-arbitration-vs-litigation-how-to-decide-the-right-path-for-your-dispute-resolution-agreement" class="source-link" target="_blank">Arbitration vs Litigation Guide</a>
+                        <a href="https://legalvision.com.au/software-website-development-agreement-draft-supplier-warranties-indemnity-clause/" class="source-link" target="_blank">Warranties and Indemnities in Software Agreements</a>
+                    </div>
+                </div>
+
+                <div class="source-category">
+                    <h4>Entity Structure & Taxation</h4>
+                    <div class="source-list">
+                        <a href="https://stripe.com/resources/more/c-corp-vs-llc" class="source-link" target="_blank">C Corp vs LLC - Stripe</a>
+                        <a href="https://carta.com/sg/en/learn/startups/private-companies/c-corp-vs-llc/" class="source-link" target="_blank">C Corp vs LLC for Startups - Carta</a>
+                        <a href="https://www.xflowpay.com/blog/tds-on-foreign-payments" class="source-link" target="_blank">TDS on Foreign Payments (India)</a>
+                        <a href="https://ebizfiling.com/blog/tax-withholding-on-foreign-payments-tds-on-foreign-payments/" class="source-link" target="_blank">Tax Withholding on Foreign Payments</a>
+                    </div>
+                </div>
+
+                <div class="source-category">
+                    <h4>Legal Costs</h4>
+                    <div class="source-list">
+                        <a href="https://www.contractscounsel.com/b/partnership-agreement-cost" class="source-link" target="_blank">Partnership Agreement Cost Guide</a>
+                        <a href="https://venturesmarter.com/rocket-lawyer-vs-legalzoom/" class="source-link" target="_blank">Rocket Lawyer vs LegalZoom Comparison</a>
+                        <a href="https://llcbuddy.com/legalzoom-vs-rocket-lawyer/" class="source-link" target="_blank">LegalZoom vs Rocket Lawyer 2025</a>
+                    </div>
+                </div>
+
+                <div class="source-category">
+                    <h4>App Store Requirements</h4>
+                    <div class="source-list">
+                        <a href="https://support.google.com/googleplay/android-developer/answer/6230247?hl=en" class="source-link" target="_blank">Google Play App Transfer Guide</a>
+                        <a href="https://support.loke.global/hc/en-us/articles/9214416297999-How-to-transfer-your-Apple-App-to-a-new-Apple-account" class="source-link" target="_blank">Apple App Store Transfer Guide</a>
+                        <a href="https://developer.apple.com/help/app-store-connect/reference/role-permissions/" class="source-link" target="_blank">App Store Connect Role Permissions</a>
+                        <a href="https://performance-partners.apple.com/commissions-payments" class="source-link" target="_blank">Apple Performance Partners Payments</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <a href="../step-09-monetization-validation/step9-monetization-validation.html">
+                    <span>←</span>
+                    <span>Previous: Monetization Validation</span>
+                </a>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 10 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-11-infrastructure/step11-infrastructure.html">
+                    <span>Next: Infrastructure</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p style="margin-top: 20px;">Moonshot Research | Step 10: Legal Structure | December 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

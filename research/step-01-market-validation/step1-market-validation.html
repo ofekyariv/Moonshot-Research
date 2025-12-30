@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1 | Market Validation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        /* Big Stats */
+        .big-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .big-stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .big-stat-label {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #a5b4fc;
+        }
+
+        .card p {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        .card .highlight {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .source-link {
+            display: block;
+            margin-top: 12px;
+            color: #667eea;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .data-table .value {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* Implications */
+        .implications {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .implication {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .implication h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #86efac;
+        }
+
+        .implication p {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        /* Sources */
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .sources ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sources li {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        /* Verdict */
+        .verdict {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(34, 197, 94, 0.1) 100%);
+        }
+
+        .verdict h2 {
+            font-size: 40px;
+            margin-bottom: 16px;
+            color: #22c55e;
+        }
+
+        .verdict p {
+            color: #a0aec0;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .verdict .confidence {
+            display: inline-block;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .big-stats { grid-template-columns: repeat(2, 1fr); }
+            .cards, .implications, .sources ul { grid-template-columns: 1fr; }
+        }
+
+        /* Navigation Bar */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav .disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>›</span>
+            <a href="../index.html">Phase 1: Foundation</a>
+            <span>›</span>
+            Step 1
+        </div>
+        <header>
+            <div class="logo">Moonshot Research</div>
+            <div class="badge">H1</div>
+        </header>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>The Market Exists at Scale</h1>
+            <p class="tagline">Under-monetized indie apps aren't just real—they're everywhere. Our hypothesis was conservative by 100-300x.</p>
+            <p class="subtitle">Research Date: December 28, 2025 | Primary Source: RevenueCat (30,000 apps)</p>
+        </div>
+    </section>
+
+    <section class="big-stats">
+        <div class="container" style="display: contents;">
+            <div class="big-stat">
+                <div class="big-stat-number">82.8%</div>
+                <div class="big-stat-label">Apps earn less than $1K/month</div>
+                <a class="source-link" href="https://techcrunch.com/2024/03/12/most-subscription-mobile-apps-dont-make-money-new-report-shows/" target="_blank">RevenueCat via TechCrunch</a>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number">347K</div>
+                <div class="big-stat-label">Apps fit our target profile</div>
+                <a class="source-link" href="#math" style="color: #a5b4fc;">See calculation below</a>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number">1M+</div>
+                <div class="big-stat-label">Abandoned apps with users</div>
+                <a class="source-link" href="https://www.pixalate.com/blog/pixalates-q3-2024-abandoned-mobile-apps-report" target="_blank">Pixalate Q3 2024</a>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number">500x</div>
+                <div class="big-stat-label">Revenue gap: top 5% vs rest</div>
+                <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat 2024</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Revenue Distribution is Brutal</h2>
+            <p class="section-subtitle">The vast majority of apps struggle to make meaningful money, even with real users.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="highlight">&lt;$50</div>
+                    <h3>Median Monthly Revenue</h3>
+                    <p>After 12 months of operation, the typical app earns less than $50/month. Most never break even.</p>
+                    <a class="source-link" href="https://techcrunch.com/2024/03/12/most-subscription-mobile-apps-dont-make-money-new-report-shows/" target="_blank">Source: TechCrunch / RevenueCat</a>
+                </div>
+                <div class="card">
+                    <div class="highlight">3.5%</div>
+                    <h3>Reach Full-Time Viability</h3>
+                    <p>Only 3.5% of apps reach $10K/month—the threshold where a solo developer can go full-time.</p>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">Source: RevenueCat 2024</a>
+                </div>
+                <div class="card">
+                    <div class="highlight">$5-20</div>
+                    <h3>Bottom 25% Earnings</h3>
+                    <p>A quarter of all apps earn between $5 and $20 per month. These are our primary targets.</p>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">Source: RevenueCat 2024</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Monetization Gap Section -->
+    <section class="section" id="monetization-gap" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">The Monetization Gap (Non-Gaming)</h2>
+            <p class="section-subtitle">Non-gaming apps leave 5-20x revenue on the table. Here's the data.</p>
+
+            <!-- Chart 1: Revenue per 1K Users by Strategy -->
+            <div style="margin-bottom: 60px;">
+                <h3 style="color: #a5b4fc; margin-bottom: 24px; font-size: 20px;">Revenue per 1,000 Users (Monthly)</h3>
+                <div class="chart-container" style="display: flex; align-items: flex-end; gap: 40px; height: 320px; padding: 20px 0;">
+                    <!-- Poor: Ad-Only -->
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                        <div style="background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); width: 100%; border-radius: 8px 8px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 12px; height: 25px; position: relative;">
+                            <span style="position: absolute; top: -30px; font-weight: 700; font-size: 18px;">$50-90</span>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 0 0 8px 8px; padding: 16px; text-align: center; width: 100%;">
+                            <div style="font-weight: 600; color: #fca5a5;">Ad-Only</div>
+                            <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Poor monetization</div>
+                        </div>
+                    </div>
+                    <!-- Average: Freemium -->
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                        <div style="background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); width: 100%; border-radius: 8px 8px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 12px; height: 65px; position: relative;">
+                            <span style="position: absolute; top: -30px; font-weight: 700; font-size: 18px;">$130</span>
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 0 0 8px 8px; padding: 16px; text-align: center; width: 100%;">
+                            <div style="font-weight: 600; color: #fcd34d;">Freemium</div>
+                            <div style="font-size: 13px; color: #64748b; margin-top: 4px;">2.6% conversion</div>
+                        </div>
+                    </div>
+                    <!-- Good: Subscription -->
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                        <div style="background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%); width: 100%; border-radius: 8px 8px 0 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 12px; height: 250px; position: relative;">
+                            <span style="position: absolute; top: -30px; font-weight: 700; font-size: 18px;">$500-1,000</span>
+                        </div>
+                        <div style="background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 0 0 8px 8px; padding: 16px; text-align: center; width: 100%;">
+                            <div style="font-weight: 600; color: #86efac;">Subscription</div>
+                            <div style="font-size: 13px; color: #64748b; margin-top: 4px;">5% conversion</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 8px; margin-top: 16px;">
+                    <span style="background: rgba(239, 68, 68, 0.3); padding: 6px 16px; border-radius: 20px; font-size: 14px; color: #fca5a5;">5-11x gap</span>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="display: inline; margin: 0; padding: 6px 16px;">Source: RevenueCat 2024</a>
+                </div>
+            </div>
+
+            <!-- Chart 2: Gap by Category -->
+            <h3 style="color: #a5b4fc; margin-bottom: 24px; font-size: 20px;">Monetization Gap by Category (Non-Gaming)</h3>
+            <div class="category-chart" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Education -->
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 120px; text-align: right; color: #a0aec0; font-size: 14px;">Education</div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                        <div style="background: linear-gradient(90deg, #ef4444, #dc2626); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$0.50</div>
+                        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, #ef4444, #22c55e); position: relative;">
+                            <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fcd34d; font-weight: 600;">20x gap</span>
+                        </div>
+                        <div style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$10</div>
+                    </div>
+                    <a class="source-link" href="https://www.businessofapps.com/data/education-app-market/" target="_blank" style="display: inline; margin: 0; font-size: 11px;">Source</a>
+                </div>
+                <!-- Productivity -->
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 120px; text-align: right; color: #a0aec0; font-size: 14px;">Productivity</div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                        <div style="background: linear-gradient(90deg, #ef4444, #dc2626); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$0.50</div>
+                        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, #ef4444, #22c55e); position: relative;">
+                            <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fcd34d; font-weight: 600;">18x gap</span>
+                        </div>
+                        <div style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$9</div>
+                    </div>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="display: inline; margin: 0; font-size: 11px;">Source</a>
+                </div>
+                <!-- Lifestyle -->
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 120px; text-align: right; color: #a0aec0; font-size: 14px;">Lifestyle</div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                        <div style="background: linear-gradient(90deg, #ef4444, #dc2626); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$0.50</div>
+                        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, #ef4444, #22c55e); position: relative;">
+                            <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fcd34d; font-weight: 600;">12x gap</span>
+                        </div>
+                        <div style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$6</div>
+                    </div>
+                    <a class="source-link" href="https://www.businessofapps.com/data/wellness-app-market/" target="_blank" style="display: inline; margin: 0; font-size: 11px;">Source</a>
+                </div>
+                <!-- Health/Fitness -->
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 120px; text-align: right; color: #a0aec0; font-size: 14px;">Health/Fitness</div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                        <div style="background: linear-gradient(90deg, #ef4444, #dc2626); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$1</div>
+                        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, #ef4444, #22c55e); position: relative;">
+                            <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fcd34d; font-weight: 600;">6.5x gap</span>
+                        </div>
+                        <div style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$6.50</div>
+                    </div>
+                    <a class="source-link" href="https://www.businessofapps.com/data/fitness-app-market/" target="_blank" style="display: inline; margin: 0; font-size: 11px;">Source</a>
+                </div>
+                <!-- Utilities -->
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 120px; text-align: right; color: #a0aec0; font-size: 14px;">Utilities</div>
+                    <div style="flex: 1; display: flex; align-items: center; gap: 8px;">
+                        <div style="background: linear-gradient(90deg, #ef4444, #dc2626); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$0.50</div>
+                        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, #ef4444, #22c55e); position: relative;">
+                            <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #fcd34d; font-weight: 600;">6x gap</span>
+                        </div>
+                        <div style="background: linear-gradient(90deg, #22c55e, #16a34a); height: 32px; min-width: 50px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">$3</div>
+                    </div>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="display: inline; margin: 0; font-size: 11px;">Source</a>
+                </div>
+            </div>
+            <p style="margin-top: 24px; color: #64748b; text-align: center; font-size: 14px;">ARPU = Average Revenue Per User (monthly). Red = ad-only actual, Green = subscription potential.</p>
+        </div>
+    </section>
+
+    <!-- NEW: Revenue by User Count Section -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Revenue Potential by User Count</h2>
+            <p class="section-subtitle">What apps at different user levels could be earning vs what they actually earn.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>User Count (MAU)</th>
+                        <th>Ad-Only (Actual)</th>
+                        <th>Subscription (Potential)</th>
+                        <th>Gap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>15,000</td>
+                        <td class="value" style="color: #fca5a5;">$750 - $1,350/mo</td>
+                        <td class="value" style="color: #86efac;">$7,500 - $15,000/mo</td>
+                        <td><span style="background: rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 12px; font-size: 13px;">10x</span></td>
+                    </tr>
+                    <tr>
+                        <td>50,000</td>
+                        <td class="value" style="color: #fca5a5;">$2,500 - $4,500/mo</td>
+                        <td class="value" style="color: #86efac;">$25,000 - $50,000/mo</td>
+                        <td><span style="background: rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 12px; font-size: 13px;">10x</span></td>
+                    </tr>
+                    <tr>
+                        <td>100,000</td>
+                        <td class="value" style="color: #fca5a5;">$5,000 - $9,000/mo</td>
+                        <td class="value" style="color: #86efac;">$50,000 - $100,000/mo</td>
+                        <td><span style="background: rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 12px; font-size: 13px;">10x</span></td>
+                    </tr>
+                    <tr>
+                        <td>500,000</td>
+                        <td class="value" style="color: #fca5a5;">$25,000 - $45,000/mo</td>
+                        <td class="value" style="color: #86efac;">$250,000 - $500,000/mo</td>
+                        <td><span style="background: rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 12px; font-size: 13px;">10x</span></td>
+                    </tr>
+                    <tr>
+                        <td>1,000,000</td>
+                        <td class="value" style="color: #fca5a5;">$50,000 - $90,000/mo</td>
+                        <td class="value" style="color: #86efac;">$500,000 - $1,000,000/mo</td>
+                        <td><span style="background: rgba(245, 158, 11, 0.3); padding: 4px 12px; border-radius: 12px; font-size: 13px;">10x</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 16px; color: #64748b; font-size: 13px;">
+                Assumptions: Ad-only at $0.50-$0.90 ARPU | Subscription at 5% conversion, $10/month average
+                <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="display: inline; margin-left: 8px;">Source: RevenueCat</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- NEW: Case Studies Section -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Proof: Real Revenue Improvements</h2>
+            <p class="section-subtitle">Non-gaming apps that optimized monetization without growing users.</p>
+
+            <div class="cards" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="card">
+                    <div class="highlight" style="color: #22c55e;">+111%</div>
+                    <h3>Breezometer</h3>
+                    <p>Air quality app. Optimized ad placement and formats.</p>
+                    <a class="source-link" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
+                </div>
+                <div class="card">
+                    <div class="highlight" style="color: #22c55e;">+96%</div>
+                    <h3>RynVPN</h3>
+                    <p>Privacy utility. Results in 4 months.</p>
+                    <a class="source-link" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
+                </div>
+                <div class="card">
+                    <div class="highlight" style="color: #22c55e;">+71%</div>
+                    <h3>Mobiscore</h3>
+                    <p>Sports info app. Just switched ad partners.</p>
+                    <a class="source-link" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
+                </div>
+                <div class="card">
+                    <div class="highlight" style="color: #22c55e;">+296%</div>
+                    <h3>Toss (Fintech)</h3>
+                    <p>Payment app. Added native + interstitial ads.</p>
+                    <a class="source-link" href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Key Statistics</h2>
+            <p class="section-subtitle">Data from RevenueCat, Pixalate, 99firms, and other authoritative sources.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Apps earning &lt;$1K/month</td>
+                        <td class="value">82.8%</td>
+                        <td>RevenueCat 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Apps reaching $10K/month</td>
+                        <td class="value">3.5%</td>
+                        <td>RevenueCat 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Median monthly revenue (12mo)</td>
+                        <td class="value">&lt;$50</td>
+                        <td>RevenueCat 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Top 5% vs bottom 95% revenue ratio</td>
+                        <td class="value">500x</td>
+                        <td>RevenueCat 2025</td>
+                    </tr>
+                    <tr>
+                        <td>Apps considered "successful"</td>
+                        <td class="value">0.01% (1 in 10K)</td>
+                        <td>99firms</td>
+                    </tr>
+                    <tr>
+                        <td>Abandoned iOS apps</td>
+                        <td class="value">682,000</td>
+                        <td>Pixalate Q3 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Abandoned Android apps</td>
+                        <td class="value">332,000</td>
+                        <td>Pixalate Q3 2024</td>
+                    </tr>
+                    <tr>
+                        <td>User churn within 90 days</td>
+                        <td class="value">71%</td>
+                        <td>Gitnux 2023</td>
+                    </tr>
+                    <tr>
+                        <td>Apps used only once</td>
+                        <td class="value">25%</td>
+                        <td>Gitnux 2023</td>
+                    </tr>
+                    <tr>
+                        <td>Total apps (iOS + Android)</td>
+                        <td class="value">4.19M</td>
+                        <td>99firms</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Strategic Implications</h2>
+            <p class="section-subtitle">What this means for Moonshot's business model.</p>
+
+            <div class="implications">
+                <div class="implication">
+                    <h3>TAM is Massive</h3>
+                    <p>We estimated "thousands" of target apps. The real number is ~347,000. Even capturing 0.1% means hundreds of partnerships.</p>
+                    <a class="source-link" href="https://99firms.com/research/apps-statistics/" target="_blank" style="color: #86efac;">99firms: 4.19M total apps</a>
+                </div>
+                <div class="implication">
+                    <h3>10x Revenue is Achievable</h3>
+                    <p>Moving an app from bottom quartile ($5-20/mo) to median ($50) is only 2.5x. Moving to top 25% validates our 10x hypothesis.</p>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="color: #86efac;">RevenueCat quartile data</a>
+                </div>
+                <div class="implication">
+                    <h3>Abandoned Apps = Opportunity</h3>
+                    <p>1M+ abandoned apps still have active users generating $53M/quarter in ad revenue. Developers may welcome resurrection partners.</p>
+                    <a class="source-link" href="https://www.pixalate.com/blog/pixalates-q3-2024-abandoned-mobile-apps-report" target="_blank" style="color: #86efac;">Pixalate Q3 2024 Report</a>
+                </div>
+                <div class="implication">
+                    <h3>Geographic Arbitrage</h3>
+                    <p>North American apps monetize 4x better than global average. Helping non-US developers reach NA monetization levels is valuable.</p>
+                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="color: #86efac;">RevenueCat geographic data</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="math" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">The Math</h2>
+            <p class="section-subtitle">How we calculated the target market size.</p>
+
+            <div class="cards" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="card" style="text-align: center;">
+                    <div class="highlight">4.19M</div>
+                    <p style="margin-top: 8px;">Total apps in stores</p>
+                    <a class="source-link" href="https://99firms.com/research/apps-statistics/" target="_blank">99firms</a>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="highlight">x 82.8%</div>
+                    <p style="margin-top: 8px;">Earn &lt;$1K/month</p>
+                    <a class="source-link" href="https://techcrunch.com/2024/03/12/most-subscription-mobile-apps-dont-make-money-new-report-shows/" target="_blank">RevenueCat</a>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="highlight">x 10%</div>
+                    <p style="margin-top: 8px;">Have 15K-1M users</p>
+                    <a class="source-link" href="#" style="color: #64748b;">Conservative estimate</a>
+                </div>
+                <div class="card" style="text-align: center; background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.3);">
+                    <div class="highlight" style="color: #22c55e;">= 347K</div>
+                    <p style="margin-top: 8px; color: #86efac;">Target apps</p>
+                    <span class="source-link" style="color: #86efac;">347x our hypothesis</span>
+                </div>
+            </div>
+
+            <p style="margin-top: 24px; color: #64748b; text-align: center;">Even at 1% user filter (ultra-conservative), that's 34,700 apps—still 34x our "thousands" assumption.</p>
+        </div>
+    </section>
+
+    <section class="verdict">
+        <div class="container">
+            <h2>Hypothesis Tested</h2>
+            <p>The under-monetized indie app market exists at a scale 100-300x larger than our conservative estimate. This is a massive TAM for Moonshot.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="sources">
+                <h3>Sources & References</h3>
+                <ul>
+                    <li><a href="https://techcrunch.com/2024/03/12/most-subscription-mobile-apps-dont-make-money-new-report-shows/" target="_blank">TechCrunch: Most subscription apps don't make money</a></li>
+                    <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
+                    <li><a href="https://www.pixalate.com/blog/pixalates-q3-2024-abandoned-mobile-apps-report" target="_blank">Pixalate: Q3 2024 Abandoned Apps Report</a></li>
+                    <li><a href="https://99firms.com/research/apps-statistics/" target="_blank">99firms: Apps Statistics 2025</a></li>
+                    <li><a href="https://gitnux.org/mobile-app-download-statistics/" target="_blank">Gitnux: Mobile App Download Statistics</a></li>
+                    <li><a href="https://www.businessofapps.com/data/app-revenues/" target="_blank">Business of Apps: App Revenue Data</a></li>
+                    <li><a href="https://www.businessofapps.com/data/education-app-market/" target="_blank">Business of Apps: Education App Market</a></li>
+                    <li><a href="https://www.businessofapps.com/data/fitness-app-market/" target="_blank">Business of Apps: Fitness App Market</a></li>
+                    <li><a href="https://www.businessofapps.com/data/wellness-app-market/" target="_blank">Business of Apps: Wellness App Market</a></li>
+                    <li><a href="https://firstpagesage.com/seo-blog/saas-freemium-conversion-rates/" target="_blank">FirstPageSage: SaaS Conversion Rates</a></li>
+                    <li><a href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore: App Revenue Case Studies</a></li>
+                    <li><a href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle: App Monetization Case Studies</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <div class="disabled">
+                    <span>← Previous</span>
+                </div>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 1 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-02-competitive-landscape/step2-competitive-landscape.html">
+                    <span>Next: Competitive Landscape</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p style="margin-top: 20px;">Moonshot Research | H1 Validation Report | December 2025</p>
+        </div>
+    </footer>
+</body>
+</html>

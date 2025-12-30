@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 2 | Competitive Landscape</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        .big-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .big-stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .big-stat-label {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #a5b4fc;
+        }
+
+        .card p {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        .card .highlight {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .card.threat {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .card.threat:hover {
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        .card.threat h3 {
+            color: #fca5a5;
+        }
+
+        .card.opportunity {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .card.opportunity:hover {
+            border-color: rgba(34, 197, 94, 0.6);
+        }
+
+        .card.opportunity h3 {
+            color: #86efac;
+        }
+
+        .card.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .card.warning:hover {
+            border-color: rgba(245, 158, 11, 0.6);
+        }
+
+        .card.warning h3 {
+            color: #fcd34d;
+        }
+
+        .source-link {
+            display: block;
+            margin-top: 12px;
+            color: #667eea;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .data-table tr.highlight-row {
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .data-table tr.highlight-row:hover {
+            background: rgba(34, 197, 94, 0.2);
+        }
+
+        .check {
+            color: #22c55e;
+        }
+
+        .cross {
+            color: #ef4444;
+        }
+
+        .partial {
+            color: #f59e0b;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag-gaming {
+            background: rgba(139, 92, 246, 0.3);
+            color: #c4b5fd;
+        }
+
+        .tag-saas {
+            background: rgba(59, 130, 246, 0.3);
+            color: #93c5fd;
+        }
+
+        .tag-ecom {
+            background: rgba(236, 72, 153, 0.3);
+            color: #f9a8d4;
+        }
+
+        .tag-nongaming {
+            background: rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .sources ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sources li {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        .verdict {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(34, 197, 94, 0.1) 100%);
+        }
+
+        .verdict h2 {
+            font-size: 40px;
+            margin-bottom: 16px;
+            color: #22c55e;
+        }
+
+        .verdict p {
+            color: #a0aec0;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .verdict .confidence {
+            display: inline-block;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .big-stats { grid-template-columns: repeat(2, 1fr); }
+            .cards, .sources ul { grid-template-columns: 1fr; }
+        }
+
+        /* Navigation Bar */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .executive-summary {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 32px;
+            border-radius: 16px;
+            margin: 40px 0;
+        }
+
+        .executive-summary h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #a5b4fc;
+        }
+
+        .executive-summary p {
+            color: #a0aec0;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .executive-summary strong {
+            color: #fff;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 24px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .stat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>›</span>
+            <a href="../index.html">Phase 1: Foundation</a>
+            <span>›</span>
+            Step 2
+        </div>
+        <header>
+            <div class="logo">Moonshot Research</div>
+            <div class="badge">CLEAR WHITE SPACE</div>
+        </header>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>No Direct Competitor Exists</h1>
+            <p class="tagline">Partnership + operational lift for non-gaming indie mobile apps is an unoccupied market position.</p>
+            <p class="subtitle">Research Date: December 28, 2025 | Competitive Analysis: 12+ Players Evaluated</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="executive-summary">
+            <h3>Executive Summary</h3>
+            <p><strong>Market Validation:</strong> Non-gaming apps surpassed mobile games in revenue for the first time in Q2 2025 ($21.1B vs $20B), representing a historic shift in the app economy. This 24% YoY growth validates Moonshot's non-gaming focus.</p>
+            <p><strong>Competitive Threat Level: HIGH</strong> - Tilting Point has officially entered non-gaming with $30M deployed across two partnerships (Clean Manager utility app + undisclosed lifestyle app). Their $150M UA fund positions them as the first mover in this space.</p>
+            <p><strong>Key Finding:</strong> No true operational partnership models exist yet. All competitors focus on UA funding, acquisition, or gaming-only publishing. Moonshot's combination of technical overhaul + revenue share + operational support remains differentiated.</p>
+        </div>
+    </div>
+
+    <section class="section" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Market Trends: Non-Gaming Apps Rising</h2>
+            <p class="section-subtitle">Historic shift in app economy validates Moonshot's focus.</p>
+
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-number">$21.1B</div>
+                    <div class="stat-label">Non-gaming app revenue Q2 2025</div>
+                    <a class="source-link" href="https://asoworld.com/blog/non-gaming-apps-surpass-games-in-revenue-for-first-time-in-q2-2025/" target="_blank">ASO World</a>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">+24%</div>
+                    <div class="stat-label">YoY growth (vs 0% for games)</div>
+                    <a class="source-link" href="https://gameworldobserver.com/2025/08/13/sensor-tower-in-the-second-quarter-of-2025-apps-surpassed-mobile-games-in-iap-revenue-for-the-first-time" target="_blank">Sensor Tower</a>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">+49%</div>
+                    <div class="stat-label">Overall non-gaming sector growth in 2025</div>
+                    <a class="source-link" href="https://www.mintegral.com/en/blog/non-gaming-app-growth-in-2025" target="_blank">Mintegral</a>
+                </div>
+            </div>
+
+            <div class="cards">
+                <div class="card opportunity">
+                    <h3>Category Winners</h3>
+                    <p><strong>Utility Apps:</strong> +72.15% growth (highest performing)</p>
+                    <p><strong>Finance Apps:</strong> +41.15% growth</p>
+                    <p><strong>Lifestyle Apps:</strong> +45.04% growth</p>
+                    <p><strong>Short Drama Apps:</strong> +679% explosive growth (new category)</p>
+                    <a class="source-link" href="https://www.mintegral.com/en/blog/non-gaming-app-growth-in-2025" target="_blank">Mintegral 2025 Report</a>
+                </div>
+                <div class="card opportunity">
+                    <h3>AI-Powered Revenue Surge</h3>
+                    <p>AI apps saw revenue jump <strong>+50% YoY</strong>. ChatGPT became the fastest app to hit 1B downloads and ranks 4th globally in IAP revenue.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">Validates monetization potential beyond traditional utility apps.</p>
+                    <a class="source-link" href="https://asoworld.com/blog/non-gaming-apps-surpass-games-in-revenue-for-first-time-in-q2-2025/" target="_blank">ASO World</a>
+                </div>
+                <div class="card opportunity">
+                    <h3>Ad Revenue Doubling</h3>
+                    <p>Ad revenue for non-gaming app publishers <strong>doubled year-on-year</strong> on the Vungle Exchange (+116% YoY).</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">Validates IAA monetization as viable path for utility/lifestyle apps.</p>
+                    <a class="source-link" href="https://advanced-television.com/2025/01/09/report-ad-revenue-for-non-gaming-apps-up-116-yoy/" target="_blank">Advanced Television</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="big-stats">
+        <div class="container" style="display: contents;">
+            <div class="big-stat">
+                <div class="big-stat-number">0</div>
+                <div class="big-stat-label">Direct competitors in our space</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number">$30M</div>
+                <div class="big-stat-label">Tilting Point's non-gaming bet</div>
+                <a class="source-link" href="https://www.pocketgamer.biz/tilting-point-pumps-30m-into-two-non-gaming-apps/" target="_blank">PocketGamer</a>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number">90%</div>
+                <div class="big-stat-label">Mobile time in non-gaming apps</div>
+                <a class="source-link" href="https://www.pocketgamer.biz/tilting-point-pumps-30m-into-two-non-gaming-apps/" target="_blank">Tilting Point data</a>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number">4</div>
+                <div class="big-stat-label">Key differentiators vs nearest</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">The Competitive Landscape</h2>
+            <p class="section-subtitle">Gaming publishers dominate app partnerships. Acquirers target SaaS/e-commerce. Non-gaming mobile apps have no equivalent support.</p>
+
+            <div class="cards">
+                <div class="card">
+                    <span class="tag tag-gaming">Gaming Only</span>
+                    <h3 style="margin-top: 16px;">Supersonic (Unity)</h3>
+                    <p><strong>6.6B+ installs</strong>, 190M+ MAU across 130+ games. Hyper-casual focus with rapid testing and scaling.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">45% IAP revenue share. High KPI requirements.</p>
+                    <a class="source-link" href="https://supersonic.com/publishing/" target="_blank">supersonic.com</a>
+                </div>
+                <div class="card">
+                    <span class="tag tag-gaming">Gaming Only</span>
+                    <h3 style="margin-top: 16px;">Voodoo</h3>
+                    <p>High-volume hyper-casual publishing. <strong>$20K at soft launch</strong>, up to $1M for 10M+ downloads.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">70% revenue from third-party games. Ad-driven LTV $0.50-$1.50.</p>
+                    <a class="source-link" href="https://sacra.com/c/voodoo/" target="_blank">Sacra analysis</a>
+                </div>
+                <div class="card">
+                    <span class="tag tag-gaming">Gaming Only</span>
+                    <h3 style="margin-top: 16px;">CrazyLabs</h3>
+                    <p>"Publishing For All" program for B-tier games. <strong>55% rev share</strong> to developers.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">Requirements: CPI &le;$0.80, promising retention. 1 in 150-200 acceptance rate.</p>
+                    <a class="source-link" href="https://mobidictum.com/crazylabs-publishing-for-all/" target="_blank">Mobidictum</a>
+                </div>
+            </div>
+
+            <div class="cards" style="margin-top: 24px;">
+                <div class="card threat">
+                    <span class="tag tag-nongaming">Non-Gaming - CRITICAL THREAT</span>
+                    <h3 style="margin-top: 16px;">Tilting Point</h3>
+                    <p><strong>$150M UA fund</strong> (March 2025). First mover in non-gaming app partnerships.</p>
+                    <p style="margin-top: 8px;"><strong>December 2025 deals:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 4px; color: #a0aec0; font-size: 14px;">
+                        <li>$12M to Clean Manager (by Quiet) - utility app</li>
+                        <li>$18M to undisclosed lifestyle app</li>
+                    </ul>
+                    <p style="margin-top: 12px; font-size: 13px; color: #fca5a5;"><strong>What they DON'T provide:</strong> No technical overhaul, no ops support, no monetization strategy - UA funding only.</p>
+                    <a class="source-link" href="https://www.pocketgamer.biz/tilting-point-pumps-30m-into-two-non-gaming-apps/" target="_blank">PocketGamer</a>
+                </div>
+                <div class="card">
+                    <span class="tag tag-saas">SaaS/Web Only</span>
+                    <h3 style="margin-top: 16px;">Tiny</h3>
+                    <p>Acquires profitable internet businesses. <strong>$500K-$50M profit</strong> requirement. 80+ companies, $250M+ revenue.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">Focus: SaaS, web products, agencies. NOT mobile apps.</p>
+                    <a class="source-link" href="https://www.tiny.com/" target="_blank">tiny.com</a>
+                </div>
+                <div class="card">
+                    <span class="tag tag-ecom">E-commerce Only</span>
+                    <h3 style="margin-top: 16px;">OpenStore</h3>
+                    <p>Acquires Shopify stores. <strong>Offer in 24 hours</strong>, close in 1 week. $970M valuation.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #64748b;">OpenStore Drive: 1-year managed ops, 10% fee. Shopify-only.</p>
+                    <a class="source-link" href="https://research.contrary.com/company/openstore" target="_blank">Contrary Research</a>
+                </div>
+                <div class="card warning">
+                    <span class="tag tag-nongaming">Non-Gaming UA</span>
+                    <h3 style="margin-top: 16px;">PvX Partners (New Entrant)</h3>
+                    <p><strong>€15.2M deal</strong> with Reface (AI app) for UA growth. Revenue-based financing model.</p>
+                    <p style="margin-top: 8px;"><strong>$250M+</strong> committed in UA financing facilities. Targets apps with $25M annual UA spend.</p>
+                    <p style="margin-top: 12px; font-size: 13px; color: #fcd34d;"><strong>Similar to Tilting Point:</strong> UA funding only, no operational support.</p>
+                    <a class="source-link" href="https://entrepreneurloop.com/reface-non-dilutive-funding-ukrainian-ai-startup/" target="_blank">EntrepreneurLoop</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Gap Analysis: Competitive Positioning</h2>
+            <p class="section-subtitle">Where each player sits vs. Moonshot's proposed position.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Vertical</th>
+                        <th>Model</th>
+                        <th>Dev Keeps Ownership</th>
+                        <th>Ops Support</th>
+                        <th>Tech Rebuild</th>
+                        <th>Monetization</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Gaming Publishers</strong><br><span style="font-size: 12px; color: #64748b;">Supersonic, Voodoo, CrazyLabs</span></td>
+                        <td><span class="tag tag-gaming">Gaming</span></td>
+                        <td>Publish</td>
+                        <td class="partial">Varies</td>
+                        <td class="check">Yes</td>
+                        <td class="cross">No</td>
+                        <td class="check">Yes (ads)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tilting Point</strong><br><span style="font-size: 12px; color: #64748b;">Expanding non-gaming</span></td>
+                        <td><span class="tag tag-nongaming">Non-gaming</span></td>
+                        <td>UA Funding</td>
+                        <td class="check">Yes</td>
+                        <td class="cross">No</td>
+                        <td class="cross">No</td>
+                        <td class="cross">No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tiny</strong></td>
+                        <td><span class="tag tag-saas">SaaS/Web</span></td>
+                        <td>Acquire</td>
+                        <td class="cross">No</td>
+                        <td class="partial">Light touch</td>
+                        <td class="cross">No</td>
+                        <td class="cross">No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OpenStore</strong></td>
+                        <td><span class="tag tag-ecom">E-commerce</span></td>
+                        <td>Acquire</td>
+                        <td class="cross">No</td>
+                        <td class="check">Yes</td>
+                        <td class="cross">No</td>
+                        <td class="partial">Limited</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PvX Partners</strong><br><span style="font-size: 12px; color: #f59e0b;">New entrant</span></td>
+                        <td><span class="tag tag-nongaming">Non-gaming</span></td>
+                        <td>UA Funding</td>
+                        <td class="check">Yes</td>
+                        <td class="cross">No</td>
+                        <td class="cross">No</td>
+                        <td class="cross">No</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong style="color: #22c55e;">Moonshot</strong></td>
+                        <td><span class="tag tag-nongaming">Non-gaming</span></td>
+                        <td>Partner</td>
+                        <td class="check">Yes</td>
+                        <td class="check">Yes</td>
+                        <td class="check">Yes</td>
+                        <td class="check">Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">White Space Opportunities</h2>
+            <p class="section-subtitle">Four key differentiators that define Moonshot's unique position.</p>
+
+            <div class="cards" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="card opportunity">
+                    <h3>1. Vertical Gap: Non-Gaming Mobile</h3>
+                    <p>Gaming publishing is mature with established players. Utility, education, lifestyle, and productivity apps have <strong>no equivalent support infrastructure</strong>.</p>
+                    <p style="margin-top: 12px; font-size: 13px;">Evidence: Tilting Point's 2025 pivot validates this. Non-gaming apps now exceed gaming in total app store revenue.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>2. Model Gap: Partnership vs Acquisition</h3>
+                    <p>All existing players are <strong>acquirers</strong>. Even "publishers" take significant control. Developers want to keep ownership.</p>
+                    <p style="margin-top: 12px; font-size: 13px;">Moonshot: True partnership where developer keeps meaningful ownership while getting operational lift.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>3. Service Gap: Tech + Monetization</h3>
+                    <p>Gaming publishers provide both but only for games. Holding companies provide neither. E-commerce aggregators focus on ops only.</p>
+                    <p style="margin-top: 12px; font-size: 13px;">Moonshot: Full-stack service (technical rebuild + monetization optimization) for non-gaming apps.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>4. Developer Experience Gap</h3>
+                    <p>Gaming publishers optimize for volume (1 in 150 acceptance). Focus on $0.50-$1.50 LTV hyper-casual. Treat developers as content suppliers.</p>
+                    <p style="margin-top: 12px; font-size: 13px;">Moonshot: Developer-centric partnership with focus on sustainable subscription/IAP revenue.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Competitive Threats</h2>
+            <p class="section-subtitle">Risks to monitor and how to mitigate them.</p>
+
+            <div class="cards" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="card threat">
+                    <h3>Tilting Point Expansion</h3>
+                    <p><strong>Threat Level: High</strong></p>
+                    <p>First mover in non-gaming app investment with $150M fund and established relationships.</p>
+                    <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(239, 68, 68, 0.3);">
+                        <strong>Mitigation:</strong> They offer UA funding only, not operational partnership. Our differentiation: full technical + monetization support.
+                    </p>
+                </div>
+                <div class="card threat">
+                    <h3>Gaming Publishers Entering Non-Gaming</h3>
+                    <p><strong>Threat Level: Medium</strong></p>
+                    <p>If CrazyLabs or Voodoo decide to expand beyond gaming, they have resources and expertise.</p>
+                    <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(239, 68, 68, 0.3);">
+                        <strong>Mitigation:</strong> Their DNA is hyper-casual gaming. Different skill set required for subscription/utility apps. Build portfolio and playbook early.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Strategic Recommendations</h2>
+            <p class="section-subtitle">Actionable steps based on competitive analysis.</p>
+
+            <div class="cards" style="grid-template-columns: 1fr;">
+                <div class="card opportunity">
+                    <h3>1. Reposition Against Tilting Point</h3>
+                    <p><strong>Action:</strong> Update messaging to explicitly contrast with UA-only models.</p>
+                    <p style="margin-top: 8px;"><strong>Positioning:</strong> "UA funding gives you fuel. Moonshot builds the engine, optimizes the route, and drives the car."</p>
+                    <p style="margin-top: 8px;"><strong>Target:</strong> Developers with technical debt, poor analytics, or unclear monetization strategy who won't benefit from UA funding alone.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>2. Move Fast on Pilot</h3>
+                    <p><strong>Urgency:</strong> HIGH - Tilting Point's December 2025 deals show they're actively deploying capital.</p>
+                    <p style="margin-top: 8px;"><strong>Goal:</strong> Demonstrate full partnership model before Tilting Point scales to 10+ apps.</p>
+                </div>
+                <div class="card warning">
+                    <h3>3. Monitor Tilting Point's Portfolio</h3>
+                    <p><strong>Action:</strong> Track Clean Manager and lifestyle app partner metrics via Sensor Tower, data.ai.</p>
+                    <p style="margin-top: 8px;"><strong>Why:</strong> If UA-only approach shows limitations (retention issues, poor monetization), it validates Moonshot's holistic approach.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>4. Partner with UA Funders</h3>
+                    <p><strong>Strategic Play:</strong> Position Moonshot as the operational layer for UA-funded apps. "You got the money - we'll build the engine."</p>
+                    <p style="margin-top: 8px; font-size: 13px; color: #86efac;">This turns Tilting Point from competitor to lead generation source.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>5. Target Apps Rejected by UA Funders</h3>
+                    <p><strong>Insight:</strong> UA funders require high ROAS and strong retention. Many good apps won't meet their bar.</p>
+                    <p style="margin-top: 8px;"><strong>Moonshot's Advantage:</strong> We can fix technical issues and improve monetization first, making apps UA-ready later.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Key Takeaways</h2>
+            <p class="section-subtitle">What this means for Moonshot.</p>
+
+            <div class="cards" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="card opportunity">
+                    <h3>Market Timing is Favorable</h3>
+                    <p>Non-gaming apps now larger than gaming by revenue. Users spend 90% of mobile time in non-gaming categories. Tilting Point's pivot validates the opportunity.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>Gaming Playbook Exists</h3>
+                    <p>Supersonic and CrazyLabs have proven the partnership publishing model works. We can adapt their approach (testing, scaling, rev share) for non-gaming apps.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>Acquisition Models Dominate</h3>
+                    <p>The partnership model is genuinely differentiated. Developers who want to keep ownership have no current option for operational support.</p>
+                </div>
+                <div class="card opportunity">
+                    <h3>No Direct Competitor</h3>
+                    <p>Partnership + operational lift for non-gaming indie mobile apps is an unoccupied market position. First-mover advantage is available.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="verdict">
+        <div class="container">
+            <h2>Clear White Space Identified</h2>
+            <p>No established player targets non-gaming indie mobile apps with a partnership (vs. acquisition) model combined with operational support.</p>
+            <div class="confidence">Strategic Opportunity Confirmed</div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="sources">
+                <h3>Sources & References</h3>
+                <ul>
+                    <li><a href="https://asoworld.com/blog/non-gaming-apps-surpass-games-in-revenue-for-first-time-in-q2-2025/" target="_blank">ASO World: Non-gaming apps surpass games in revenue Q2 2025</a></li>
+                    <li><a href="https://gameworldobserver.com/2025/08/13/sensor-tower-in-the-second-quarter-of-2025-apps-surpassed-mobile-games-in-iap-revenue-for-the-first-time" target="_blank">Game World Observer: Sensor Tower Q2 2025 data</a></li>
+                    <li><a href="https://www.mintegral.com/en/blog/non-gaming-app-growth-in-2025" target="_blank">Mintegral: Why 2025 was a great year for non-gaming apps</a></li>
+                    <li><a href="https://advanced-television.com/2025/01/09/report-ad-revenue-for-non-gaming-apps-up-116-yoy/" target="_blank">Advanced Television: Ad revenue for non-gaming apps up 116% YoY</a></li>
+                    <li><a href="https://www.pocketgamer.biz/tilting-point-pumps-30m-into-two-non-gaming-apps/" target="_blank">PocketGamer: Tilting Point pumps $30m into two non-gaming apps</a></li>
+                    <li><a href="https://mobilemarketingreads.com/tilting-point-expands-150m-ua-fund-into-consumer-apps-deploys-30m-across-quiet-and-lifestyle-partner/" target="_blank">Mobile Marketing Reads: Tilting Point expands $150M UA fund</a></li>
+                    <li><a href="https://entrepreneurloop.com/reface-non-dilutive-funding-ukrainian-ai-startup/" target="_blank">EntrepreneurLoop: Reface secures €15.2M non-dilutive funding</a></li>
+                    <li><a href="https://www.gamedeveloper.com/mobile/tripledot-to-acquire-applovin-mobile-studio-portfolio-for-800-million" target="_blank">GameDeveloper: Tripledot acquires AppLovin studios</a></li>
+                    <li><a href="https://lite14.net/blog/2025/12/27/applovins-strategic-reset-doubling-down-on-ai-powered-advertising/" target="_blank">AppLovin strategic reset to ad-tech</a></li>
+                    <li><a href="https://investors.unity.com/news/news-details/2022/Unity-Announces-Merger-Agreement-with-ironSource/" target="_blank">Unity-IronSource merger announcement</a></li>
+                    <li><a href="https://supersonic.com/publishing/" target="_blank">Supersonic publishing program</a></li>
+                    <li><a href="https://mobidictum.com/crazylabs-publishing-for-all/" target="_blank">CrazyLabs Publishing For All</a></li>
+                    <li><a href="https://www.pocketgamer.biz/55-rev-share-in-the-new-hypercasual-developer-challenge-by-crazylabs/" target="_blank">CrazyLabs 55% rev share challenge</a></li>
+                    <li><a href="https://sacra.com/c/voodoo/" target="_blank">Sacra: Voodoo business model analysis</a></li>
+                    <li><a href="https://www.tiny.com/" target="_blank">Tiny.com - holding company</a></li>
+                    <li><a href="https://sbo.financial/blog/financial-teardowns/tiny-capital-financial-teardown/" target="_blank">Tiny Capital financial teardown</a></li>
+                    <li><a href="https://research.contrary.com/company/openstore" target="_blank">Contrary Research: OpenStore analysis</a></li>
+                    <li><a href="https://investors.club/acquire-statistics/" target="_blank">Acquire.com statistics</a></li>
+                    <li><a href="https://flippa.com/blog/mobile-app-valuation-key-methods-metrics-and-multiples-for-2025/" target="_blank">Flippa: Mobile app valuations 2025</a></li>
+                    <li><a href="https://fastercapital.com/content/Mobile-revenue-sharing-model--Marketing-Magic--Boosting-App-Revenue-with-Revenue-Sharing.html" target="_blank">Mobile revenue sharing models</a></li>
+                    <li><a href="https://flippa.com/blog/acquisitions/apps-industry-acquisitions/" target="_blank">Flippa: App acquisition case studies</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <a href="../step-01-market-validation/step1-market-validation.html">
+                    <span>←</span>
+                    <span>Previous: Market Validation</span>
+                </a>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 2 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-03-swot-analysis/step3-swot-analysis.html">
+                    <span>Next: SWOT Analysis</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p style="margin-top: 20px;">Moonshot Research | Step 2: Competitive Landscape | December 2025</p>
+        </div>
+    </footer>
+</body>
+</html>

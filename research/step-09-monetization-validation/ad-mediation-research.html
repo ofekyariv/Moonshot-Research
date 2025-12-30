@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Mediation Research for Non-Gaming Apps - Moonshot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .pros {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .cons {
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 20px;
+            border-left: 4px solid #f59e0b;
+            margin: 20px 0;
+        }
+
+        .recommendation {
+            background: #dbeafe;
+            padding: 20px;
+            border-left: 4px solid #3b82f6;
+            margin: 20px 0;
+        }
+
+        .metric {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: 500;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .sources {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        .sources li {
+            margin-bottom: 8px;
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .bar {
+            height: 30px;
+            margin: 10px 0;
+            border-radius: 4px;
+            position: relative;
+            background: #e0e0e0;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .bar-label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .platform-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .platform-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: #f59e0b;
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Ad Mediation Research for Non-Gaming Apps</h1>
+            <p>Comprehensive analysis of ad mediation platforms, eCPM benchmarks, and monetization strategies for Moonshot's indie app partners</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Executive Summary -->
+        <section class="section">
+            <h2>Executive Summary</h2>
+            <p>This research analyzes ad mediation options for non-gaming mobile apps (utilities, education, productivity, lifestyle) to inform Moonshot's monetization playbook. Key findings:</p>
+
+            <div class="highlight">
+                <h3>Key Insights</h3>
+                <ul>
+                    <li><strong>Platform Recommendation:</strong> AdMob is best for indie developers (15K-1M MAU) due to zero fees, ease of use, and excellent fill rates (90%+)</li>
+                    <li><strong>eCPM Performance:</strong> Interstitial ads outperform banners by 4,094% on average. US interstitial eCPMs peak at $8.57, with rewarded video delivering 3.5x higher retention</li>
+                    <li><strong>Non-Gaming Reality:</strong> Non-gaming apps see significantly lower eCPMs than gaming apps, but hybrid monetization (ads + subscriptions) can drive strong conversion rates</li>
+                    <li><strong>Critical Challenge:</strong> Education apps face severe COPPA restrictions (FTC finalized new rules in Jan 2025) that limit ad monetization for apps targeting children under 13</li>
+                </ul>
+            </div>
+
+            <div class="recommendation">
+                <h3>Moonshot's Default Ad Stack Recommendation</h3>
+                <p><strong>Primary Platform:</strong> Google AdMob with mediation enabled (no fees, 90%+ fill rate, 25+ network access)</p>
+                <p><strong>Ad Format Mix:</strong></p>
+                <ul>
+                    <li>Interstitial ads at natural transition points (highest revenue)</li>
+                    <li>Rewarded video for optional premium features (best UX/retention balance)</li>
+                    <li>Native ads for content-heavy apps (4-8x higher CTR than banners)</li>
+                    <li>Minimize or avoid banner ads (lowest performance, banner blindness)</li>
+                </ul>
+                <p><strong>Hybrid Strategy:</strong> Offer "Remove Ads" IAP at $1.99-$2.99 to convert ad-averse users while maintaining free tier with strategic ad placement</p>
+            </div>
+        </section>
+
+        <!-- Platform Comparison -->
+        <section class="section">
+            <h2>1. Ad Mediation Platform Comparison</h2>
+
+            <h3>Overview: MAX by AppLovin vs AdMob vs Competitors</h3>
+            <p>Ad mediation platforms connect publishers with multiple ad networks through a single SDK, enabling automated competition that drives higher revenue. Here's how the major platforms compare for non-gaming apps:</p>
+
+            <div class="comparison-grid">
+                <div class="platform-card">
+                    <h4>Google AdMob</h4>
+                    <div class="rating">★★★★★ (Best for Indie Devs)</div>
+                    <p><strong>Networks:</strong> 25+ integrated</p>
+                    <p><strong>Fees:</strong> $0 (No revenue share)</p>
+                    <p><strong>Fill Rate:</strong> 90%+ in tier 1 countries</p>
+                    <p><strong>Ratings:</strong> TrustRadius 7.7/10, G2 4.2/5</p>
+                    <p class="pros">✓ Pros:</p>
+                    <ul>
+                        <li>Zero fees or revenue share</li>
+                        <li>Easy integration and setup</li>
+                        <li>Excellent fill rates via Google demand</li>
+                        <li>Free mediation with auto-optimization</li>
+                    </ul>
+                    <p class="cons">✗ Cons:</p>
+                    <ul>
+                        <li>Poor customer support</li>
+                        <li>High payout threshold ($100)</li>
+                        <li>Strict policy enforcement (account bans)</li>
+                    </ul>
+                </div>
+
+                <div class="platform-card">
+                    <h4>AppLovin MAX</h4>
+                    <div class="rating">★★★★☆ (Best for Scale)</div>
+                    <p><strong>Networks:</strong> 25+ with real-time bidding</p>
+                    <p><strong>Fees:</strong> Not transparent (revenue share model)</p>
+                    <p><strong>Fill Rate:</strong> High (competitive bidding)</p>
+                    <p><strong>Ratings:</strong> TrustRadius 8.2/10, G2 4.5/5</p>
+                    <p class="pros">✓ Pros:</p>
+                    <ul>
+                        <li>Advanced AI optimization</li>
+                        <li>Real-time bidding (higher eCPMs)</li>
+                        <li>User-friendly dashboard</li>
+                        <li>Broad advertiser demand</li>
+                    </ul>
+                    <p class="cons">✗ Cons:</p>
+                    <ul>
+                        <li>Opaque fee structure</li>
+                        <li>Inadequate anti-fraud controls</li>
+                        <li>More complex setup than AdMob</li>
+                    </ul>
+                </div>
+
+                <div class="platform-card">
+                    <h4>ironSource LevelPlay (Unity)</h4>
+                    <div class="rating">★★★★☆ (Best for Gaming)</div>
+                    <p><strong>Networks:</strong> 15+ integrated</p>
+                    <p><strong>Fees:</strong> Revenue share model</p>
+                    <p><strong>Fill Rate:</strong> Strong in US/EU, weaker elsewhere</p>
+                    <p><strong>Ratings:</strong> TrustRadius 7.8/10, G2 5.0/5</p>
+                    <p class="pros">✓ Pros:</p>
+                    <ul>
+                        <li>Most comprehensive reporting</li>
+                        <li>Real-time auto-optimization</li>
+                        <li>Strong analytics (DAU, ARPDAU)</li>
+                        <li>Excellent support</li>
+                    </ul>
+                    <p class="cons">✗ Cons:</p>
+                    <ul>
+                        <li>Complex setup process</li>
+                        <li>Struggles with non-tier-1 traffic</li>
+                        <li>Gaming-focused optimization</li>
+                        <li>Can miss delivery targets</li>
+                    </ul>
+                </div>
+
+                <div class="platform-card">
+                    <h4>Meta Audience Network</h4>
+                    <div class="rating">★★★☆☆ (Declining)</div>
+                    <p><strong>Networks:</strong> Meta demand only</p>
+                    <p><strong>Fees:</strong> Revenue share</p>
+                    <p><strong>Fill Rate:</strong> Declining since iOS 14</p>
+                    <p><strong>Note:</strong> Often used via AdMob mediation</p>
+                    <p class="pros">✓ Pros:</p>
+                    <ul>
+                        <li>High-quality advertisers</li>
+                        <li>Good eCPMs (when filling)</li>
+                        <li>Easy integration via mediation</li>
+                    </ul>
+                    <p class="cons">✗ Cons:</p>
+                    <ul>
+                        <li>Fill rate issues post-ATT</li>
+                        <li>Not a standalone mediation platform</li>
+                        <li>Better as mediated network</li>
+                    </ul>
+                </div>
+
+                <div class="platform-card">
+                    <h4>InMobi</h4>
+                    <div class="rating">★★★☆☆ (Regional Focus)</div>
+                    <p><strong>Networks:</strong> 200+ DSPs, 5,000+ buyers</p>
+                    <p><strong>Fees:</strong> Revenue share</p>
+                    <p><strong>Fill Rate:</strong> Geography-dependent</p>
+                    <p><strong>Ratings:</strong> G2 3.4/5 (limited reviews)</p>
+                    <p class="pros">✓ Pros:</p>
+                    <ul>
+                        <li>Strong regional demand (Asia)</li>
+                        <li>Lightweight SDK</li>
+                        <li>Innovative native ad formats</li>
+                        <li>Good reporting tools</li>
+                    </ul>
+                    <p class="cons">✗ Cons:</p>
+                    <ul>
+                        <li>Lower eCPMs reported</li>
+                        <li>Account banning issues</li>
+                        <li>Weak fraud prevention</li>
+                        <li>Inconsistent performance</li>
+                    </ul>
+                </div>
+
+                <div class="platform-card">
+                    <h4>Appodeal</h4>
+                    <div class="rating">★★★★☆ (Easy Setup)</div>
+                    <p><strong>Networks:</strong> 60+ with parallel bidding</p>
+                    <p><strong>Fees:</strong> Revenue share</p>
+                    <p><strong>Fill Rate:</strong> Excellent (60+ networks)</p>
+                    <p><strong>Ratings:</strong> G2 4.7/5</p>
+                    <p class="pros">✓ Pros:</p>
+                    <ul>
+                        <li>Effortless setup process</li>
+                        <li>Parallel bidding technology</li>
+                        <li>17% higher eCPM, 30% higher ARPDAU claimed</li>
+                        <li>Responsive support</li>
+                    </ul>
+                    <p class="cons">✗ Cons:</p>
+                    <ul>
+                        <li>Revenue share fees</li>
+                        <li>Less proven for non-gaming</li>
+                        <li>Smaller user base than leaders</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>User Ratings Comparison</h3>
+                <div class="bar">
+                    <div class="bar-label">AppLovin MAX - G2</div>
+                    <div class="bar-fill" style="width: 90%; background: #667eea;">4.5 / 5.0</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">Appodeal - G2</div>
+                    <div class="bar-fill" style="width: 94%; background: #667eea;">4.7 / 5.0</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">AdMob - G2</div>
+                    <div class="bar-fill" style="width: 84%; background: #10b981;">4.2 / 5.0</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">ironSource - TrustRadius</div>
+                    <div class="bar-fill" style="width: 78%; background: #667eea;">7.8 / 10</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">AdMob - TrustRadius</div>
+                    <div class="bar-fill" style="width: 77%; background: #10b981;">7.7 / 10</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">InMobi - G2</div>
+                    <div class="bar-fill" style="width: 68%; background: #ef4444;">3.4 / 5.0</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- eCPM Benchmarks -->
+        <section class="section">
+            <h2>2. eCPM Benchmarks by Category & Region</h2>
+
+            <h3>Ad Format Performance (2024-2025 Data)</h3>
+            <p>eCPM varies dramatically by ad format, with interstitials significantly outperforming other types:</p>
+
+            <div class="chart-container">
+                <h4>Tier 1 Countries - Interstitial eCPM Peaks</h4>
+                <div class="bar">
+                    <div class="bar-label">Japan (Feb 2024)</div>
+                    <div class="bar-fill" style="width: 100%; background: #10b981;">$10.78</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">Taiwan (Nov 2024)</div>
+                    <div class="bar-fill" style="width: 81%; background: #10b981;">$8.73</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">United States (Jul 2024)</div>
+                    <div class="bar-fill" style="width: 79%; background: #10b981;">$8.57</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">Brazil (Dec 2024)</div>
+                    <div class="bar-fill" style="width: 34%; background: #667eea;">$3.67</div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <h4>Critical Finding: Interstitial vs Banner Performance</h4>
+                <p>Study of 50 publishers over 3 months revealed:</p>
+                <ul>
+                    <li><strong>Interstitial ads outperform banners by 4,094% on average</strong></li>
+                    <li>US publishers: 3,996% improvement</li>
+                    <li>European publishers: 4,192% improvement</li>
+                    <li>Reason: Full-screen placement drives higher CTR and advertiser bids</li>
+                </ul>
+            </div>
+
+            <h3>Non-Gaming App eCPM Reality</h3>
+            <p>While specific non-gaming benchmarks are limited in public data, key insights include:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ad Format</th>
+                        <th>Performance Tier</th>
+                        <th>Key Metrics</th>
+                        <th>Best Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Interstitial</strong></td>
+                        <td><span class="metric">Highest Revenue</span></td>
+                        <td>$3-10 eCPM in tier 1; 4,094% better than banners</td>
+                        <td>Natural transition points (between tasks, level completion)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rewarded Video</strong></td>
+                        <td><span class="metric">Best Retention</span></td>
+                        <td>3.5x higher user retention; voluntary engagement</td>
+                        <td>Optional premium features, extended trial access</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Native Ads</strong></td>
+                        <td><span class="metric">High Engagement</span></td>
+                        <td>4-8x higher CTR than banners; 0.38% CTR avg</td>
+                        <td>Content-heavy apps (news, blogs, educational content)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Banner Ads</strong></td>
+                        <td><span class="metric">Lowest Performance</span></td>
+                        <td>Banner blindness; ad blocker susceptibility</td>
+                        <td>Time-sensitive announcements only (minimize use)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>App Open Ads</strong></td>
+                        <td><span class="metric">Supplementary</span></td>
+                        <td>Lower than interstitial across all markets</td>
+                        <td>Additional touchpoint (use sparingly to avoid annoying users)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Regional eCPM Differences</h3>
+            <p>Geography dramatically impacts ad revenue. Tier 1 countries command premium rates:</p>
+
+            <div class="chart-container">
+                <h4>Regional Tiers (Estimated eCPM Ranges for Interstitial)</h4>
+                <div class="bar">
+                    <div class="bar-label">Tier 1 (US, JP, UK, CA, AU, DE)</div>
+                    <div class="bar-fill" style="width: 90%; background: #10b981;">$5-10+ eCPM</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">Tier 2 (BR, MX, TW, KR, FR, ES)</div>
+                    <div class="bar-fill" style="width: 40%; background: #667eea;">$2-5 eCPM</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">Tier 3 (VN, TH, IN, PH, ID)</div>
+                    <div class="bar-fill" style="width: 15%; background: #f59e0b;">$0.50-2 eCPM</div>
+                </div>
+            </div>
+
+            <div class="recommendation">
+                <h4>Emerging Market Opportunity</h4>
+                <p>Several emerging markets showed significant growth (2024 data):</p>
+                <ul>
+                    <li><strong>Vietnam:</strong> Interstitial eCPM approximately doubled from Jan to Dec 2024</li>
+                    <li><strong>Thailand:</strong> 48% eCPM growth across the year</li>
+                    <li><strong>Brazil:</strong> Surged to $3.67 in December (tier 2 level)</li>
+                </ul>
+                <p>For apps with global reach, targeting tier 1 users with premium features while monetizing tier 2/3 with ads can optimize LTV.</p>
+            </div>
+
+            <h3>Seasonal Patterns</h3>
+            <p>eCPMs follow predictable cycles throughout the year:</p>
+            <ul>
+                <li><strong>Q1:</strong> Strong momentum (post-holiday budgets)</li>
+                <li><strong>Q2-Q3:</strong> Dips in ad spend</li>
+                <li><strong>Q4:</strong> Peak revenue (Black Friday, holiday shopping season)</li>
+            </ul>
+            <p><em>Strategic implication:</em> Plan major monetization pushes and user acquisition for Q4 when eCPMs are highest.</p>
+        </section>
+
+        <!-- Best Practices -->
+        <section class="section">
+            <h2>3. Ad Placement Best Practices for Non-Gaming Apps</h2>
+
+            <h3>Core Principles</h3>
+            <p>Balancing ad revenue with user experience is critical for long-term retention. Poor ad placement can destroy an app's value proposition.</p>
+
+            <div class="highlight">
+                <h4>The UX vs Revenue Tradeoff</h4>
+                <p>Interstitial ads generate 40x more revenue than banners but are "intentionally designed to be intrusive." The key is strategic placement at natural break points where users expect pauses.</p>
+            </div>
+
+            <h3>Placement Strategies by Ad Format</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ad Format</th>
+                        <th>Ideal Placement (Non-Gaming)</th>
+                        <th>Frequency Recommendation</th>
+                        <th>UX Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Interstitial</strong></td>
+                        <td>
+                            <ul>
+                                <li>After completing a task/action</li>
+                                <li>Between major navigation transitions</li>
+                                <li>When saving/exporting work</li>
+                                <li>After time-based milestones (e.g., 5 min of use)</li>
+                            </ul>
+                        </td>
+                        <td>Max 1 every 60-90 seconds of active use</td>
+                        <td class="cons">High disruption - use sparingly</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rewarded Video</strong></td>
+                        <td>
+                            <ul>
+                                <li>Unlock premium feature temporarily</li>
+                                <li>Remove ads for 30-60 minutes</li>
+                                <li>Get extra storage/exports/credits</li>
+                                <li>Access tutorial or advanced content</li>
+                            </ul>
+                        </td>
+                        <td>User-initiated (no limit)</td>
+                        <td class="pros">Positive - users choose to engage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Native Ads</strong></td>
+                        <td>
+                            <ul>
+                                <li>Within content feeds/lists</li>
+                                <li>Between articles/lessons</li>
+                                <li>In search results (marked as ads)</li>
+                                <li>Related recommendations section</li>
+                            </ul>
+                        </td>
+                        <td>1 ad per 5-10 content items</td>
+                        <td class="pros">Low disruption - blends with content</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Banner Ads</strong></td>
+                        <td>
+                            <ul>
+                                <li>Bottom of screen (avoid top)</li>
+                                <li>After primary content area</li>
+                                <li>AVOID: Near action buttons</li>
+                                <li>AVOID: Covering content</li>
+                            </ul>
+                        </td>
+                        <td>Persistent (but minimize overall use)</td>
+                        <td class="cons">Banner blindness - low effectiveness</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>App-Category-Specific Guidance</h3>
+
+            <div class="comparison-grid">
+                <div class="platform-card">
+                    <h4>Utility Apps</h4>
+                    <p><strong>Examples:</strong> Calculator, file manager, QR scanner, note-taking</p>
+                    <p><strong>Best Strategy:</strong></p>
+                    <ul>
+                        <li>Interstitial after completing 3-5 actions</li>
+                        <li>Rewarded video to unlock premium tools temporarily</li>
+                        <li>AVOID persistent banners (kills usability)</li>
+                    </ul>
+                    <p><strong>Key Metric:</strong> Session frequency matters more than length - cap ads per session</p>
+                </div>
+
+                <div class="platform-card">
+                    <h4>Education Apps</h4>
+                    <p><strong>Examples:</strong> Language learning, flashcards, tutorials, reference</p>
+                    <p><strong>Best Strategy:</strong></p>
+                    <ul>
+                        <li>Rewarded video to unlock next lesson/level</li>
+                        <li>Interstitial between lessons (not mid-lesson)</li>
+                        <li>Native ads in resource libraries</li>
+                    </ul>
+                    <p><strong>Critical Warning:</strong> COPPA restrictions for apps targeting children under 13 (see section 5)</p>
+                </div>
+
+                <div class="platform-card">
+                    <h4>Productivity Apps</h4>
+                    <p><strong>Examples:</strong> To-do lists, calendars, time tracking, habit trackers</p>
+                    <p><strong>Best Strategy:</strong></p>
+                    <ul>
+                        <li>Rewarded video for premium analytics/reports</li>
+                        <li>Interstitial when switching between major views</li>
+                        <li>AVOID interrupting active workflows</li>
+                    </ul>
+                    <p><strong>Key Metric:</strong> Power users hate ads - prioritize subscription conversion</p>
+                </div>
+
+                <div class="platform-card">
+                    <h4>Lifestyle Apps</h4>
+                    <p><strong>Examples:</strong> Fitness trackers, recipe apps, meditation, journaling</p>
+                    <p><strong>Best Strategy:</strong></p>
+                    <ul>
+                        <li>Native ads in content feeds (recipes, articles)</li>
+                        <li>Rewarded video for workout videos or premium content</li>
+                        <li>Interstitial between major sections</li>
+                    </ul>
+                    <p><strong>Key Metric:</strong> Content consumption time is high - more ad opportunities</p>
+                </div>
+            </div>
+
+            <h3>Advanced Optimization Tactics</h3>
+
+            <div class="recommendation">
+                <h4>AdMob Mediation Best Practices</h4>
+                <ol>
+                    <li><strong>Enable Auto-Optimization:</strong> Let AdMob's algorithm prioritize highest-paying networks automatically</li>
+                    <li><strong>Set eCPM Floor:</strong> Minimum thresholds ensure fewer, higher-quality ads display</li>
+                    <li><strong>Use Frequency Capping:</strong> Limit ad exposure per user per time period (AdMob supports app/unit-level caps)</li>
+                    <li><strong>Segment User Groups:</strong> Create separate ad units for new users vs power users vs tier 1 geography</li>
+                    <li><strong>A/B Test Placements:</strong> Test different timing/frequency combinations and measure retention impact</li>
+                    <li><strong>Monitor Key Metrics:</strong>
+                        <ul>
+                            <li>eCPM trends by format and geography</li>
+                            <li>Fill rate (aim for 85%+)</li>
+                            <li>Day 1, 7, 30 retention by cohort</li>
+                            <li>Revenue per daily active user (ARPDAU)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>What NOT to Do</h3>
+            <ul>
+                <li><strong>Never:</strong> Show interstitial during critical user tasks (mid-form, during active editing, while loading important content)</li>
+                <li><strong>Never:</strong> Place banners near action buttons (accidental clicks destroy trust)</li>
+                <li><strong>Never:</strong> Show ads on first app open (let users understand value first)</li>
+                <li><strong>Never:</strong> Auto-play video ads with sound (massive UX violation)</li>
+                <li><strong>Never:</strong> Ignore Google's ad policy (account bans are permanent and devastating)</li>
+            </ul>
+        </section>
+
+        <!-- Hybrid Monetization -->
+        <section class="section">
+            <h2>4. Hybrid Monetization: Ads + Subscriptions</h2>
+
+            <h3>The Power of Dual Revenue Streams</h3>
+            <p>Combining ads with subscription/IAP options maximizes revenue by capturing both ad-tolerant users and those willing to pay for ad-free experiences.</p>
+
+            <div class="highlight">
+                <h4>Successful Hybrid Models</h4>
+                <ul>
+                    <li><strong>Spotify:</strong> Achieved 46% conversion rate from free (ad-supported) to paid users through strategic friction (ads between songs, limited skips)</li>
+                    <li><strong>LinkedIn:</strong> Tiered freemium model where free users see ads, paid tiers remove ads and unlock features</li>
+                    <li><strong>Evernote:</strong> Free tier with ads + feature limits, premium removes both restrictions</li>
+                </ul>
+            </div>
+
+            <h3>Strategies for Converting Ad Users to Subscribers</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Strategy</th>
+                        <th>Implementation</th>
+                        <th>Expected Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Remove Ads IAP</strong></td>
+                        <td>
+                            <ul>
+                                <li>Price: $1.99-$2.99 one-time</li>
+                                <li>Position after user sees 3-5 ads</li>
+                                <li>Highlight "Never see ads again"</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <strong>Low conversion (2-5%)</strong> but pure profit. Works best for utility apps where ads are disruptive.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Premium Subscription</strong></td>
+                        <td>
+                            <ul>
+                                <li>Price: $4.99-$9.99/month</li>
+                                <li>Bundle: No ads + premium features</li>
+                                <li>Offer free trial (7-14 days)</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <strong>Higher LTV</strong>. SaaS freemium conversion averages 2-5%, but can reach 10%+ with strong value prop.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Freemium Tiers</strong></td>
+                        <td>
+                            <ul>
+                                <li>Free: Ads + basic features</li>
+                                <li>Premium: Ad-free + advanced features</li>
+                                <li>Pro: Everything + priority support</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <strong>Maximizes TAM</strong>. Free tier drives adoption, paid tiers capture power users. 3-5% typical conversion.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rewarded Upgrade Path</strong></td>
+                        <td>
+                            <ul>
+                                <li>Watch video to try premium for 30 min</li>
+                                <li>Show conversion prompt after trial</li>
+                                <li>"Upgrade now for 50% off"</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <strong>Sample before buying</strong>. Increases conversion by letting users experience premium value. +20-30% lift in trials.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>When to Show Ads vs Hide Them</h3>
+
+            <div class="recommendation">
+                <h4>User Segmentation Strategy</h4>
+                <ol>
+                    <li><strong>New Users (Day 1-3):</strong>
+                        <ul>
+                            <li>Minimal ads initially (let them experience core value)</li>
+                            <li>Introduce ads gradually starting Day 2-3</li>
+                            <li>Offer premium trial after first value moment</li>
+                        </ul>
+                    </li>
+                    <li><strong>Engaged Free Users (Day 4-30):</strong>
+                        <ul>
+                            <li>Full ad load (interstitials, rewarded video)</li>
+                            <li>Show "Remove Ads" prompt after frustration signals (skipping ads, rapid clicks)</li>
+                            <li>Time-limited discount offers (24-hour flash sales)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Power Users (30+ days):</strong>
+                        <ul>
+                            <li>Reduce ad frequency slightly (retention risk)</li>
+                            <li>Targeted premium upsells based on usage patterns</li>
+                            <li>Personalized "You're a power user" messaging</li>
+                        </ul>
+                    </li>
+                    <li><strong>Premium Subscribers:</strong>
+                        <ul>
+                            <li>Zero ads (honor the promise)</li>
+                            <li>Upsell to higher tiers if applicable</li>
+                            <li>Referral incentives for bringing free users</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Pricing Strategy for "Remove Ads"</h3>
+
+            <div class="chart-container">
+                <h4>Optimal IAP Price Points (Based on Industry Data)</h4>
+                <div class="bar">
+                    <div class="bar-label">$0.99 (Impulse Buy)</div>
+                    <div class="bar-fill" style="width: 60%; background: #f59e0b;">Higher conversion, lower revenue per user</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">$1.99 (Sweet Spot)</div>
+                    <div class="bar-fill" style="width: 85%; background: #10b981;">Best balance for utility apps</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">$2.99 (Standard)</div>
+                    <div class="bar-fill" style="width: 75%; background: #10b981;">Good for apps with strong value prop</div>
+                </div>
+                <div class="bar">
+                    <div class="bar-label">$4.99+ (Premium)</div>
+                    <div class="bar-fill" style="width: 40%; background: #667eea;">Lower conversion, only for niche/professional apps</div>
+                </div>
+            </div>
+
+            <p><strong>Recommendation for Moonshot Partners:</strong> Start with $1.99 for remove ads IAP. Test $2.99 after gathering data. Avoid sub-$1 pricing (devalues the offer).</p>
+
+            <h3>Revenue Math Example</h3>
+
+            <div class="highlight">
+                <h4>Scenario: 50K MAU Utility App</h4>
+                <p><strong>Ad-Only Model:</strong></p>
+                <ul>
+                    <li>50K MAU × 10 sessions/month × 2 interstitials/session = 1M impressions</li>
+                    <li>eCPM: $5 (US tier 1)</li>
+                    <li>Monthly Revenue: 1M impressions × $5 / 1000 = <strong>$5,000/month</strong></li>
+                </ul>
+
+                <p><strong>Hybrid Model (Ads + Remove Ads IAP):</strong></p>
+                <ul>
+                    <li>47.5K users stay free (95%) → Ad Revenue: $4,750/month</li>
+                    <li>2.5K users convert (5%) at $1.99 → IAP Revenue: $4,975 one-time → $1,658/month (amortized over 3 months)</li>
+                    <li><strong>Total Monthly Revenue: $6,408/month (+28% increase)</strong></li>
+                </ul>
+
+                <p><strong>Hybrid Model (Ads + Subscription at $4.99/month):</strong></p>
+                <ul>
+                    <li>48.5K users stay free (97%) → Ad Revenue: $4,850/month</li>
+                    <li>1.5K users convert (3%) at $4.99/month → Subscription Revenue: $7,485/month (recurring!)</li>
+                    <li><strong>Total Monthly Revenue: $12,335/month (+147% increase)</strong></li>
+                    <li><strong>Plus:</strong> Recurring revenue creates compounding growth</li>
+                </ul>
+            </div>
+
+            <h3>Best Practices for Hybrid Monetization</h3>
+            <ul>
+                <li><strong>Be Transparent:</strong> Clearly communicate what premium removes (ads) and adds (features)</li>
+                <li><strong>Offer Trials:</strong> 7-14 day free trials significantly increase subscription conversion</li>
+                <li><strong>Use Social Proof:</strong> "Join 10,000+ premium members" messaging builds trust</li>
+                <li><strong>Time Offers:</strong> Limited-time discounts create urgency (50% off for 24 hours)</li>
+                <li><strong>A/B Test Everything:</strong> Price points, messaging, upgrade prompts, trial lengths</li>
+                <li><strong>Respect Users:</strong> Never make free tier deliberately bad just to force upgrades (kills trust)</li>
+            </ul>
+        </section>
+
+        <!-- Special Considerations -->
+        <section class="section">
+            <h2>5. Special Considerations for Non-Gaming Apps</h2>
+
+            <h3>Education Apps & COPPA Compliance</h3>
+
+            <div class="highlight">
+                <h4>Critical Alert: New COPPA Rules (January 2025)</h4>
+                <p>The FTC finalized major changes to the Children's Online Privacy Protection Act (COPPA) in January 2025, significantly limiting companies' ability to monetize children's data.</p>
+            </div>
+
+            <p><strong>Key Restrictions for Apps Targeting Children Under 13:</strong></p>
+            <ul>
+                <li><strong>Behavioral Advertising Banned:</strong> Cannot use personal data for targeted advertising</li>
+                <li><strong>Contextual Ads Only:</strong> Ads must be based on content context, not user tracking</li>
+                <li><strong>No Persistent Identifiers:</strong> Severely limits ad network tracking capabilities</li>
+                <li><strong>Parental Consent Required:</strong> For any data collection beyond basic app functionality</li>
+                <li><strong>Limited Ad Networks:</strong> Many major networks don't support COPPA-compliant inventory</li>
+            </ul>
+
+            <div class="recommendation">
+                <h4>Moonshot Strategy for Education Apps</h4>
+                <p>Given COPPA restrictions, education apps targeting children should:</p>
+                <ol>
+                    <li><strong>Prioritize Subscription Monetization:</strong> Ads are too limited/risky for children's apps</li>
+                    <li><strong>Family Plans:</strong> Market to parents, not kids (parent pays for child's access)</li>
+                    <li><strong>School/District Licensing:</strong> B2B model avoids individual data collection</li>
+                    <li><strong>If Using Ads:</strong> Use COPPA-compliant networks only (AdMob has COPPA support, but eCPMs will be very low)</li>
+                    <li><strong>Age Gating:</strong> Apps for 13+ can use standard ad monetization</li>
+                </ol>
+            </div>
+
+            <h3>Setup Complexity Comparison</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Setup Time</th>
+                        <th>Technical Complexity</th>
+                        <th>Documentation Quality</th>
+                        <th>Developer Sentiment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AdMob</strong></td>
+                        <td>2-4 hours</td>
+                        <td><span class="pros">Low</span> - Single SDK, clear guides</td>
+                        <td><span class="pros">Excellent</span> - Google's comprehensive docs</td>
+                        <td><span class="pros">Positive</span> - "Easy for beginners"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AppLovin MAX</strong></td>
+                        <td>4-6 hours</td>
+                        <td><span class="metric">Medium</span> - Requires network adapter configs</td>
+                        <td><span class="pros">Good</span> - Well-documented but more complex</td>
+                        <td><span class="metric">Mixed</span> - "Powerful but learning curve"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ironSource</strong></td>
+                        <td>6-8 hours</td>
+                        <td><span class="cons">High</span> - Complex integration, many settings</td>
+                        <td><span class="metric">Good</span> - Comprehensive but overwhelming</td>
+                        <td><span class="cons">Frustrating</span> - "Lots of trial and error"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appodeal</strong></td>
+                        <td>2-3 hours</td>
+                        <td><span class="pros">Very Low</span> - "Effortless setup"</td>
+                        <td><span class="metric">Good</span> - Simplified documentation</td>
+                        <td><span class="pros">Very Positive</span> - "Easiest platform"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Revenue Share & Fee Structures</h3>
+
+            <div class="chart-container">
+                <h4>Cost to Publishers</h4>
+                <p><strong>AdMob:</strong> <span class="pros">$0 - No fees, no revenue share</span></p>
+                <p><strong>AppLovin MAX:</strong> <span class="cons">Not disclosed - Revenue share model (estimated 10-20%)</span></p>
+                <p><strong>ironSource:</strong> <span class="cons">Revenue share model (estimated 10-15%)</span></p>
+                <p><strong>Appodeal:</strong> <span class="cons">Revenue share model (estimated 10%)</span></p>
+                <p><strong>Meta Audience Network:</strong> <span class="cons">Revenue share when used directly (varies)</span></p>
+            </div>
+
+            <p><strong>Key Insight:</strong> AdMob's zero-fee model is a major advantage for indie developers with limited scale. Even if AppLovin MAX generates 10% higher eCPMs, the revenue share could offset those gains.</p>
+
+            <h3>Common Integration Issues (from GitHub/Forums)</h3>
+
+            <ul>
+                <li><strong>AdMob + Meta Mediation:</strong> Frequent reports of fill rate drops and build errors when integrating Facebook Audience Network via AdMob mediation</li>
+                <li><strong>AppLovin iOS Builds:</strong> SDK compatibility issues with certain Xcode versions reported in GitHub issues</li>
+                <li><strong>Ad Policy Violations:</strong> Accidental clicks (ads near buttons) trigger account suspensions across all platforms - design carefully!</li>
+                <li><strong>GDPR/Privacy Consent:</strong> All platforms require proper consent flows for EU users - use Google's UMP SDK or equivalent</li>
+            </ul>
+
+            <h3>Decision Framework for Moonshot</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>App Profile</th>
+                        <th>Recommended Platform</th>
+                        <th>Rationale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Small indie (15K-100K MAU)</td>
+                        <td><strong>AdMob</strong></td>
+                        <td>Zero fees maximize limited revenue; easy setup; Google demand ensures fill</td>
+                    </tr>
+                    <tr>
+                        <td>Growing app (100K-500K MAU)</td>
+                        <td><strong>AdMob → Consider MAX</strong></td>
+                        <td>Start with AdMob, test AppLovin MAX if hitting revenue plateaus</td>
+                    </tr>
+                    <tr>
+                        <td>Scaled app (500K-1M MAU)</td>
+                        <td><strong>AppLovin MAX or hybrid</strong></td>
+                        <td>Volume justifies revenue share; real-time bidding optimizes yield</td>
+                    </tr>
+                    <tr>
+                        <td>Education (kids under 13)</td>
+                        <td><strong>Avoid ads - use subscriptions</strong></td>
+                        <td>COPPA compliance makes ad monetization impractical</td>
+                    </tr>
+                    <tr>
+                        <td>Global app (non-US majority)</td>
+                        <td><strong>AdMob + InMobi mediation</strong></td>
+                        <td>InMobi strong in Asia; mediate via AdMob for best fill</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Final Recommendation -->
+        <section class="section">
+            <h2>Final Recommendation: Moonshot's Default Ad Stack</h2>
+
+            <div class="recommendation">
+                <h3>Recommended Implementation</h3>
+
+                <p><strong>Platform:</strong> Google AdMob with mediation enabled</p>
+
+                <p><strong>Mediated Networks:</strong></p>
+                <ul>
+                    <li>Meta Audience Network (when fill rate is stable)</li>
+                    <li>AppLovin (as mediated partner, not MAX)</li>
+                    <li>InMobi (for Asia-focused apps)</li>
+                </ul>
+
+                <p><strong>Ad Format Priority:</strong></p>
+                <ol>
+                    <li><strong>Interstitial ads</strong> - Highest revenue, use at natural transitions</li>
+                    <li><strong>Rewarded video ads</strong> - Best UX/revenue balance, user-initiated</li>
+                    <li><strong>Native ads</strong> - For content-heavy apps only</li>
+                    <li><strong>Banner ads</strong> - Minimize or avoid entirely</li>
+                </ol>
+
+                <p><strong>Hybrid Monetization:</strong></p>
+                <ul>
+                    <li>Implement "Remove Ads" IAP at $1.99</li>
+                    <li>For apps with premium features: Bundle subscription ($4.99-$7.99/month) with ad removal</li>
+                    <li>Target 3-5% conversion from free to paid</li>
+                </ul>
+
+                <p><strong>Key Metrics to Track:</strong></p>
+                <ul>
+                    <li>eCPM by ad format and geography</li>
+                    <li>Fill rate (target 85%+)</li>
+                    <li>Day 1, 7, 30 retention rates</li>
+                    <li>ARPDAU (Average Revenue Per Daily Active User)</li>
+                    <li>IAP/subscription conversion rates</li>
+                </ul>
+
+                <p><strong>Implementation Timeline:</strong></p>
+                <ol>
+                    <li>Week 1: Integrate AdMob SDK, implement interstitial + rewarded video</li>
+                    <li>Week 2: Add mediation partners, test fill rates</li>
+                    <li>Week 3: Implement "Remove Ads" IAP</li>
+                    <li>Week 4+: Optimize based on data, A/B test placements</li>
+                </ol>
+            </div>
+
+            <div class="highlight">
+                <h3>Expected Outcomes</h3>
+                <p>For a typical Moonshot partner app (50K MAU, US-focused utility app):</p>
+                <ul>
+                    <li><strong>Baseline (no monetization):</strong> $0/month</li>
+                    <li><strong>Ads only (AdMob):</strong> $3,000-$6,000/month (depending on engagement)</li>
+                    <li><strong>Ads + Remove Ads IAP:</strong> $4,000-$8,000/month</li>
+                    <li><strong>Ads + Subscription:</strong> $8,000-$15,000/month (with 3% conversion)</li>
+                </ul>
+                <p><em>This represents a meaningful revenue boost from typical sub-$1K/month baseline, validating Moonshot's value proposition.</em></p>
+            </div>
+        </section>
+
+        <!-- Sources -->
+        <div class="sources">
+            <h3>Sources & References</h3>
+            <ol>
+                <li><a href="https://www.TrustRadius.com/compare-products/applovin-max-vs-google-admob">Compare AppLovin MAX vs Google AdMob 2025 | TrustRadius</a></li>
+                <li><a href="https://www.g2.com/compare/google-admob-vs-max-by-applovin">Google AdMob vs. MAX by AppLovin | G2</a></li>
+                <li><a href="https://medium.com/@vivek.beladia/google-admob-vs-alternatives-whats-best-for-app-monetization-in-2025-b2b433d0bde6">Google AdMob vs. Alternatives — What's Best for App Monetization in 2025? | Medium</a></li>
+                <li><a href="https://www.playwire.com/blog/choosing-your-platform-applovin-vs-competitors">Choosing Your Platform: AppLovin vs. Competitors</a></li>
+                <li><a href="https://www.yodo1.com/resources/mobile-game-ecpm-benchmarks-2025">Mobile Ad Revenue Cheat Sheet - Yodo1</a></li>
+                <li><a href="https://www.monetizemore.com/blog/best-app-ad-networks/">14 BEST Mobile Ad Networks for 2025</a></li>
+                <li><a href="https://www.monetizemore.com/blog/ecpm-insights/">2024-25 eCPM Insights you Missed Out On!</a></li>
+                <li><a href="https://appodeal.com/blog/mobile-ecpm-report-app-ad-monetization-worldwide-performance/">Mobile ECPM Report Is Now Appodeal Benchmarks!</a></li>
+                <li><a href="https://medium.com/p/9e3a3c54e8af">Benefits of Applovin, Unity & Ironsource for non-gaming Apps</a></li>
+                <li><a href="https://setupad.com/blog/interstitial-ads/">What Are Interstitial Ads and How to Use Them Right?</a></li>
+                <li><a href="https://www.businessofapps.com/ads/interstitial/">Interstitial Ads (2025)</a></li>
+                <li><a href="https://www.inspiringapps.com/blog/show-me-the-money-how-mobile-apps-make-money">App Monetization Strategy: How Free Apps Make Money</a></li>
+                <li><a href="https://adapty.io/blog/freemium-app-monetization-strategies/">Freemium Monetization Models and Strategies for Subscription Apps</a></li>
+                <li><a href="https://medium.com/@vikranthsalian/google-admob-mediation-best-practices-unlock-more-revenue-delight-your-users-996185e3335a">Google AdMob Mediation Best Practices</a></li>
+                <li><a href="https://admob.google.com/home/resources/optimize-revenue-with-ad-mediation/">3 Ways to Optimize Your Revenue with Ad Mediation - Google AdMob</a></li>
+                <li><a href="https://www.playwire.com/blog/top-app-mediation-partners">Best Mobile Ad Mediation Platforms in 2025</a></li>
+                <li><a href="https://www.blog.udonis.co/mobile-marketing/top-ad-mediation-platforms-mobile-apps-games">Top 13 Ad Mediation Platforms For Mobile Apps & Games</a></li>
+                <li><a href="https://admob.google.com/home/resources/best-practices-for-in-app-rewarded-video-ads/">Best Practices for In-App Rewarded Video Ads with Google AdMob</a></li>
+                <li><a href="https://www.adnimation.com/interstitial-ads-vs-banner-ads/">Interstitial Ads vs Banner Ads: Which Will Earn You More?</a></li>
+                <li><a href="https://teqblaze.com/blog/mobile-app-monetization-for-publishers">AdMob vs. ironSource vs. AppLovin MAX vs. White-Label Mobile SDK</a></li>
+                <li><a href="https://www.monetizemore.com/blog/the-best-guide-to-mobile-app-monetization/">12 Best Mobile App Monetization Strategies you haven't tried [2025]</a></li>
+                <li><a href="https://Www.Ftc.gov/news-events/news/press-releases/2025/01/ftc-finalizes-changes-childrens-privacy-rule-limiting-companies-ability-monetize-kids-data">FTC Finalizes Changes to Children's Privacy Rule (COPPA)</a></li>
+                <li><a href="https://business.daily.dev/resources/native-ads-vs-banner-ads-what-works-for-developer-audiences">Native Ads vs Banner Ads: What Works for Developer Audiences</a></li>
+                <li><a href="https://support.google.com/admob/answer/6244508?hl=en">Set frequency caps for apps or ad units - Google AdMob Help</a></li>
+                <li><a href="https://firstpagesage.com/seo-blog/saas-freemium-conversion-rates/">SaaS Freemium Conversion Rates: 2025 Report</a></li>
+            </ol>
+
+            <p><strong>Research Conducted:</strong> December 2025</p>
+            <p><strong>Prepared for:</strong> Moonshot - Indie App Accelerator</p>
+            <p style="margin-top: 30px;"><a href="../index.html" style="color: #667eea; text-decoration: none; font-weight: 500;">← Back to Research Hub</a></p>
+        </div>
+    </div>
+</body>
+</html>

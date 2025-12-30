@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 8 | Technical Feasibility</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #f59e0b 0%, #fcd34d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 22px;
+            color: #a0aec0;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+
+        .hero .subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+
+        /* Big Stats */
+        .big-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .big-stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .big-stat-number.green {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-number.yellow {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-number.red {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-number.purple {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .big-stat-label {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #a0aec0;
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* Tier Cards */
+        .tier-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .tier-card {
+            border-radius: 16px;
+            padding: 32px;
+            transition: transform 0.2s;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .tier-card.green {
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .tier-card.yellow {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .tier-card.red {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .tier-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tier-badge {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .tier-badge.green {
+            background: rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .tier-badge.yellow {
+            background: rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+        }
+
+        .tier-badge.red {
+            background: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .tier-timeline {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .tier-card.green .tier-timeline { color: #22c55e; }
+        .tier-card.yellow .tier-timeline { color: #f59e0b; }
+        .tier-card.red .tier-timeline { color: #ef4444; }
+
+        .tier-target {
+            font-size: 14px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .tier-card.green .tier-target {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .tier-card.yellow .tier-target {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+        }
+
+        .tier-card.red .tier-target {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .tier-criteria {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .tier-criteria li {
+            color: #a0aec0;
+            font-size: 14px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .tier-criteria li:last-child {
+            border-bottom: none;
+        }
+
+        /* Scorecard */
+        .scorecard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .score-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .score-item h4 {
+            font-size: 14px;
+            color: #a5b4fc;
+            margin-bottom: 12px;
+        }
+
+        .score-scale {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .score-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .score-dot.active-1 { background: #22c55e; color: #fff; }
+        .score-dot.active-2 { background: #84cc16; color: #fff; }
+        .score-dot.active-3 { background: #f59e0b; color: #fff; }
+        .score-dot.active-4 { background: #f97316; color: #fff; }
+        .score-dot.active-5 { background: #ef4444; color: #fff; }
+        .score-dot.inactive { background: rgba(255,255,255,0.1); color: #64748b; }
+
+        .score-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        /* Score Result */
+        .score-result {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+        }
+
+        .score-range {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .score-range.green {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .score-range.yellow {
+            background: rgba(245, 158, 11, 0.15);
+            border: 2px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .score-range.orange {
+            background: rgba(249, 115, 22, 0.15);
+            border: 2px solid rgba(249, 115, 22, 0.4);
+        }
+
+        .score-range.red {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .score-range-number {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .score-range.green .score-range-number { color: #22c55e; }
+        .score-range.yellow .score-range-number { color: #f59e0b; }
+        .score-range.orange .score-range-number { color: #f97316; }
+        .score-range.red .score-range-number { color: #ef4444; }
+
+        .score-range-label {
+            font-size: 13px;
+            color: #a0aec0;
+        }
+
+        .score-range-action {
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .score-range.green .score-range-action { color: #86efac; }
+        .score-range.yellow .score-range-action { color: #fcd34d; }
+        .score-range.orange .score-range-action { color: #fdba74; }
+        .score-range.red .score-range-action { color: #fca5a5; }
+
+        /* Red Flags */
+        .red-flags {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .red-flag {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .red-flag-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .red-flag h4 {
+            color: #fca5a5;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .red-flag p {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Scope Table */
+        .scope-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .scope-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .scope-card.in-scope {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .scope-card.out-scope {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .scope-card h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .scope-card.in-scope h3 { color: #86efac; }
+        .scope-card.out-scope h3 { color: #fca5a5; }
+
+        .scope-list {
+            list-style: none;
+        }
+
+        .scope-list li {
+            padding: 8px 0;
+            color: #a0aec0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scope-list li::before {
+            font-size: 14px;
+        }
+
+        .scope-card.in-scope .scope-list li::before {
+            content: "✓";
+            color: #22c55e;
+        }
+
+        .scope-card.out-scope .scope-list li::before {
+            content: "✕";
+            color: #ef4444;
+        }
+
+        /* App Types */
+        .app-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .app-type-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .app-type-card h4 {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .app-type-card.accept { border-color: rgba(34, 197, 94, 0.3); }
+        .app-type-card.accept h4 { color: #86efac; }
+
+        .app-type-card.caution { border-color: rgba(245, 158, 11, 0.3); }
+        .app-type-card.caution h4 { color: #fcd34d; }
+
+        .app-type-card.avoid { border-color: rgba(239, 68, 68, 0.3); }
+        .app-type-card.avoid h4 { color: #fca5a5; }
+
+        .app-type-list {
+            list-style: none;
+        }
+
+        .app-type-list li {
+            padding: 6px 0;
+            color: #a0aec0;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .app-type-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-table th {
+            color: #a5b4fc;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            color: #e2e8f0;
+            font-size: 15px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* Implications */
+        .implications {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .implication {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .implication h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #a5b4fc;
+        }
+
+        .implication p {
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        /* Sources */
+        .sources {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 40px;
+        }
+
+        .sources h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #a5b4fc;
+        }
+
+        .sources ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .sources li {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .sources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        /* Verdict */
+        .verdict {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.1) 100%);
+        }
+
+        .verdict h2 {
+            font-size: 40px;
+            margin-bottom: 16px;
+            color: #f59e0b;
+        }
+
+        .verdict p {
+            color: #a0aec0;
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 24px;
+        }
+
+        .verdict .confidence {
+            display: inline-block;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .big-stats { grid-template-columns: repeat(2, 1fr); }
+            .tier-cards, .scorecard, .red-flags, .scope-grid, .app-types, .implications, .sources ul { grid-template-columns: 1fr; }
+            .score-result { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* Navigation Bar */
+        .top-nav {
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #a5b4fc;
+        }
+
+        .nav-brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 16px 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+
+        .step-nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .step-nav a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #fff;
+        }
+
+        .step-nav-center {
+            text-align: center;
+        }
+
+        .step-nav-center a {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border: none;
+            color: #fff;
+        }
+
+        .step-indicator {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
+            <div class="nav-links">
+                <a href="../../one-pager/index.html">Home</a>
+                <a href="../index.html" class="active">Research Hub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="../index.html">Research Hub</a>
+            <span>›</span>
+            <a href="../index.html">Phase 4: Operations</a>
+            <span>›</span>
+            Step 8
+        </div>
+        <header>
+            <div class="logo">Moonshot Research</div>
+            <div class="badge">H5</div>
+        </header>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Timeline Depends on Complexity</h1>
+            <p class="tagline">8 weeks works for simple apps. Medium apps need 12 weeks. Complex apps should be declined. Use the scorecard to qualify.</p>
+            <p class="subtitle">Research Date: December 28, 2025 | H5 Hypothesis Refined</p>
+        </div>
+    </section>
+
+    <section class="big-stats">
+        <div class="container" style="display: contents;">
+            <div class="big-stat">
+                <div class="big-stat-number green">6-8 wk</div>
+                <div class="big-stat-label">Tier 1: Simple Apps</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number yellow">10-12 wk</div>
+                <div class="big-stat-label">Tier 2: Medium Apps</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number red">16+ wk</div>
+                <div class="big-stat-label">Tier 3: Complex Apps</div>
+            </div>
+            <div class="big-stat">
+                <div class="big-stat-number purple">8-point</div>
+                <div class="big-stat-label">Complexity Scorecard</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Complexity Tiers -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Complexity Tiers</h2>
+            <p class="section-subtitle">Apps fall into three complexity tiers. Target Tier 1 for 8-week partnerships.</p>
+
+            <div class="tier-cards">
+                <!-- Tier 1: Simple -->
+                <div class="tier-card green">
+                    <div class="tier-header">
+                        <span class="tier-badge green">TIER 1</span>
+                    </div>
+                    <div class="tier-timeline">6-8 weeks</div>
+                    <span class="tier-target">Primary Target</span>
+                    <ul class="tier-criteria">
+                        <li>5-10 screens</li>
+                        <li>1-3 core features</li>
+                        <li>Simple CRUD operations</li>
+                        <li>BaaS-compatible backend</li>
+                        <li>Standard UI patterns</li>
+                        <li>Single platform (iOS or Android)</li>
+                        <li>No compliance requirements</li>
+                    </ul>
+                </div>
+
+                <!-- Tier 2: Medium -->
+                <div class="tier-card yellow">
+                    <div class="tier-header">
+                        <span class="tier-badge yellow">TIER 2</span>
+                    </div>
+                    <div class="tier-timeline">10-12 weeks</div>
+                    <span class="tier-target">Selective</span>
+                    <ul class="tier-criteria">
+                        <li>10-25 screens</li>
+                        <li>3-5 core features</li>
+                        <li>API integrations</li>
+                        <li>In-app purchases</li>
+                        <li>Push notifications</li>
+                        <li>User profiles and settings</li>
+                        <li>Moderate backend complexity</li>
+                    </ul>
+                </div>
+
+                <!-- Tier 3: Complex -->
+                <div class="tier-card red">
+                    <div class="tier-header">
+                        <span class="tier-badge red">TIER 3</span>
+                    </div>
+                    <div class="tier-timeline">16+ weeks</div>
+                    <span class="tier-target">Avoid</span>
+                    <ul class="tier-criteria">
+                        <li>25+ screens</li>
+                        <li>5+ interdependent features</li>
+                        <li>Real-time synchronization</li>
+                        <li>Custom backend systems</li>
+                        <li>Video/audio processing</li>
+                        <li>Social networking features</li>
+                        <li>Compliance requirements</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Complexity Scorecard -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Complexity Scorecard</h2>
+            <p class="section-subtitle">Rate each criterion 1-5. Sum the scores to determine the app's tier.</p>
+
+            <div class="scorecard">
+                <!-- Criterion 1 -->
+                <div class="score-item">
+                    <h4>1. Core Features</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>1-2 features</span>
+                        <span>6+ features</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 2 -->
+                <div class="score-item">
+                    <h4>2. Backend Complexity</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>BaaS only</span>
+                        <span>Custom backend</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 3 -->
+                <div class="score-item">
+                    <h4>3. Data Model</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>Simple CRUD</span>
+                        <span>Complex relations</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 4 -->
+                <div class="score-item">
+                    <h4>4. UI Complexity</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>Standard UI</span>
+                        <span>Custom animations</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 5 -->
+                <div class="score-item">
+                    <h4>5. Integrations</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>0-1 APIs</span>
+                        <span>4+ APIs</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 6 -->
+                <div class="score-item">
+                    <h4>6. User Base Size</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>&lt;10K MAU</span>
+                        <span>&gt;100K MAU</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 7 -->
+                <div class="score-item">
+                    <h4>7. Compliance</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>None</span>
+                        <span>HIPAA/PCI</span>
+                    </div>
+                </div>
+
+                <!-- Criterion 8 -->
+                <div class="score-item">
+                    <h4>8. Migration</h4>
+                    <div class="score-scale">
+                        <div class="score-dot active-1">1</div>
+                        <div class="score-dot active-2">2</div>
+                        <div class="score-dot active-3">3</div>
+                        <div class="score-dot active-4">4</div>
+                        <div class="score-dot active-5">5</div>
+                    </div>
+                    <div class="score-labels">
+                        <span>Greenfield</span>
+                        <span>Complex data</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Results -->
+            <div class="score-result">
+                <div class="score-range green">
+                    <div class="score-range-number">8-16</div>
+                    <div class="score-range-label">Tier 1</div>
+                    <div class="score-range-action">Proceed</div>
+                </div>
+                <div class="score-range yellow">
+                    <div class="score-range-number">17-24</div>
+                    <div class="score-range-label">Tier 2</div>
+                    <div class="score-range-action">Scope Aggressively</div>
+                </div>
+                <div class="score-range orange">
+                    <div class="score-range-number">25-32</div>
+                    <div class="score-range-label">Tier 3</div>
+                    <div class="score-range-action">Consider Declining</div>
+                </div>
+                <div class="score-range red">
+                    <div class="score-range-number">33-40</div>
+                    <div class="score-range-label">Too Complex</div>
+                    <div class="score-range-action">Reject</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Red Flags -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Red Flag Features</h2>
+            <p class="section-subtitle">If an app has any of these features, it exceeds the 8-week timeline. Auto-reject or extend timeline significantly.</p>
+
+            <div class="red-flags">
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F504;</div>
+                    <div>
+                        <h4>Real-Time Multiplayer</h4>
+                        <p>WebSocket infrastructure, state sync, conflict resolution. Adds +6-8 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F4DD;</div>
+                    <div>
+                        <h4>UGC with Moderation</h4>
+                        <p>Content review, abuse prevention, legal liability. Adds +4-6 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F3AC;</div>
+                    <div>
+                        <h4>Video/Photo Editing</h4>
+                        <p>Media processing, filters, rendering. Adds +8-12 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F4F4;</div>
+                    <div>
+                        <h4>Offline-First Architecture</h4>
+                        <p>Local database, sync engine, conflict resolution. Adds +3-4 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F465;</div>
+                    <div>
+                        <h4>Social Networking</h4>
+                        <p>Profiles, feeds, following, activity streams. Adds +6-8 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F6D2;</div>
+                    <div>
+                        <h4>Complex E-commerce</h4>
+                        <p>Multi-vendor, inventory, orders, disputes. Adds +8-12 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F5FA;</div>
+                    <div>
+                        <h4>Custom Maps/Geolocation</h4>
+                        <p>Routing, geofencing, real-time tracking. Adds +4-6 weeks.</p>
+                    </div>
+                </div>
+                <div class="red-flag">
+                    <div class="red-flag-icon">&#x1F3E5;</div>
+                    <div>
+                        <h4>HIPAA/PCI Compliance</h4>
+                        <p>Security audits, legal review, testing. Adds +3-6 weeks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Boundaries -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Scope Boundaries</h2>
+            <p class="section-subtitle">What's in scope for an 8-week rebuild vs what should be deferred or rejected.</p>
+
+            <div class="scope-grid">
+                <div class="scope-card in-scope">
+                    <h3>In Scope (8 Weeks)</h3>
+                    <ul class="scope-list">
+                        <li>Simple CRUD apps (5-10 screens)</li>
+                        <li>1-3 core features only</li>
+                        <li>BaaS backend (Firebase/Supabase)</li>
+                        <li>Basic OAuth authentication</li>
+                        <li>Single platform (iOS OR Android)</li>
+                        <li>Standard UI patterns</li>
+                        <li>Basic analytics integration</li>
+                        <li>Crash reporting</li>
+                        <li>Simple subscription/IAP</li>
+                    </ul>
+                </div>
+                <div class="scope-card out-scope">
+                    <h3>Out of Scope (Defer or Reject)</h3>
+                    <ul class="scope-list">
+                        <li>Real-time collaboration features</li>
+                        <li>Video/audio processing</li>
+                        <li>User-generated content moderation</li>
+                        <li>Social networking features</li>
+                        <li>Complex e-commerce/marketplace</li>
+                        <li>Offline-first with sync</li>
+                        <li>Custom mapping/routing</li>
+                        <li>AI/ML custom models</li>
+                        <li>Both platforms simultaneously</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Archetypes -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">App Type Guide</h2>
+            <p class="section-subtitle">Quick reference for which app types to accept, approach with caution, or avoid.</p>
+
+            <div class="app-types">
+                <div class="app-type-card accept">
+                    <h4>Accept (Tier 1)</h4>
+                    <ul class="app-type-list">
+                        <li>Habit trackers (6-7 wk)</li>
+                        <li>Expense trackers (7-8 wk)</li>
+                        <li>Focus/productivity timers (5-6 wk)</li>
+                        <li>Flashcard apps (6-8 wk)</li>
+                        <li>Simple utilities (4-6 wk)</li>
+                        <li>Educational quizzes (6-8 wk)</li>
+                        <li>Note-taking (text only)</li>
+                        <li>Simple calculators</li>
+                    </ul>
+                </div>
+                <div class="app-type-card caution">
+                    <h4>Caution (Tier 2)</h4>
+                    <ul class="app-type-list">
+                        <li>Fitness trackers (static library only)</li>
+                        <li>Recipe apps (provided database)</li>
+                        <li>Journal apps (text only, no media)</li>
+                        <li>Budget apps (manual entry only)</li>
+                        <li>Weather apps (API integration)</li>
+                        <li>Simple CRM tools</li>
+                        <li>Booking/scheduling</li>
+                        <li>Inventory trackers</li>
+                    </ul>
+                </div>
+                <div class="app-type-card avoid">
+                    <h4>Avoid (Tier 3)</h4>
+                    <ul class="app-type-list">
+                        <li>Social networks</li>
+                        <li>Marketplace apps</li>
+                        <li>Media editors (photo/video)</li>
+                        <li>Real-time collaboration tools</li>
+                        <li>Dating apps</li>
+                        <li>Streaming platforms</li>
+                        <li>Healthcare/fintech (compliance)</li>
+                        <li>Multi-tenant B2B SaaS</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Breakdown -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">8-Week Timeline Breakdown</h2>
+            <p class="section-subtitle">Recommended phase allocation for Tier 1 apps.</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Phase</th>
+                        <th>Activities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Setup & Architecture</td>
+                        <td>Project setup, CI/CD, design system, database schema</td>
+                    </tr>
+                    <tr>
+                        <td>2-3</td>
+                        <td>Core Features</td>
+                        <td>Authentication, primary user workflow, data persistence</td>
+                    </tr>
+                    <tr>
+                        <td>4-5</td>
+                        <td>Secondary Features</td>
+                        <td>Settings, profiles, additional workflows, analytics</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Monetization</td>
+                        <td>Payment/subscription integration, ad placement</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Testing & QA</td>
+                        <td>Bug fixes, performance optimization, beta testing</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Launch</td>
+                        <td>App Store submission, gradual rollout, monitoring</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Real-World Evidence</h2>
+            <p class="section-subtitle">Case studies and industry data supporting timeline estimates.</p>
+
+            <div class="implications" style="grid-template-columns: 1fr;">
+                <div class="implication" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
+                    <h3 style="color: #fcd34d;">Dashlane iOS Rewrite</h3>
+                    <p><strong>Timeline:</strong> 6 months with 4 dedicated developers + 5 maintaining legacy app.<br>
+                    <strong>App Type:</strong> Password manager (complex security app).<br>
+                    <strong>Approach:</strong> Modernization (not complete rebuild) - reused Swift crypto/sync frameworks, new SwiftUI + UIKit hybrid UI.<br>
+                    <strong>Trade-offs:</strong> Features frozen during rewrite, some cut from initial launch.<br>
+                    <strong>Results:</strong> 50% fewer crashes, 50% faster account loading.<br>
+                    <strong>Key Lesson:</strong> Even a well-resourced team needed 6 months for a complex app. Simple apps can be faster.</p>
+                </div>
+            </div>
+
+            <table class="data-table" style="margin-top: 40px;">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Finding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Multiple Agencies</td>
+                        <td>Simple apps: 8-12 weeks | Medium: 16-24 weeks | Complex: 24-48+ weeks</td>
+                    </tr>
+                    <tr>
+                        <td>Panthos Labs</td>
+                        <td>MVP development possible in 4 weeks with strict scope control</td>
+                    </tr>
+                    <tr>
+                        <td>Scorchsoft</td>
+                        <td>Velocity Sprints: 2-8 weeks for focused MVPs</td>
+                    </tr>
+                    <tr>
+                        <td>Industry Consensus</td>
+                        <td>Rewrites with existing specs can be 20-40% faster than new builds</td>
+                    </tr>
+                    <tr>
+                        <td>Cross-Platform Data</td>
+                        <td>Flutter/React Native: 30-50% faster than dual native development</td>
+                    </tr>
+                    <tr>
+                        <td>Team Size Impact</td>
+                        <td>Solo developer: 2-3x slower than 2-3 person team</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Implications -->
+    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container">
+            <h2 class="section-title">Implications for Moonshot</h2>
+            <p class="section-subtitle">What this research means for the partnership model.</p>
+
+            <div class="implications">
+                <div class="implication">
+                    <h3>Target Tier 1 Apps</h3>
+                    <p>Focus on habit trackers, expense apps, timers, flashcards, and simple utilities. These fit reliably in 8 weeks and have proven monetization potential.</p>
+                </div>
+                <div class="implication">
+                    <h3>Use the Scorecard</h3>
+                    <p>Score every potential partnership before committing. Apps scoring 17+ should be approached with caution or declined to protect timeline reliability.</p>
+                </div>
+                <div class="implication">
+                    <h3>Mandate BaaS Backends</h3>
+                    <p>Firebase or Supabase saves 3-4 weeks vs custom backend. Only accept custom backends if they're well-documented and genuinely reusable.</p>
+                </div>
+                <div class="implication">
+                    <h3>Single Platform First</h3>
+                    <p>Building both iOS and Android doubles timeline. Start with the platform where 80%+ of users are, add the other in Phase 2.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verdict -->
+    <section class="verdict">
+        <div class="container">
+            <h2>H5: Tiered Timeline Model</h2>
+            <p>The original hypothesis "8-week timeline is realistic" is too simplistic. Timeline depends on complexity tier. 8 weeks is achievable for Tier 1 (simple) apps with strict scope control and experienced developers.</p>
+            <div class="confidence">Use Scorecard to Qualify</div>
+        </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="section">
+        <div class="container">
+            <div class="sources">
+                <h3>Sources & References</h3>
+                <ul>
+                    <li><a href="https://www.dashlane.com/blog/we-re-wrote-our-ios-app-heres-why-and-why-its-better-than-ever" target="_blank">Dashlane: We Re-Wrote Our iOS App</a></li>
+                    <li><a href="https://www.debutinfotech.com/blog/mobile-app-development-timeline" target="_blank">Debut Infotech: Mobile App Development Timeline</a></li>
+                    <li><a href="https://baritechsol.com/blog/mobile-app-development-timeline/" target="_blank">Baritech Sol: Mobile App Development Timeline 2025</a></li>
+                    <li><a href="https://guarana-technologies.com/blog/mobile-app-development-timeline" target="_blank">Guarana: Mobile App Development Timeline</a></li>
+                    <li><a href="https://panthos.au/quick-mvp-development/" target="_blank">Panthos Labs: 4-Week MVP Development</a></li>
+                    <li><a href="https://www.scorchsoft.com/services/rapid-mvp-development" target="_blank">Scorchsoft: Velocity Sprints</a></li>
+                    <li><a href="https://techcrunch.com/2022/10/26/a-prep-checklist-for-startups-about-to-undergo-technical-due-diligence/" target="_blank">TechCrunch: Technical Due Diligence Checklist</a></li>
+                    <li><a href="https://www.fullestop.com/blog/native-vs-cross-platform-apps-development-costs" target="_blank">Fullestop: Native vs Cross-Platform Costs</a></li>
+                    <li><a href="https://www.creolestudios.com/how-much-does-it-cost-to-make-an-app/" target="_blank">Creole Studios: App Cost Breakdown</a></li>
+                    <li><a href="https://www.redhat.com/fr/blog/mobile-app-development-complexity-and-cost-meter" target="_blank">Red Hat: Mobile App Complexity Meter</a></li>
+                    <li><a href="https://www.interviewhelp.io/blog/posts/were_going_to_rewrite_the_whole_project_in_3_month/" target="_blank">InterviewHelp: Why 3-Month Rewrites Fail</a></li>
+                    <li><a href="https://rewisoft.com/blog/mvp-app-development-a-step-by-step-guide-on-how-to-build-your-application/" target="_blank">Rewisoft: MVP App Development Guide</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Step Navigation -->
+            <div class="step-nav">
+                <a href="../step-07-unit-economics/step7-unit-economics.html">
+                    <span>←</span>
+                    <span>Previous: Unit Economics</span>
+                </a>
+                <div class="step-nav-center">
+                    <div class="step-indicator">Step 8 of 14</div>
+                    <a href="../index.html">Back to Research Hub</a>
+                </div>
+                <a href="../step-09-monetization-validation/step9-monetization-validation.html">
+                    <span>Next: Monetization Validation</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p style="margin-top: 20px;">Moonshot Research | Step 8: Technical Feasibility Assessment | December 2025</p>
+        </div>
+    </footer>
+
+</body>
+</html>
