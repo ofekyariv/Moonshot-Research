@@ -3,209 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 14 | Funding Strategy</title>
+    <title>Step 14: Funding Strategy — Moonshot Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
-        /* Hero */
+        .nav-links a:hover {
+            color: var(--amber-glow);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
+            padding: 140px 0 80px;
             text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--success-green);
+            margin-bottom: 24px;
         }
 
         .hero h1 {
-            font-size: 52px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 64px);
             font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            background: linear-gradient(135deg, var(--success-green) 0%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
             max-width: 700px;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
+            font-weight: 300;
         }
 
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
+        .hero-meta {
+            font-size: 14px;
+            color: var(--text-muted);
         }
 
-        /* Big Stats */
-        .big-stats {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 40px;
         }
 
-        .big-stat {
+        .stat {
             text-align: center;
-            padding: 20px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .big-stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--success-green);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
         }
 
-        .big-stat-number.purple {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .stat-value.amber {
+            color: var(--amber-glow);
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
-        .big-stat-label {
-            color: #a0aec0;
+        .stat-label {
             font-size: 14px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Section */
         .section {
             padding: 80px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        .section:last-child {
+        .section:last-of-type {
             border-bottom: none;
         }
 
-        .section-title {
+        .section-header {
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
             font-size: 32px;
             font-weight: 700;
+            letter-spacing: -1px;
             margin-bottom: 12px;
         }
 
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
             max-width: 700px;
         }
 
@@ -225,82 +349,64 @@
         }
 
         .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
         }
 
-        .card.success {
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        .card.warning {
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .card.danger {
-            border-color: rgba(239, 68, 68, 0.3);
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card.recommended {
-            border-color: rgba(34, 197, 94, 0.5);
-            background: rgba(34, 197, 94, 0.05);
+            border-color: rgba(52, 211, 153, 0.3);
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.08) 0%, var(--space-navy) 100%);
         }
 
-        .card-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .card-value {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .card-value.success {
-            color: #22c55e;
-        }
-
-        .card-value.warning {
-            color: #f59e0b;
-        }
-
-        .card-description {
-            color: #a0aec0;
-            font-size: 14px;
+        .card.recommended::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
         }
 
         .card-badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 50px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
         }
 
         .card-badge.recommended {
-            background: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--success-green);
         }
 
         .card-badge.optional {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--amber-glow);
         }
 
         .card-badge.not-recommended {
@@ -308,10 +414,82 @@
             color: #f87171;
         }
 
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card-value.success {
+            color: var(--success-green);
+        }
+
+        .card-value.warning {
+            color: var(--amber-glow);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .card-description strong {
+            color: var(--text-primary);
+        }
+
+        /* Insight Box */
+        .insight-box {
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-left: 3px solid var(--amber-glow);
+            border-radius: 0 12px 12px 0;
+            padding: 24px;
+            margin: 32px 0;
+        }
+
+        .insight-box.success {
+            background: rgba(52, 211, 153, 0.05);
+            border-color: rgba(52, 211, 153, 0.15);
+            border-left-color: var(--success-green);
+        }
+
+        .insight-box-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--amber-glow);
+        }
+
+        .insight-box.success .insight-box-title {
+            color: var(--success-green);
+        }
+
+        .insight-box-content {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .insight-box-content strong {
+            color: var(--cyan-soft);
+        }
+
         /* Table */
         .table-wrapper {
             overflow-x: auto;
             margin: 24px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         table {
@@ -321,40 +499,40 @@
         }
 
         th, td {
-            padding: 16px;
+            padding: 16px 20px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         th {
-            background: rgba(255,255,255,0.05);
+            background: rgba(251, 191, 36, 0.05);
             font-weight: 600;
-            color: #a0aec0;
+            color: var(--text-muted);
             text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
+            font-size: 11px;
+            letter-spacing: 1px;
         }
 
         td {
-            color: #e2e8f0;
+            color: var(--text-secondary);
+            background: var(--space-mid);
         }
 
-        tr:hover {
-            background: rgba(255,255,255,0.02);
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: var(--space-light);
         }
 
         .highlight {
-            color: #22c55e;
+            color: var(--success-green);
             font-weight: 600;
         }
 
         .warning-text {
-            color: #f59e0b;
-            font-weight: 600;
-        }
-
-        .danger-text {
-            color: #ef4444;
+            color: var(--amber-glow);
             font-weight: 600;
         }
 
@@ -375,95 +553,58 @@
         }
 
         .chart-bar-label span:first-child {
-            color: #e2e8f0;
+            color: var(--text-primary);
         }
 
         .chart-bar-label span:last-child {
-            color: #a0aec0;
+            color: var(--cyan-soft);
+            font-weight: 500;
         }
 
         .chart-bar {
             height: 32px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .chart-bar-fill {
             height: 100%;
             border-radius: 8px;
-            transition: width 0.5s ease;
-        }
-
-        .chart-bar-fill.purple {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.8s ease;
         }
 
         .chart-bar-fill.green {
-            background: linear-gradient(90deg, #22c55e, #16a34a);
+            background: linear-gradient(90deg, var(--success-green) 0%, #10b981 100%);
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
         }
 
-        .chart-bar-fill.orange {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-        }
-
-        .chart-bar-fill.red {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-        }
-
-        /* Insight Box */
-        .insight-box {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 32px 0;
-        }
-
-        .insight-box.success {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        .insight-box.warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .insight-box-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .insight-box-content {
-            color: #a0aec0;
-            font-size: 15px;
+        .chart-bar-fill.amber {
+            background: linear-gradient(90deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
         /* Timeline */
         .timeline {
             position: relative;
-            padding-left: 40px;
-            margin: 32px 0;
+            padding-left: 48px;
+            margin: 40px 0;
         }
 
         .timeline::before {
             content: '';
             position: absolute;
-            left: 12px;
+            left: 16px;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: linear-gradient(180deg, #22c55e 0%, #667eea 50%, #764ba2 100%);
+            background: linear-gradient(180deg, var(--success-green) 0%, var(--amber-glow) 50%, var(--cyan-soft) 100%);
         }
 
         .timeline-item {
             position: relative;
-            padding-bottom: 32px;
+            padding-bottom: 40px;
         }
 
         .timeline-item:last-child {
@@ -472,39 +613,48 @@
 
         .timeline-dot {
             position: absolute;
-            left: -34px;
-            width: 24px;
-            height: 24px;
+            left: -40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #1a1a2e;
-            border: 3px solid #22c55e;
+            background: var(--space-deep);
+            border: 3px solid var(--success-green);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: 12px;
             font-weight: 700;
-        }
-
-        .timeline-dot.phase-1 {
-            border-color: #22c55e;
+            color: var(--success-green);
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
         }
 
         .timeline-dot.phase-2 {
-            border-color: #667eea;
+            border-color: var(--amber-glow);
+            color: var(--amber-glow);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
         .timeline-dot.phase-3 {
-            border-color: #764ba2;
+            border-color: var(--cyan-soft);
+            color: var(--cyan-soft);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.3);
         }
 
         .timeline-content {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: rgba(251, 191, 36, 0.2);
         }
 
         .timeline-title {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
@@ -512,21 +662,27 @@
 
         .timeline-period {
             font-size: 13px;
-            color: #667eea;
-            margin-bottom: 12px;
+            color: var(--amber-glow);
+            margin-bottom: 16px;
+            font-weight: 500;
         }
 
         .timeline-description {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .timeline-description strong {
+            color: var(--text-primary);
         }
 
         /* Decision Tree */
         .decision-tree {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 32px;
+            padding: 40px;
             margin: 32px 0;
         }
 
@@ -536,19 +692,20 @@
         }
 
         .decision-question {
-            background: rgba(102, 126, 234, 0.2);
-            border: 1px solid rgba(102, 126, 234, 0.4);
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
             border-radius: 12px;
             padding: 16px 24px;
             display: inline-block;
             font-weight: 600;
             margin-bottom: 16px;
+            color: var(--text-primary);
         }
 
         .decision-branches {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 48px;
         }
 
         .decision-branch {
@@ -556,34 +713,29 @@
         }
 
         .decision-arrow {
-            font-size: 24px;
-            color: #64748b;
+            font-size: 18px;
+            color: var(--text-muted);
             margin-bottom: 8px;
-        }
-
-        .decision-label {
-            font-size: 13px;
-            color: #a0aec0;
-            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .decision-result {
-            padding: 12px 20px;
+            padding: 12px 24px;
             border-radius: 8px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .decision-result.bootstrap {
-            background: rgba(34, 197, 94, 0.2);
-            border: 1px solid rgba(34, 197, 94, 0.4);
-            color: #4ade80;
+            background: rgba(52, 211, 153, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: var(--success-green);
         }
 
         .decision-result.raise {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.15);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: var(--amber-glow);
         }
 
         /* Investor Grid */
@@ -595,21 +747,28 @@
         }
 
         .investor-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .investor-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-4px);
         }
 
         .investor-card.high-fit {
-            border-color: rgba(34, 197, 94, 0.3);
+            border-color: rgba(52, 211, 153, 0.2);
         }
 
-        .investor-card.medium-fit {
-            border-color: rgba(245, 158, 11, 0.3);
+        .investor-card.high-fit:hover {
+            border-color: rgba(52, 211, 153, 0.4);
         }
 
         .investor-name {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 4px;
@@ -617,67 +776,62 @@
 
         .investor-type {
             font-size: 12px;
-            color: #667eea;
-            margin-bottom: 12px;
+            color: var(--amber-glow);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .investor-details {
             font-size: 14px;
-            color: #a0aec0;
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
 
         .investor-details strong {
-            color: #e2e8f0;
+            color: var(--text-primary);
         }
 
         .fit-badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
-            margin-top: 12px;
+            margin-top: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .fit-badge.high {
-            background: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--success-green);
         }
 
         .fit-badge.medium {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--amber-glow);
         }
 
         /* Sources */
-        .sources {
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sources-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 24px;
-        }
-
         .sources-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
+            gap: 40px;
         }
 
         .sources-category {
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .sources-category-title {
-            font-size: 14px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
             font-weight: 600;
-            color: #667eea;
-            margin-bottom: 12px;
+            color: var(--amber-glow);
+            margin-bottom: 16px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .sources-list {
@@ -685,18 +839,34 @@
         }
 
         .sources-list li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .sources-list a {
-            color: #a0aec0;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.2s;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sources-list a::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--amber-glow);
+            border-radius: 50%;
+            opacity: 0.5;
         }
 
         .sources-list a:hover {
-            color: #667eea;
+            color: var(--amber-glow);
+        }
+
+        .sources-list a:hover::before {
+            opacity: 1;
         }
 
         /* Step Navigation */
@@ -704,30 +874,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 40px;
+            padding: 48px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 48px;
         }
 
         .step-nav a {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #a0aec0;
+            gap: 12px;
+            padding: 14px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
         .step-nav-center {
@@ -735,590 +905,692 @@
         }
 
         .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border: none;
-            color: #fff;
+            color: var(--space-deep);
+            font-weight: 600;
+        }
+
+        .step-nav-center a:hover {
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.3);
         }
 
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .step-nav .disabled {
+            padding: 14px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 14px;
+            opacity: 0.5;
         }
 
         /* Footer */
-        footer {
-            padding: 40px 0;
+        .footer {
+            padding: 48px 40px;
             text-align: center;
-            color: #64748b;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .footer p {
+            color: var(--text-muted);
             font-size: 14px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .big-stats {
+        @media (max-width: 1024px) {
+            .stats-inner {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .cards, .cards-4 {
-                grid-template-columns: 1fr;
+            .cards-4 {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .investor-grid, .sources-grid {
-                grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 0 60px;
             }
             .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .stat {
+                padding: 20px;
+            }
+            .stat-value {
                 font-size: 32px;
+            }
+            .cards,
+            .cards-2,
+            .cards-4 {
+                grid-template-columns: 1fr;
+            }
+            .investor-grid,
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .nav-inner {
+                padding: 0 24px;
             }
             .decision-branches {
                 flex-direction: column;
                 gap: 16px;
             }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .step-nav a,
+            .step-nav .disabled {
+                width: 100%;
+                justify-content: center;
+            }
+            .timeline {
+                padding-left: 40px;
+            }
+            .timeline-dot {
+                left: -32px;
+                width: 24px;
+                height: 24px;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
+
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">Home</a>
+                    <span class="step-badge">Step 14</span>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>></span>
-            <a href="../index.html">Phase 5: Go-to-Market</a>
-            <span>></span>
-            Step 14
-        </div>
-
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 14</div>
-        </header>
-
+        <!-- Hero -->
         <section class="hero">
-            <h1>Bootstrap-First Strategy</h1>
-            <p class="tagline">$150K is sufficient to reach proof-of-concept. External funding only after validation.</p>
-            <p class="subtitle">Research completed December 2025 | 20+ sources analyzed</p>
+            <div class="hero-badge animate-on-scroll">
+                <span>◆</span>
+                Phase 5: Go-to-Market
+            </div>
+            <h1 class="animate-on-scroll">Bootstrap-First Strategy</h1>
+            <p class="hero-subtitle animate-on-scroll">$150K is sufficient to reach proof-of-concept. External funding only after validation.</p>
+            <p class="hero-meta animate-on-scroll">Research completed December 2025 | 20+ sources analyzed</p>
         </section>
 
-        <div class="big-stats">
-            <div class="big-stat">
-                <div class="big-stat-number">$150K</div>
-                <div class="big-stat-label">Available Capital</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">2-3</div>
-                <div class="big-stat-label">Apps to Proof-of-Concept</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number purple">12-18mo</div>
-                <div class="big-stat-label">Time to Profitability</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">100%</div>
-                <div class="big-stat-label">Ownership Retained</div>
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$150K</div>
+                    <div class="stat-label">Available Capital</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">2-3</div>
+                    <div class="stat-label">Apps to Proof-of-Concept</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value amber">12-18mo</div>
+                    <div class="stat-label">Time to Profitability</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Ownership Retained</div>
+                </div>
             </div>
         </div>
 
-        <!-- Recommendation Section -->
-        <section class="section">
-            <h2 class="section-title">Recommendation: Bootstrap First</h2>
-            <p class="section-subtitle">With $150K+ available and preference for full ownership, bootstrapping to proof-of-concept is the optimal path.</p>
+        <div class="main">
+            <!-- Recommendation Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Recommendation: Bootstrap First</h2>
+                    <p>With $150K+ available and preference for full ownership, bootstrapping to proof-of-concept is the optimal path.</p>
+                </div>
 
-            <div class="insight-box success">
-                <div class="insight-box-title">Key Finding</div>
-                <div class="insight-box-content">
-                    Research on successful bootstrapped app portfolios (Tony Dinh, Pieter Levels, Danny Postma) shows <strong>time-to-profitability of 6-12 months</strong> with proper execution.
-                    Moonshot's advantage: partnering with apps that already have users eliminates the 0-to-1 problem, potentially reducing this to <strong>3-6 months per app</strong>.
+                <div class="insight-box success animate-on-scroll">
+                    <div class="insight-box-title">Key Finding</div>
+                    <div class="insight-box-content">
+                        Research on successful bootstrapped app portfolios (Tony Dinh, Pieter Levels, Danny Postma) shows <strong>time-to-profitability of 6-12 months</strong> with proper execution.
+                        Moonshot's advantage: partnering with apps that already have users eliminates the 0-to-1 problem, potentially reducing this to <strong>3-6 months per app</strong>.
+                    </div>
                 </div>
-            </div>
 
-            <div class="cards">
-                <div class="card recommended">
-                    <span class="card-badge recommended">RECOMMENDED</span>
-                    <div class="card-title">Bootstrap</div>
-                    <div class="card-value success">$150K</div>
-                    <div class="card-description">
-                        <strong>2-3 apps</strong> to proof-of-concept<br>
-                        <strong>100%</strong> ownership retained<br>
-                        <strong>12-18 months</strong> to profitability<br>
-                        <strong>Full control</strong> over pace and direction
+                <div class="cards animate-on-scroll">
+                    <div class="card recommended">
+                        <span class="card-badge recommended">Recommended</span>
+                        <div class="card-title">Bootstrap</div>
+                        <div class="card-value success">$150K</div>
+                        <div class="card-description">
+                            <strong>2-3 apps</strong> to proof-of-concept<br>
+                            <strong>100%</strong> ownership retained<br>
+                            <strong>12-18 months</strong> to profitability<br>
+                            <strong>Full control</strong> over pace and direction
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <span class="card-badge optional">PHASE 2 OPTION</span>
-                    <div class="card-title">Angel / Micro-VC</div>
-                    <div class="card-value warning">$200-500K</div>
-                    <div class="card-description">
-                        <strong>Only after</strong> proven model<br>
-                        <strong>5-10 apps</strong> acceleration<br>
-                        <strong>0-20%</strong> dilution (varies)<br>
-                        Best fit: Earnest, Calm Fund
+                    <div class="card">
+                        <span class="card-badge optional">Phase 2 Option</span>
+                        <div class="card-title">Angel / Micro-VC</div>
+                        <div class="card-value warning">$200-500K</div>
+                        <div class="card-description">
+                            <strong>Only after</strong> proven model<br>
+                            <strong>5-10 apps</strong> acceleration<br>
+                            <strong>0-20%</strong> dilution (varies)<br>
+                            Best fit: Earnest, Calm Fund
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <span class="card-badge optional">PHASE 2 OPTION</span>
-                    <div class="card-title">Revenue-Based</div>
-                    <div class="card-value warning">Up to $4M</div>
-                    <div class="card-description">
-                        <strong>Requires</strong> $15K+ MRR first<br>
-                        <strong>No equity</strong> dilution<br>
-                        <strong>1.3-2x</strong> repayment<br>
-                        Best fit: Lighter Capital
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Bootstrap Runway Section -->
-        <section class="section">
-            <h2 class="section-title">Bootstrap Runway Analysis</h2>
-            <p class="section-subtitle">How far $150K takes you with offshore vs. hybrid development teams.</p>
-
-            <div class="cards cards-2">
-                <div class="card success">
-                    <div class="card-title">Scenario A: Offshore Team</div>
-                    <div class="card-description" style="margin-bottom: 16px;">Lower cost, more apps, longer timelines</div>
-                    <div class="table-wrapper">
-                        <table>
-                            <tr><td>App 1 Development</td><td class="highlight">$35,000</td></tr>
-                            <tr><td>App 2 Development</td><td>$35,000</td></tr>
-                            <tr><td>App 3 Development</td><td>$35,000</td></tr>
-                            <tr><td>Ops Reserve (12mo)</td><td>$25,000</td></tr>
-                            <tr><td>Legal + Tools</td><td>$5,000</td></tr>
-                            <tr style="background: rgba(34, 197, 94, 0.1);"><td><strong>Total</strong></td><td><strong class="highlight">$135,000</strong></td></tr>
-                        </table>
-                    </div>
-                    <div style="margin-top: 16px; font-size: 14px; color: #4ade80;"><strong>Result:</strong> 3 apps + $15K buffer</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">Scenario B: Hybrid Team</div>
-                    <div class="card-description" style="margin-bottom: 16px;">Higher quality, fewer apps, faster execution</div>
-                    <div class="table-wrapper">
-                        <table>
-                            <tr><td>App 1 Development</td><td>$50,000</td></tr>
-                            <tr><td>App 2 Development</td><td>$50,000</td></tr>
-                            <tr><td>Ops Reserve (12mo)</td><td>$30,000</td></tr>
-                            <tr><td>Legal + Tools</td><td>$5,000</td></tr>
-                            <tr style="background: rgba(255,255,255,0.05);"><td><strong>Total</strong></td><td><strong>$135,000</strong></td></tr>
-                        </table>
-                    </div>
-                    <div style="margin-top: 16px; font-size: 14px; color: #a0aec0;"><strong>Result:</strong> 2 apps + $15K buffer</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Time to Profitability Section -->
-        <section class="section">
-            <h2 class="section-title">Time to Profitability Model</h2>
-            <p class="section-subtitle">Sequential app launches with 4x monetization uplift and 70/30 revenue share.</p>
-
-            <div class="chart-container">
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Month 6: App 1 Live</span>
-                        <span>+$900/mo net</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 15%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Month 9: App 2 Optimizing</span>
-                        <span>+$1,800/mo net</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 30%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Month 12: App 3 Optimizing</span>
-                        <span>+$2,700/mo net</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 45%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Month 18: All Apps Steady</span>
-                        <span>+$2,700/mo net (cumulative: +$16K)</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill purple" style="width: 60%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Month 24: Self-Sustaining</span>
-                        <span>+$2,700/mo net (cumulative: +$52K)</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill purple" style="width: 80%;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="insight-box">
-                <div class="insight-box-title">Assumptions</div>
-                <div class="insight-box-content">
-                    Target apps: 100K MAU, currently $1K/mo | Monetization uplift: 4x (conservative) | Revenue share: 70/30 pilot (developer keeps 70%) | Ops costs: $200/mo per app | Development: $35K per app (offshore)
-                </div>
-            </div>
-        </section>
-
-        <!-- Phased Approach Section -->
-        <section class="section">
-            <h2 class="section-title">Recommended Path: Phased Approach</h2>
-            <p class="section-subtitle">Bootstrap to validation, then decide on growth path based on results.</p>
-
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot phase-1">1</div>
-                    <div class="timeline-content">
-                        <div class="timeline-title">Phase 1: Bootstrap Proof of Concept</div>
-                        <div class="timeline-period">Months 1-12 | Capital: $150K personal funds</div>
-                        <div class="timeline-description">
-                            <strong>Goal:</strong> 2-3 successful partnerships, $5-10K MRR<br><br>
-                            <strong>Activities:</strong><br>
-                            - First partnership signed and in development (M1-3)<br>
-                            - First app live, monetization optimizations (M4-6)<br>
-                            - Second partnership, document case study (M7-9)<br>
-                            - Third partnership, reach break-even (M10-12)<br><br>
-                            <strong>Success Metrics:</strong> 3 apps generating revenue, $5K+ net MRR, 3x+ case study documented
+                    <div class="card">
+                        <span class="card-badge optional">Phase 2 Option</span>
+                        <div class="card-title">Revenue-Based</div>
+                        <div class="card-value warning">Up to $4M</div>
+                        <div class="card-description">
+                            <strong>Requires</strong> $15K+ MRR first<br>
+                            <strong>No equity</strong> dilution<br>
+                            <strong>1.3-2x</strong> repayment<br>
+                            Best fit: Lighter Capital
                         </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot phase-2">2</div>
-                    <div class="timeline-content">
-                        <div class="timeline-title">Phase 2: Decide Growth Path</div>
-                        <div class="timeline-period">Months 12-15 | Decision point</div>
-                        <div class="timeline-description">
-                            <strong>If Proven + Want to Scale:</strong> Approach Earnest Capital or Calm Fund ($200-500K), or Lighter Capital RBF if at $15K+ MRR<br><br>
-                            <strong>If Proven + Prefer Sustainable:</strong> Continue bootstrapped, reinvest profits, add 1-2 apps/year<br><br>
-                            <strong>If Model Not Working:</strong> Evaluate learnings, pivot or wind down with no external obligations
+            </section>
+
+            <!-- Bootstrap Runway Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Bootstrap Runway Analysis</h2>
+                    <p>How far $150K takes you with offshore vs. hybrid development teams.</p>
+                </div>
+
+                <div class="cards cards-2 animate-on-scroll">
+                    <div class="card recommended">
+                        <div class="card-title">Scenario A: Offshore Team</div>
+                        <div class="card-description" style="margin-bottom: 20px;">Lower cost, more apps, longer timelines</div>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr><td>App 1 Development</td><td class="highlight">$35,000</td></tr>
+                                <tr><td>App 2 Development</td><td>$35,000</td></tr>
+                                <tr><td>App 3 Development</td><td>$35,000</td></tr>
+                                <tr><td>Ops Reserve (12mo)</td><td>$25,000</td></tr>
+                                <tr><td>Legal + Tools</td><td>$5,000</td></tr>
+                                <tr style="background: rgba(52, 211, 153, 0.1);"><td><strong>Total</strong></td><td><strong class="highlight">$135,000</strong></td></tr>
+                            </table>
+                        </div>
+                        <div style="margin-top: 16px; font-size: 14px; color: var(--success-green);"><strong>Result:</strong> 3 apps + $15K buffer</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Scenario B: Hybrid Team</div>
+                        <div class="card-description" style="margin-bottom: 20px;">Higher quality, fewer apps, faster execution</div>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr><td>App 1 Development</td><td>$50,000</td></tr>
+                                <tr><td>App 2 Development</td><td>$50,000</td></tr>
+                                <tr><td>Ops Reserve (12mo)</td><td>$30,000</td></tr>
+                                <tr><td>Legal + Tools</td><td>$5,000</td></tr>
+                                <tr style="background: rgba(255,255,255,0.03);"><td><strong>Total</strong></td><td><strong>$135,000</strong></td></tr>
+                            </table>
+                        </div>
+                        <div style="margin-top: 16px; font-size: 14px; color: var(--text-secondary);"><strong>Result:</strong> 2 apps + $15K buffer</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Time to Profitability Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Time to Profitability Model</h2>
+                    <p>Sequential app launches with 4x monetization uplift and 70/30 revenue share.</p>
+                </div>
+
+                <div class="chart-container animate-on-scroll">
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Month 6: App 1 Live</span>
+                            <span>+$900/mo net</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 15%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Month 9: App 2 Optimizing</span>
+                            <span>+$1,800/mo net</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Month 12: App 3 Optimizing</span>
+                            <span>+$2,700/mo net</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Month 18: All Apps Steady</span>
+                            <span>+$2,700/mo net (cumulative: +$16K)</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill amber" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Month 24: Self-Sustaining</span>
+                            <span>+$2,700/mo net (cumulative: +$52K)</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill amber" style="width: 80%;"></div>
                         </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot phase-3">3</div>
-                    <div class="timeline-content">
-                        <div class="timeline-title">Phase 3: Scale or Stay Small</div>
-                        <div class="timeline-period">Month 18+ | Long-term path</div>
-                        <div class="timeline-description">
-                            <strong>Option A - Aggressive Scale:</strong> Raise $500K-$1M, build team (3-5 people), 15-20 apps by Year 3<br><br>
-                            <strong>Option B - Calm Company:</strong> Stay at 5-10 apps, $50-100K/year net, solo/small team, high margins<br><br>
-                            <strong>Option C - Exit:</strong> Sell portfolio to strategic acquirer (app studio M&A at 3-5x revenue exists)
+
+                <div class="insight-box animate-on-scroll">
+                    <div class="insight-box-title">Assumptions</div>
+                    <div class="insight-box-content">
+                        Target apps: 100K MAU, currently $1K/mo | Monetization uplift: 4x (conservative) | Revenue share: 70/30 pilot (developer keeps 70%) | Ops costs: $200/mo per app | Development: $35K per app (offshore)
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phased Approach Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Recommended Path: Phased Approach</h2>
+                    <p>Bootstrap to validation, then decide on growth path based on results.</p>
+                </div>
+
+                <div class="timeline animate-on-scroll">
+                    <div class="timeline-item">
+                        <div class="timeline-dot">1</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Phase 1: Bootstrap Proof of Concept</div>
+                            <div class="timeline-period">Months 1-12 | Capital: $150K personal funds</div>
+                            <div class="timeline-description">
+                                <strong>Goal:</strong> 2-3 successful partnerships, $5-10K MRR<br><br>
+                                <strong>Activities:</strong><br>
+                                - First partnership signed and in development (M1-3)<br>
+                                - First app live, monetization optimizations (M4-6)<br>
+                                - Second partnership, document case study (M7-9)<br>
+                                - Third partnership, reach break-even (M10-12)<br><br>
+                                <strong>Success Metrics:</strong> 3 apps generating revenue, $5K+ net MRR, 3x+ case study documented
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot phase-2">2</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Phase 2: Decide Growth Path</div>
+                            <div class="timeline-period">Months 12-15 | Decision point</div>
+                            <div class="timeline-description">
+                                <strong>If Proven + Want to Scale:</strong> Approach Earnest Capital or Calm Fund ($200-500K), or Lighter Capital RBF if at $15K+ MRR<br><br>
+                                <strong>If Proven + Prefer Sustainable:</strong> Continue bootstrapped, reinvest profits, add 1-2 apps/year<br><br>
+                                <strong>If Model Not Working:</strong> Evaluate learnings, pivot or wind down with no external obligations
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot phase-3">3</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Phase 3: Scale or Stay Small</div>
+                            <div class="timeline-period">Month 18+ | Long-term path</div>
+                            <div class="timeline-description">
+                                <strong>Option A - Aggressive Scale:</strong> Raise $500K-$1M, build team (3-5 people), 15-20 apps by Year 3<br><br>
+                                <strong>Option B - Calm Company:</strong> Stay at 5-10 apps, $50-100K/year net, solo/small team, high margins<br><br>
+                                <strong>Option C - Exit:</strong> Sell portfolio to strategic acquirer (app studio M&A at 3-5x revenue exists)
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Funding Decision Tree Section -->
-        <section class="section">
-            <h2 class="section-title">Funding Decision Framework</h2>
-            <p class="section-subtitle">Clear triggers for when to raise vs. stay bootstrapped.</p>
+            <!-- Funding Decision Framework Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Funding Decision Framework</h2>
+                    <p>Clear triggers for when to raise vs. stay bootstrapped.</p>
+                </div>
 
-            <div class="decision-tree">
-                <div class="decision-node">
-                    <div class="decision-question">Do you have 3+ successful partnerships with 3x+ monetization lift?</div>
-                    <div class="decision-branches">
-                        <div class="decision-branch">
-                            <div class="decision-arrow">No</div>
-                            <div class="decision-result bootstrap">Continue Bootstrap</div>
-                        </div>
-                        <div class="decision-branch">
-                            <div class="decision-arrow">Yes</div>
-                            <div class="decision-question" style="margin-bottom: 16px;">Is combined MRR $10K+ with pipeline demand?</div>
-                            <div class="decision-branches">
-                                <div class="decision-branch">
-                                    <div class="decision-arrow">No</div>
-                                    <div class="decision-result bootstrap">Continue Bootstrap</div>
-                                </div>
-                                <div class="decision-branch">
-                                    <div class="decision-arrow">Yes</div>
-                                    <div class="decision-result raise">Consider Raising</div>
+                <div class="decision-tree animate-on-scroll">
+                    <div class="decision-node">
+                        <div class="decision-question">Do you have 3+ successful partnerships with 3x+ monetization lift?</div>
+                        <div class="decision-branches">
+                            <div class="decision-branch">
+                                <div class="decision-arrow">No</div>
+                                <div class="decision-result bootstrap">Continue Bootstrap</div>
+                            </div>
+                            <div class="decision-branch">
+                                <div class="decision-arrow">Yes</div>
+                                <div class="decision-question" style="margin-bottom: 16px;">Is combined MRR $10K+ with pipeline demand?</div>
+                                <div class="decision-branches">
+                                    <div class="decision-branch">
+                                        <div class="decision-arrow">No</div>
+                                        <div class="decision-result bootstrap">Continue Bootstrap</div>
+                                    </div>
+                                    <div class="decision-branch">
+                                        <div class="decision-arrow">Yes</div>
+                                        <div class="decision-result raise">Consider Raising</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Milestone</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1st app at $2K+ net/mo</td>
-                            <td class="highlight">Continue bootstrap, start app 2</td>
-                        </tr>
-                        <tr>
-                            <td>3 apps at $10K combined MRR</td>
-                            <td class="warning-text">Evaluate Earnest/Calm Fund</td>
-                        </tr>
-                        <tr>
-                            <td>5 apps at $15K MRR</td>
-                            <td class="warning-text">Lighter Capital RBF available</td>
-                        </tr>
-                        <tr>
-                            <td>10 apps at $30K MRR</td>
-                            <td>Consider team expansion + angel round</td>
-                        </tr>
-                        <tr>
-                            <td>20 apps at $100K MRR</td>
-                            <td>Evaluate Series A or stay profitable</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                <div class="table-wrapper animate-on-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Milestone</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1st app at $2K+ net/mo</td>
+                                <td class="highlight">Continue bootstrap, start app 2</td>
+                            </tr>
+                            <tr>
+                                <td>3 apps at $10K combined MRR</td>
+                                <td class="warning-text">Evaluate Earnest/Calm Fund</td>
+                            </tr>
+                            <tr>
+                                <td>5 apps at $15K MRR</td>
+                                <td class="warning-text">Lighter Capital RBF available</td>
+                            </tr>
+                            <tr>
+                                <td>10 apps at $30K MRR</td>
+                                <td>Consider team expansion + angel round</td>
+                            </tr>
+                            <tr>
+                                <td>20 apps at $100K MRR</td>
+                                <td>Evaluate Series A or stay profitable</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
 
-        <!-- Funding Options Comparison Section -->
-        <section class="section">
-            <h2 class="section-title">Funding Options Comparison</h2>
-            <p class="section-subtitle">Full comparison of all funding paths for future reference.</p>
+            <!-- Funding Options Comparison Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Funding Options Comparison</h2>
+                    <p>Full comparison of all funding paths for future reference.</p>
+                </div>
 
-            <div class="cards cards-4">
-                <div class="card recommended">
-                    <span class="card-badge recommended">RECOMMENDED</span>
-                    <div class="card-title">Bootstrap</div>
-                    <div class="card-description">
-                        <strong>Amount:</strong> $150K personal<br>
-                        <strong>Dilution:</strong> 0%<br>
-                        <strong>Timeline:</strong> Immediate<br>
-                        <strong>Best for:</strong> Proof of concept
+                <div class="cards cards-4 animate-on-scroll">
+                    <div class="card recommended">
+                        <span class="card-badge recommended">Recommended</span>
+                        <div class="card-title">Bootstrap</div>
+                        <div class="card-description">
+                            <strong>Amount:</strong> $150K personal<br>
+                            <strong>Dilution:</strong> 0%<br>
+                            <strong>Timeline:</strong> Immediate<br>
+                            <strong>Best for:</strong> Proof of concept
+                        </div>
+                    </div>
+                    <div class="card">
+                        <span class="card-badge optional">Phase 2</span>
+                        <div class="card-title">Micro-VC</div>
+                        <div class="card-description">
+                            <strong>Amount:</strong> $150-500K<br>
+                            <strong>Dilution:</strong> 0-20%<br>
+                            <strong>Timeline:</strong> 2-4 months<br>
+                            <strong>Best for:</strong> Proven model scaling
+                        </div>
+                    </div>
+                    <div class="card">
+                        <span class="card-badge optional">Phase 2</span>
+                        <div class="card-title">RBF</div>
+                        <div class="card-description">
+                            <strong>Amount:</strong> Up to $4M<br>
+                            <strong>Dilution:</strong> 0%<br>
+                            <strong>Cost:</strong> 1.3-2x repay<br>
+                            <strong>Requires:</strong> $15K+ MRR
+                        </div>
+                    </div>
+                    <div class="card">
+                        <span class="card-badge not-recommended">Avoid</span>
+                        <div class="card-title">Traditional VC</div>
+                        <div class="card-description">
+                            <strong>Amount:</strong> $500K+<br>
+                            <strong>Dilution:</strong> 7-20%<br>
+                            <strong>Pressure:</strong> High growth<br>
+                            <strong>Fit:</strong> Wrong model
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <span class="card-badge optional">PHASE 2</span>
-                    <div class="card-title">Micro-VC</div>
-                    <div class="card-description">
-                        <strong>Amount:</strong> $150-500K<br>
-                        <strong>Dilution:</strong> 0-20%<br>
-                        <strong>Timeline:</strong> 2-4 months<br>
-                        <strong>Best for:</strong> Proven model scaling
-                    </div>
-                </div>
-                <div class="card">
-                    <span class="card-badge optional">PHASE 2</span>
-                    <div class="card-title">RBF</div>
-                    <div class="card-description">
-                        <strong>Amount:</strong> Up to $4M<br>
-                        <strong>Dilution:</strong> 0%<br>
-                        <strong>Cost:</strong> 1.3-2x repay<br>
-                        <strong>Requires:</strong> $15K+ MRR
-                    </div>
-                </div>
-                <div class="card">
-                    <span class="card-badge not-recommended">AVOID</span>
-                    <div class="card-title">Traditional VC</div>
-                    <div class="card-description">
-                        <strong>Amount:</strong> $500K+<br>
-                        <strong>Dilution:</strong> 7-20%<br>
-                        <strong>Pressure:</strong> High growth<br>
-                        <strong>Fit:</strong> Wrong model
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Best-Fit Investors Section -->
-        <section class="section">
-            <h2 class="section-title">Best-Fit Investors (For Phase 2+)</h2>
-            <p class="section-subtitle">Profit-focused investors aligned with the Moonshot model.</p>
+            <!-- Best-Fit Investors Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Best-Fit Investors (For Phase 2+)</h2>
+                    <p>Profit-focused investors aligned with the Moonshot model.</p>
+                </div>
 
-            <div class="investor-grid">
-                <div class="investor-card high-fit">
-                    <div class="investor-name">Earnest Capital</div>
-                    <div class="investor-type">Shared Earnings Agreement</div>
-                    <div class="investor-details">
-                        <strong>Check Size:</strong> $200-300K<br>
-                        <strong>Structure:</strong> No equity - repay 2-5x from profits<br>
-                        <strong>Focus:</strong> Bootstrapped, profitable B2B SaaS<br>
-                        <strong>Why Fit:</strong> Profit-first thesis, no dilution, aligned incentives
+                <div class="investor-grid animate-on-scroll">
+                    <div class="investor-card high-fit">
+                        <div class="investor-name">Earnest Capital</div>
+                        <div class="investor-type">Shared Earnings Agreement</div>
+                        <div class="investor-details">
+                            <strong>Check Size:</strong> $200-300K<br>
+                            <strong>Structure:</strong> No equity - repay 2-5x from profits<br>
+                            <strong>Focus:</strong> Bootstrapped, profitable B2B SaaS<br>
+                            <strong>Why Fit:</strong> Profit-first thesis, no dilution, aligned incentives
+                        </div>
+                        <span class="fit-badge high">High Fit</span>
                     </div>
-                    <span class="fit-badge high">HIGH FIT</span>
-                </div>
-                <div class="investor-card high-fit">
-                    <div class="investor-name">Calm Company Fund</div>
-                    <div class="investor-type">Value Investor</div>
-                    <div class="investor-details">
-                        <strong>Check Size:</strong> $150-500K<br>
-                        <strong>Structure:</strong> Equity with profit focus<br>
-                        <strong>Focus:</strong> Niche B2B SaaS, sustainable businesses<br>
-                        <strong>Requires:</strong> 100-500 paying customers
+                    <div class="investor-card high-fit">
+                        <div class="investor-name">Calm Company Fund</div>
+                        <div class="investor-type">Value Investor</div>
+                        <div class="investor-details">
+                            <strong>Check Size:</strong> $150-500K<br>
+                            <strong>Structure:</strong> Equity with profit focus<br>
+                            <strong>Focus:</strong> Niche B2B SaaS, sustainable businesses<br>
+                            <strong>Requires:</strong> 100-500 paying customers
+                        </div>
+                        <span class="fit-badge high">High Fit</span>
                     </div>
-                    <span class="fit-badge high">HIGH FIT</span>
-                </div>
-                <div class="investor-card medium-fit">
-                    <div class="investor-name">TinySeed</div>
-                    <div class="investor-type">Accelerator + Dividend Model</div>
-                    <div class="investor-details">
-                        <strong>Check Size:</strong> $100-200K<br>
-                        <strong>Structure:</strong> Dividend-based returns<br>
-                        <strong>Focus:</strong> B2B SaaS, bootstrapped founders<br>
-                        <strong>Requires:</strong> $500+ MRR, product-market fit
+                    <div class="investor-card">
+                        <div class="investor-name">TinySeed</div>
+                        <div class="investor-type">Accelerator + Dividend Model</div>
+                        <div class="investor-details">
+                            <strong>Check Size:</strong> $100-200K<br>
+                            <strong>Structure:</strong> Dividend-based returns<br>
+                            <strong>Focus:</strong> B2B SaaS, bootstrapped founders<br>
+                            <strong>Requires:</strong> $500+ MRR, product-market fit
+                        </div>
+                        <span class="fit-badge medium">Medium Fit</span>
                     </div>
-                    <span class="fit-badge medium">MEDIUM FIT</span>
-                </div>
-                <div class="investor-card high-fit">
-                    <div class="investor-name">Lighter Capital</div>
-                    <div class="investor-type">Revenue-Based Financing</div>
-                    <div class="investor-details">
-                        <strong>Amount:</strong> Up to $4M<br>
-                        <strong>Structure:</strong> Repay 2-8% of monthly revenue<br>
-                        <strong>Focus:</strong> B2B SaaS, 50%+ gross margins<br>
-                        <strong>Requires:</strong> $15K MRR minimum
+                    <div class="investor-card high-fit">
+                        <div class="investor-name">Lighter Capital</div>
+                        <div class="investor-type">Revenue-Based Financing</div>
+                        <div class="investor-details">
+                            <strong>Amount:</strong> Up to $4M<br>
+                            <strong>Structure:</strong> Repay 2-8% of monthly revenue<br>
+                            <strong>Focus:</strong> B2B SaaS, 50%+ gross margins<br>
+                            <strong>Requires:</strong> $15K MRR minimum
+                        </div>
+                        <span class="fit-badge high">High Fit</span>
                     </div>
-                    <span class="fit-badge high">HIGH FIT</span>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Bootstrap Success Stories Section -->
-        <section class="section">
-            <h2 class="section-title">Bootstrap Success Stories</h2>
-            <p class="section-subtitle">Validated case studies of solo founders building profitable app portfolios.</p>
+            <!-- Bootstrap Success Stories Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Bootstrap Success Stories</h2>
+                    <p>Validated case studies of solo founders building profitable app portfolios.</p>
+                </div>
 
-            <div class="cards">
-                <div class="card">
-                    <div class="card-title">Tony Dinh</div>
-                    <div class="card-value success">$45K/mo</div>
-                    <div class="card-description">
-                        <strong>Portfolio:</strong> DevUtils, Typing Mind, Black Magic<br>
-                        <strong>Timeline:</strong> 0 to $45K/mo in 2 years<br>
-                        <strong>Team:</strong> Solo to 1 FT + 3 freelancers<br>
-                        <strong>Strategy:</strong> Sequential launches, Twitter audience
+                <div class="cards animate-on-scroll">
+                    <div class="card">
+                        <div class="card-title">Tony Dinh</div>
+                        <div class="card-value success">$45K/mo</div>
+                        <div class="card-description">
+                            <strong>Portfolio:</strong> DevUtils, Typing Mind, Black Magic<br>
+                            <strong>Timeline:</strong> 0 to $45K/mo in 2 years<br>
+                            <strong>Team:</strong> Solo to 1 FT + 3 freelancers<br>
+                            <strong>Strategy:</strong> Sequential launches, Twitter audience
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Pieter Levels</div>
+                        <div class="card-value success">$250K+/mo</div>
+                        <div class="card-description">
+                            <strong>Portfolio:</strong> Photo AI, Nomad List, Remote OK<br>
+                            <strong>Timeline:</strong> $3M/year with zero employees<br>
+                            <strong>Team:</strong> Completely solo<br>
+                            <strong>Strategy:</strong> Ship at 70%, minimal infrastructure
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Danny Postma</div>
+                        <div class="card-value success">$100K+/mo</div>
+                        <div class="card-description">
+                            <strong>Portfolio:</strong> HeadshotPro, ProfilePicture.AI<br>
+                            <strong>Timeline:</strong> $300K/mo from HeadshotPro alone<br>
+                            <strong>Team:</strong> Solo<br>
+                            <strong>Strategy:</strong> Rapid MVP, open-source models
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-title">Pieter Levels</div>
-                    <div class="card-value success">$250K+/mo</div>
-                    <div class="card-description">
-                        <strong>Portfolio:</strong> Photo AI, Nomad List, Remote OK<br>
-                        <strong>Timeline:</strong> $3M/year with zero employees<br>
-                        <strong>Team:</strong> Completely solo<br>
-                        <strong>Strategy:</strong> Ship at 70%, minimal infrastructure
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">Danny Postma</div>
-                    <div class="card-value success">$100K+/mo</div>
-                    <div class="card-description">
-                        <strong>Portfolio:</strong> HeadshotPro, ProfilePicture.AI<br>
-                        <strong>Timeline:</strong> $300K/mo from HeadshotPro alone<br>
-                        <strong>Team:</strong> Solo<br>
-                        <strong>Strategy:</strong> Rapid MVP, open-source models
-                    </div>
-                </div>
-            </div>
 
-            <div class="insight-box">
-                <div class="insight-box-title">Key Pattern: Time to Profitability</div>
-                <div class="insight-box-content">
-                    All successful bootstrapped founders achieved profitability within <strong>6-12 months</strong> per major product.
-                    Key factors: existing audience, market timing, fast MVP development (2-3 weeks), and monetization from day 1.
-                    Moonshot's advantage: apps already have users, eliminating the 0-to-1 problem.
-                </div>
-            </div>
-        </section>
-
-        <!-- Key Takeaways Section -->
-        <section class="section">
-            <h2 class="section-title">Key Takeaways</h2>
-            <p class="section-subtitle">Six critical insights from the funding strategy research.</p>
-
-            <div class="cards cards-2">
-                <div class="card success">
-                    <div class="card-title">1. $150K is Sufficient</div>
-                    <div class="card-description">Bootstrap capital covers 2-3 apps to proof-of-concept with 12-month runway buffer. No external funding needed to validate the model.</div>
-                </div>
-                <div class="card success">
-                    <div class="card-title">2. Bootstrap-First Preserves Optionality</div>
-                    <div class="card-description">Maintain 100% ownership, no investor pressure, forced discipline on unit economics. All future paths remain open.</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">3. External Funding Only After Validation</div>
-                    <div class="card-description">Wait for 3+ successful partnerships and $10K+ MRR before considering outside capital. Proof de-risks everything.</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">4. Best-Fit Investors Exist</div>
-                    <div class="card-description">Earnest Capital, Calm Fund, and Lighter Capital are aligned with profit-first model. Avoid traditional VCs.</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">5. Traditional VCs Are Wrong Fit</div>
-                    <div class="card-description">Y Combinator, Techstars, and growth VCs will push for unsustainable growth. Their incentives don't align with profitable niche model.</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">6. Profitable Exit Possible</div>
-                    <div class="card-description">App studio M&A market exists (Tripledot paid $800M for AppLovin portfolio). Typical multiples: 3-5x annual revenue.</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sources Section -->
-        <section class="sources">
-            <h2 class="sources-title">Sources</h2>
-            <div class="sources-grid">
-                <div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Bootstrap Case Studies</div>
-                        <ul class="sources-list">
-                            <li><a href="https://www.indiehackers.com/post/my-solopreneur-story-zero-to-45k-mo-in-2-years-1b858f47af" target="_blank">Tony Dinh: Zero to $45K/mo in 2 Years</a></li>
-                            <li><a href="https://www.indiehackers.com/post/photo-ai-by-pieter-levels-complete-deep-dive-case-study-0-to-132k-mrr-in-18-months-3a9a2b1579" target="_blank">Pieter Levels: Photo AI to $132K MRR</a></li>
-                            <li><a href="https://www.starterstory.com/stories/headshotpro-breakdown" target="_blank">Danny Postma: HeadshotPro to $300K/mo</a></li>
-                            <li><a href="https://www.starterstory.com/stories/bannerbear-breakdown" target="_blank">Jon Yongfook: Bannerbear to $50K+ MRR</a></li>
-                            <li><a href="https://impossiblehq.com/app-lessons/" target="_blank">Joel Runyon: 10 Lessons Bootstrapping 4 Apps</a></li>
-                        </ul>
-                    </div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Investor Research</div>
-                        <ul class="sources-list">
-                            <li><a href="https://earnestcapital.com" target="_blank">Earnest Capital - Shared Earnings Agreements</a></li>
-                            <li><a href="https://calmfund.com/writing/investment-memo-calm-fund-2" target="_blank">Calm Company Fund - Investment Thesis</a></li>
-                            <li><a href="https://tinyseed.com" target="_blank">TinySeed - Bootstrapper Accelerator</a></li>
-                            <li><a href="https://lightercapital.com" target="_blank">Lighter Capital - Revenue-Based Financing</a></li>
-                        </ul>
+                <div class="insight-box animate-on-scroll">
+                    <div class="insight-box-title">Key Pattern: Time to Profitability</div>
+                    <div class="insight-box-content">
+                        All successful bootstrapped founders achieved profitability within <strong>6-12 months</strong> per major product.
+                        Key factors: existing audience, market timing, fast MVP development (2-3 weeks), and monetization from day 1.
+                        Moonshot's advantage: apps already have users, eliminating the 0-to-1 problem.
                     </div>
                 </div>
-                <div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Growth & Strategy</div>
-                        <ul class="sources-list">
-                            <li><a href="https://octospark.ai/blog/bootstrapped-indie-app-growth-strategies-zero-to-100k" target="_blank">Bootstrapped Indie App Growth Strategies 2025</a></li>
-                            <li><a href="https://fastercapital.com/content/Revenue-Reinvestment-for-Bootstrappers.html" target="_blank">Revenue Reinvestment for Bootstrappers</a></li>
-                            <li><a href="https://sacra.com/research/earnest-capital-funding-bootstrappers/" target="_blank">Sacra: Earnest Capital Analysis</a></li>
-                        </ul>
+            </section>
+
+            <!-- Key Takeaways Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Key Takeaways</h2>
+                    <p>Six critical insights from the funding strategy research.</p>
+                </div>
+
+                <div class="cards cards-2 animate-on-scroll">
+                    <div class="card recommended">
+                        <div class="card-title">1. $150K is Sufficient</div>
+                        <div class="card-description">Bootstrap capital covers 2-3 apps to proof-of-concept with 12-month runway buffer. No external funding needed to validate the model.</div>
                     </div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Industry Data</div>
-                        <ul class="sources-list">
-                            <li><a href="https://www.gamedeveloper.com/mobile/tripledot-to-acquire-applovin-mobile-studio-portfolio-for-800-million" target="_blank">Tripledot Acquires AppLovin Portfolio ($800M)</a></li>
-                            <li><a href="https://capchase.com" target="_blank">Capchase - Revenue-Based Financing Terms</a></li>
-                            <li><a href="https://www.gilion.com/basics/revenue-based-financing" target="_blank">Revenue-Based Financing Guide 2025</a></li>
-                        </ul>
+                    <div class="card recommended">
+                        <div class="card-title">2. Bootstrap-First Preserves Optionality</div>
+                        <div class="card-description">Maintain 100% ownership, no investor pressure, forced discipline on unit economics. All future paths remain open.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">3. External Funding Only After Validation</div>
+                        <div class="card-description">Wait for 3+ successful partnerships and $10K+ MRR before considering outside capital. Proof de-risks everything.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">4. Best-Fit Investors Exist</div>
+                        <div class="card-description">Earnest Capital, Calm Fund, and Lighter Capital are aligned with profit-first model. Avoid traditional VCs.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">5. Traditional VCs Are Wrong Fit</div>
+                        <div class="card-description">Y Combinator, Techstars, and growth VCs will push for unsustainable growth. Their incentives don't align with profitable niche model.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">6. Profitable Exit Possible</div>
+                        <div class="card-description">App studio M&A market exists (Tripledot paid $800M for AppLovin portfolio). Typical multiples: 3-5x annual revenue.</div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <footer>
+            <!-- Sources Section -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Sources</h2>
+                    <p>Research references and data sources.</p>
+                </div>
+
+                <div class="sources-grid animate-on-scroll">
+                    <div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Bootstrap Case Studies</div>
+                            <ul class="sources-list">
+                                <li><a href="https://www.indiehackers.com/post/my-solopreneur-story-zero-to-45k-mo-in-2-years-1b858f47af" target="_blank">Tony Dinh: Zero to $45K/mo in 2 Years</a></li>
+                                <li><a href="https://www.indiehackers.com/post/photo-ai-by-pieter-levels-complete-deep-dive-case-study-0-to-132k-mrr-in-18-months-3a9a2b1579" target="_blank">Pieter Levels: Photo AI to $132K MRR</a></li>
+                                <li><a href="https://www.starterstory.com/stories/headshotpro-breakdown" target="_blank">Danny Postma: HeadshotPro to $300K/mo</a></li>
+                                <li><a href="https://www.starterstory.com/stories/bannerbear-breakdown" target="_blank">Jon Yongfook: Bannerbear to $50K+ MRR</a></li>
+                                <li><a href="https://impossiblehq.com/app-lessons/" target="_blank">Joel Runyon: 10 Lessons Bootstrapping 4 Apps</a></li>
+                            </ul>
+                        </div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Investor Research</div>
+                            <ul class="sources-list">
+                                <li><a href="https://earnestcapital.com" target="_blank">Earnest Capital - Shared Earnings Agreements</a></li>
+                                <li><a href="https://calmfund.com/writing/investment-memo-calm-fund-2" target="_blank">Calm Company Fund - Investment Thesis</a></li>
+                                <li><a href="https://tinyseed.com" target="_blank">TinySeed - Bootstrapper Accelerator</a></li>
+                                <li><a href="https://lightercapital.com" target="_blank">Lighter Capital - Revenue-Based Financing</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Growth & Strategy</div>
+                            <ul class="sources-list">
+                                <li><a href="https://octospark.ai/blog/bootstrapped-indie-app-growth-strategies-zero-to-100k" target="_blank">Bootstrapped Indie App Growth Strategies 2025</a></li>
+                                <li><a href="https://fastercapital.com/content/Revenue-Reinvestment-for-Bootstrappers.html" target="_blank">Revenue Reinvestment for Bootstrappers</a></li>
+                                <li><a href="https://sacra.com/research/earnest-capital-funding-bootstrappers/" target="_blank">Sacra: Earnest Capital Analysis</a></li>
+                            </ul>
+                        </div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Industry Data</div>
+                            <ul class="sources-list">
+                                <li><a href="https://www.gamedeveloper.com/mobile/tripledot-to-acquire-applovin-mobile-studio-portfolio-for-800-million" target="_blank">Tripledot Acquires AppLovin Portfolio ($800M)</a></li>
+                                <li><a href="https://capchase.com" target="_blank">Capchase - Revenue-Based Financing Terms</a></li>
+                                <li><a href="https://www.gilion.com/basics/revenue-based-financing" target="_blank">Revenue-Based Financing Guide 2025</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Step Navigation -->
             <div class="step-nav">
                 <a href="../step-13-pilot-criteria/step13-pilot-criteria.html">
@@ -1326,15 +1598,53 @@
                     <span>Previous: Pilot Partner Criteria</span>
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 14 of 14</div>
+                    <div class="step-indicator">Step 14 of 15</div>
                     <a href="../index.html">Back to Home</a>
                 </div>
-                <div class="disabled">
-                    <span>Step 15: Final Assessment (Pending)</span>
-                </div>
+                <a href="../step-15-final-assessment/step15-final-assessment.html">
+                    <span>Next: Final Assessment</span>
+                    <span>&rarr;</span>
+                </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Step 14: Funding Strategy | December 2025</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Moonshot Research | Step 14: Funding Strategy | December 2025</p>
         </footer>
     </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

@@ -3,98 +3,374 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 3 | SWOT Analysis</title>
+    <title>Step 3 | SWOT Analysis — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+            --strength-green: #86efac;
+            --weakness-red: #fca5a5;
+            --opportunity-blue: #a5b4fc;
+            --threat-amber: #fcd34d;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
-        /* Hero */
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
-            text-align: center;
+            padding: 140px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .breadcrumb a {
+            color: var(--amber-glow);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--amber-bright);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            margin-bottom: 24px;
+            width: fit-content;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero h1 {
-            font-size: 52px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 72px);
             font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #667eea 0%, #a5b4fc 100%);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
             max-width: 800px;
-            margin: 0 auto 20px;
+            margin-bottom: 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
+        .hero-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        /* Section */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Section Headers */
         .section {
             padding: 80px 0;
         }
 
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
-            max-width: 600px;
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* SWOT Grid */
@@ -102,22 +378,50 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
-            margin-top: 40px;
         }
 
         .swot-quadrant {
             border-radius: 16px;
             padding: 32px;
-            min-height: 400px;
+            min-height: 420px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .swot-quadrant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .swot-quadrant:hover::before {
+            opacity: 1;
         }
 
         .swot-quadrant h3 {
-            font-size: 24px;
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+
+        .swot-quadrant h3 .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
         }
 
         .swot-quadrant ul {
@@ -125,8 +429,8 @@
         }
 
         .swot-quadrant li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             font-size: 15px;
         }
 
@@ -136,85 +440,79 @@
 
         .swot-quadrant .item-title {
             font-weight: 600;
-            color: #fff;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .swot-quadrant .item-desc {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 14px;
+            line-height: 1.5;
         }
 
         /* Strengths - Green */
         .strengths {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.08) 0%, rgba(52, 211, 153, 0.03) 100%);
+            border: 1px solid rgba(52, 211, 153, 0.2);
         }
-        .strengths h3 { color: #86efac; }
-        .strengths .item-title { color: #86efac; }
+        .strengths::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
+        }
+        .strengths:hover {
+            border-color: rgba(52, 211, 153, 0.4);
+            box-shadow: 0 0 40px rgba(52, 211, 153, 0.1);
+        }
+        .strengths h3 { color: var(--success-green); }
+        .strengths h3 .icon { background: rgba(52, 211, 153, 0.15); }
+        .strengths .item-title { color: var(--strength-green); }
 
-        /* Weaknesses - Red/Orange */
+        /* Weaknesses - Red */
         .weaknesses {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
-        .weaknesses h3 { color: #fca5a5; }
-        .weaknesses .item-title { color: #fca5a5; }
+        .weaknesses::before {
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
+        }
+        .weaknesses:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.1);
+        }
+        .weaknesses h3 { color: #f87171; }
+        .weaknesses h3 .icon { background: rgba(239, 68, 68, 0.15); }
+        .weaknesses .item-title { color: var(--weakness-red); }
 
-        /* Opportunities - Blue/Purple */
+        /* Opportunities - Cyan */
         .opportunities {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.08) 0%, rgba(103, 232, 249, 0.03) 100%);
+            border: 1px solid rgba(103, 232, 249, 0.2);
         }
-        .opportunities h3 { color: #a5b4fc; }
-        .opportunities .item-title { color: #a5b4fc; }
+        .opportunities::before {
+            background: linear-gradient(90deg, transparent, var(--cyan-soft), transparent);
+        }
+        .opportunities:hover {
+            border-color: rgba(103, 232, 249, 0.4);
+            box-shadow: 0 0 40px rgba(103, 232, 249, 0.1);
+        }
+        .opportunities h3 { color: var(--cyan-soft); }
+        .opportunities h3 .icon { background: rgba(103, 232, 249, 0.15); }
+        .opportunities .item-title { color: var(--cyan-soft); }
 
-        /* Threats - Yellow/Amber */
+        /* Threats - Amber */
         .threats {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(251, 191, 36, 0.03) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.2);
         }
-        .threats h3 { color: #fcd34d; }
-        .threats .item-title { color: #fcd34d; }
-
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+        .threats::before {
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
         }
-
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+        .threats:hover {
+            border-color: rgba(251, 191, 36, 0.4);
+            box-shadow: 0 0 40px rgba(251, 191, 36, 0.1);
         }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #a5b4fc;
-        }
-
-        .card p {
-            color: #a0aec0;
-            font-size: 15px;
-        }
-
-        .card .highlight {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
+        .threats h3 { color: var(--amber-bright); }
+        .threats h3 .icon { background: rgba(251, 191, 36, 0.15); }
+        .threats .item-title { color: var(--threat-amber); }
 
         /* Strategy Cards */
         .strategy-grid {
@@ -224,18 +522,43 @@
         }
 
         .strategy-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 28px;
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            transition: opacity 0.4s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
         }
 
         .strategy-card h4 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            margin-bottom: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .strategy-card .strategy-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
         }
 
         .strategy-card ul {
@@ -243,246 +566,265 @@
         }
 
         .strategy-card li {
-            padding: 8px 0;
-            color: #a0aec0;
+            padding: 10px 0;
+            color: var(--text-secondary);
             font-size: 15px;
-            padding-left: 20px;
+            padding-left: 24px;
             position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .strategy-card li:last-child {
+            border-bottom: none;
         }
 
         .strategy-card li::before {
             content: "→";
             position: absolute;
             left: 0;
-            color: #667eea;
+            font-weight: 600;
         }
 
+        /* Strategy card colors */
+        .strategy-so::before { background: var(--success-green); }
+        .strategy-so h4 { color: var(--success-green); }
+        .strategy-so li::before { color: var(--success-green); }
+        .strategy-so:hover { border-color: rgba(52, 211, 153, 0.3); }
+
+        .strategy-wo::before { background: var(--cyan-soft); }
+        .strategy-wo h4 { color: var(--cyan-soft); }
+        .strategy-wo li::before { color: var(--cyan-soft); }
+        .strategy-wo:hover { border-color: rgba(103, 232, 249, 0.3); }
+
+        .strategy-st::before { background: var(--amber-glow); }
+        .strategy-st h4 { color: var(--amber-glow); }
+        .strategy-st li::before { color: var(--amber-glow); }
+        .strategy-st:hover { border-color: rgba(251, 191, 36, 0.3); }
+
+        .strategy-wt::before { background: #f87171; }
+        .strategy-wt h4 { color: #f87171; }
+        .strategy-wt li::before { color: #f87171; }
+        .strategy-wt:hover { border-color: rgba(239, 68, 68, 0.3); }
+
         /* Action Items */
-        .action-items {
+        .action-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
         .action-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 28px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .action-card .timeline {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .action-card:hover::before {
+            opacity: 1;
+        }
+
+        .timeline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 16px;
         }
 
         .timeline-immediate {
-            background: rgba(34, 197, 94, 0.2);
-            color: #86efac;
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--success-green);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+        .timeline-immediate + h4 + p + .action-card::before,
+        .action-card:has(.timeline-immediate)::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
         }
 
         .timeline-near {
-            background: rgba(102, 126, 234, 0.2);
-            color: #a5b4fc;
+            background: rgba(103, 232, 249, 0.15);
+            color: var(--cyan-soft);
+            border: 1px solid rgba(103, 232, 249, 0.2);
         }
 
         .timeline-medium {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fcd34d;
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--amber-glow);
+            border: 1px solid rgba(251, 191, 36, 0.2);
         }
 
         .action-card h4 {
-            font-size: 16px;
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
             margin-bottom: 12px;
-            color: #fff;
+            color: var(--text-primary);
         }
 
         .action-card p {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 14px;
+            line-height: 1.6;
         }
 
-        /* Sources */
-        .sources {
-            background: rgba(255,255,255,0.03);
+        /* Sources Section */
+        .sources-section {
+            background: var(--space-mid);
             border-radius: 16px;
-            padding: 32px;
-            margin-top: 40px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .sources h3 {
-            font-size: 18px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
+        .sources-section h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--amber-glow);
         }
 
-        .sources ul {
-            list-style: none;
+        .sources-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-        .sources li {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .sources a {
-            color: #667eea;
+        .sources-grid a {
+            color: var(--text-secondary);
             text-decoration: none;
-        }
-
-        .sources a:hover {
-            text-decoration: underline;
-        }
-
-        /* Key Stats Bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            color: #a0aec0;
             font-size: 14px;
-            margin-top: 8px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: block;
         }
 
-        /* Verdict */
+        .sources-grid a:hover {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--amber-glow);
+        }
+
+        /* Verdict Section */
         .verdict {
-            text-align: center;
             padding: 80px 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(102, 126, 234, 0.1) 100%);
-        }
-
-        .verdict h2 {
-            font-size: 40px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
-        }
-
-        .verdict p {
-            color: #a0aec0;
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 24px;
-        }
-
-        .verdict .next-step {
-            display: inline-block;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 0;
             text-align: center;
-            color: #475569;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
         }
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .swot-grid, .strategy-grid, .sources ul { grid-template-columns: 1fr; }
-            .cards, .action-items, .stats-bar { grid-template-columns: 1fr; }
+        .verdict-card {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.08) 0%, rgba(34, 211, 238, 0.05) 100%);
+            border: 2px solid rgba(52, 211, 153, 0.2);
+            border-radius: 24px;
+            padding: 60px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+        .verdict-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
+        .verdict-card:hover {
+            border-color: rgba(52, 211, 153, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .verdict-card:hover::before {
+            opacity: 1;
+        }
+
+        .verdict-badge {
+            display: inline-flex;
             align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
-            text-decoration: none;
+            gap: 8px;
+            background: var(--success-green);
+            color: var(--space-deep);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-family: 'Syne', sans-serif;
             font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.4);
+        }
+
+        .verdict-card h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .verdict-card p {
+            color: var(--text-secondary);
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .verdict-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--success-green) 0%, #10b981 100%);
+            color: var(--space-deep);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
             text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        /* Breadcrumb */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
+        .verdict-btn:hover {
+            transform: translateX(4px);
+            box-shadow: 0 8px 30px rgba(52, 211, 153, 0.3);
         }
 
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
+        .verdict-btn svg {
+            width: 18px;
+            height: 18px;
         }
 
         /* Step Navigation */
@@ -491,29 +833,29 @@
             justify-content: space-between;
             align-items: center;
             padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             margin-top: 40px;
         }
 
         .step-nav a {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #a0aec0;
+            gap: 12px;
+            padding: 14px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+            background: var(--space-light);
+            border-color: rgba(251, 191, 36, 0.2);
+            color: var(--text-primary);
         }
 
         .step-nav-center {
@@ -521,388 +863,558 @@
         }
 
         .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border: none;
-            color: #fff;
+            color: var(--space-deep);
+        }
+
+        .step-nav-center a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.3);
         }
 
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .stat {
+                padding: 20px;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            .swot-grid,
+            .strategy-grid,
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .step-nav a {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
-            </div>
-        </div>
-    </nav>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>›</span>
-            <a href="../index.html">Phase 1: Foundation</a>
-            <span>›</span>
-            Step 3
-        </div>
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 3</div>
-        </header>
-    </div>
-
-    <section class="hero">
-        <div class="container">
-            <h1>SWOT Analysis</h1>
-            <p class="tagline">Honest assessment of Moonshot's position: unique partnership model enters a validated market with clear white space, but critical hypotheses remain unproven.</p>
-            <p class="subtitle">Research Date: December 28, 2025 | Based on Steps 1-2 + 2025 Market Research</p>
-        </div>
-    </section>
-
-    <section class="stats-bar">
-        <div class="container" style="display: contents;">
-            <div class="stat-item">
-                <div class="stat-number">6</div>
-                <div class="stat-label">Key Strengths</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">6</div>
-                <div class="stat-label">Weaknesses to Address</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">8</div>
-                <div class="stat-label">Market Opportunities</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">8</div>
-                <div class="stat-label">External Threats</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SWOT MATRIX -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">SWOT Matrix</h2>
-            <p class="section-subtitle">Internal factors (top row) vs external factors (bottom row)</p>
-
-            <div class="swot-grid">
-                <!-- Strengths -->
-                <div class="swot-quadrant strengths">
-                    <h3>Strengths</h3>
-                    <ul>
-                        <li>
-                            <span class="item-title">S1. Unique Partnership Model</span>
-                            <span class="item-desc">Developers retain ownership + earn passive income. No competitor offers true partnership for non-gaming apps.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">S2. Clear White Space</span>
-                            <span class="item-desc">Non-gaming vertical with zero direct competition. Gaming publishers explicitly exclude non-gaming.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">S3. Full-Stack Service</span>
-                            <span class="item-desc">Technical rebuild + monetization optimization. Tilting Point offers UA funding only.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">S4. Validated Massive TAM</span>
-                            <span class="item-desc">347K+ target apps (100-300x initial estimate). 82.8% of apps earn &lt;$1K/month.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">S5. Low Break-Even</span>
-                            <span class="item-desc">$21.5K/month with team of 2. Need only 5-9 apps at scale for profitability.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">S6. Developer-Friendly Terms</span>
-                            <span class="item-desc">50/50 split, keep ownership, option to step back entirely. "Digital property management."</span>
-                        </li>
-                    </ul>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">Dashboard</a>
+                    <span class="step-badge">Step 03</span>
                 </div>
+            </div>
+        </nav>
 
-                <!-- Weaknesses -->
-                <div class="swot-quadrant weaknesses">
-                    <h3>Weaknesses</h3>
-                    <ul>
-                        <li>
-                            <span class="item-title">W1. Resource Constraints</span>
-                            <span class="item-desc">Bootstrapped, small team, limited runway. Can only execute 2-3 apps at a time.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">W2. Unvalidated Hypotheses</span>
-                            <span class="item-desc">H2-H5 pending: developer demand, revenue share acceptance, 10x potential, 8-week timeline.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">W3. Long Payback Period</span>
-                            <span class="item-desc">7-20 months to recover $50K investment per app. Cash-intensive model.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">W4. No Track Record</span>
-                            <span class="item-desc">Zero partnerships closed, no case studies. Chicken-and-egg problem.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">W5. Unknown Acquisition Channels</span>
-                            <span class="item-desc">H7 not validated. May struggle to find and convert developers cost-effectively.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">W6. Dual-Platform Risk</span>
-                            <span class="item-desc">Need both iOS and Android expertise. iOS development less familiar.</span>
-                        </li>
-                    </ul>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>›</span>
+                <span>Market & Competition</span>
+                <span>›</span>
+                <span>Step 3</span>
+            </div>
+            <div class="hero-badge">
+                <span>◆</span>
+                Strategic Analysis
+            </div>
+            <h1>
+                <span class="highlight">SWOT</span> Analysis
+            </h1>
+            <p class="hero-subtitle">
+                Honest assessment of Moonshot's position: unique partnership model enters a validated market with clear white space, but critical hypotheses remain unproven.
+            </p>
+            <p class="hero-meta">Research Date: December 28, 2025 | Based on Steps 1-2 + 2025 Market Research</p>
+        </section>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Key Strengths</div>
                 </div>
-
-                <!-- Opportunities -->
-                <div class="swot-quadrant opportunities">
-                    <h3>Opportunities</h3>
-                    <ul>
-                        <li>
-                            <span class="item-title">O1. Historic Revenue Shift</span>
-                            <span class="item-desc">Q2 2025: First time ever non-gaming apps earned more than games. Perfect timing.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O2. Massive Underserved Market</span>
-                            <span class="item-desc">82.8% of apps earn &lt;$1K/month. 1M+ abandoned apps still have active users.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O3. Hybrid Monetization Uplift</span>
-                            <span class="item-desc">Ads + subscriptions = 45-70% higher ARPU, 28% better retention vs single-model.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O4. Platform Fee Changes</span>
-                            <span class="item-desc">Apple reducing commissions (30%→27%). External payments now permitted.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O5. Geographic Arbitrage</span>
-                            <span class="item-desc">North American apps monetize 4x better. Help non-US developers reach NA levels.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O6. Market Validation</span>
-                            <span class="item-desc">Tilting Point's $150M fund validates non-gaming partnership opportunity.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O7. Strong Ad Market</span>
-                            <span class="item-desc">$447B mobile ad market in 2025, 10% CAGR through 2035.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">O8. Subscription Opportunity</span>
-                            <span class="item-desc">Only 5% of apps have subscriptions but they generate 48% of revenue.</span>
-                        </li>
-                    </ul>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Weaknesses to Address</div>
                 </div>
-
-                <!-- Threats -->
-                <div class="swot-quadrant threats">
-                    <h3>Threats</h3>
-                    <ul>
-                        <li>
-                            <span class="item-title">T1. Tilting Point Expansion</span>
-                            <span class="item-desc">$150M UA fund, $30M/year to non-gaming. MODERATE: UA-only, not full partnership.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T2. Gaming Publisher Pivots</span>
-                            <span class="item-desc">CrazyLabs, Voodoo have resources. Could enter non-gaming if they see opportunity.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T3. App Store Policy Changes</span>
-                            <span class="item-desc">Google per-install fees ($2.85-$3.65). Complex compliance requirements.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T4. Self-Service Tools Improving</span>
-                            <span class="item-desc">RevenueCat, AdMob making DIY easier. But tools alone don't fix under-monetization.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T5. Subscription Fatigue</span>
-                            <span class="item-desc">Monthly retention down 14% across apps. Hybrid models mitigate this risk.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T6. Economic Downturn Risk</span>
-                            <span class="item-desc">Recession could reduce ad spend. But app spending grew 15.7% in 2024.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T7. Fast Followers</span>
-                            <span class="item-desc">After proof of concept, larger players could enter with more capital.</span>
-                        </li>
-                        <li>
-                            <span class="item-title">T8. Download Decline</span>
-                            <span class="item-desc">Global downloads down 2.3%. But Moonshot focuses on monetizing existing users.</span>
-                        </li>
-                    </ul>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Market Opportunities</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">External Threats</div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- STRATEGIC IMPLICATIONS (TOWS) -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Strategic Implications</h2>
-            <p class="section-subtitle">TOWS matrix: combining SWOT factors into actionable strategies</p>
-
-            <div class="strategy-grid">
-                <!-- SO Strategies -->
-                <div class="strategy-card" style="border-left: 4px solid #22c55e;">
-                    <h4 style="color: #86efac;">SO Strategies</h4>
-                    <p style="color: #64748b; font-size: 13px; margin-bottom: 12px;">Use strengths to capture opportunities</p>
-                    <ul>
-                        <li>Leverage white space + market timing: Move aggressively while non-gaming partnership space is empty</li>
-                        <li>Apply proven hybrid monetization playbook (45-70% ARPU uplift) to under-monetized apps</li>
-                        <li>Target 1M+ abandoned apps with users—developers may welcome resurrection partners</li>
-                    </ul>
+        <div class="main">
+            <!-- SWOT Matrix -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>SWOT Matrix</h2>
+                        <p>Internal factors (top row) vs external factors (bottom row)</p>
+                    </div>
+                    <div class="section-tag">Strategic Assessment</div>
                 </div>
 
-                <!-- WO Strategies -->
-                <div class="strategy-card" style="border-left: 4px solid #667eea;">
-                    <h4 style="color: #a5b4fc;">WO Strategies</h4>
-                    <p style="color: #64748b; font-size: 13px; margin-bottom: 12px;">Overcome weaknesses using opportunities</p>
-                    <ul>
-                        <li>Validate H2-H3 fast: Use Tilting Point's entry as conversation starter with developers</li>
-                        <li>Overcome lack of track record by offering first partners favorable terms (60/40 split)</li>
-                        <li>Reduce 8-week timeline risk by targeting simpler utilities first</li>
-                    </ul>
+                <div class="swot-grid">
+                    <!-- Strengths -->
+                    <div class="swot-quadrant strengths animate-on-scroll">
+                        <h3>
+                            <span class="icon">💪</span>
+                            Strengths
+                        </h3>
+                        <ul>
+                            <li>
+                                <span class="item-title">S1. Unique Partnership Model</span>
+                                <span class="item-desc">Developers retain ownership + earn passive income. No competitor offers true partnership for non-gaming apps.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">S2. Clear White Space</span>
+                                <span class="item-desc">Non-gaming vertical with zero direct competition. Gaming publishers explicitly exclude non-gaming.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">S3. Full-Stack Service</span>
+                                <span class="item-desc">Technical rebuild + monetization optimization. Tilting Point offers UA funding only.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">S4. Validated Massive TAM</span>
+                                <span class="item-desc">347K+ target apps (100-300x initial estimate). 82.8% of apps earn &lt;$1K/month.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">S5. Low Break-Even</span>
+                                <span class="item-desc">$21.5K/month with team of 2. Need only 5-9 apps at scale for profitability.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">S6. Developer-Friendly Terms</span>
+                                <span class="item-desc">50/50 split, keep ownership, option to step back entirely. "Digital property management."</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Weaknesses -->
+                    <div class="swot-quadrant weaknesses animate-on-scroll">
+                        <h3>
+                            <span class="icon">⚠️</span>
+                            Weaknesses
+                        </h3>
+                        <ul>
+                            <li>
+                                <span class="item-title">W1. Resource Constraints</span>
+                                <span class="item-desc">Bootstrapped, small team, limited runway. Can only execute 2-3 apps at a time.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">W2. Unvalidated Hypotheses</span>
+                                <span class="item-desc">H2-H5 pending: developer demand, revenue share acceptance, 10x potential, 8-week timeline.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">W3. Long Payback Period</span>
+                                <span class="item-desc">7-20 months to recover $50K investment per app. Cash-intensive model.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">W4. No Track Record</span>
+                                <span class="item-desc">Zero partnerships closed, no case studies. Chicken-and-egg problem.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">W5. Unknown Acquisition Channels</span>
+                                <span class="item-desc">H7 not validated. May struggle to find and convert developers cost-effectively.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">W6. Dual-Platform Risk</span>
+                                <span class="item-desc">Need both iOS and Android expertise. iOS development less familiar.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Opportunities -->
+                    <div class="swot-quadrant opportunities animate-on-scroll">
+                        <h3>
+                            <span class="icon">🚀</span>
+                            Opportunities
+                        </h3>
+                        <ul>
+                            <li>
+                                <span class="item-title">O1. Historic Revenue Shift</span>
+                                <span class="item-desc">Q2 2025: First time ever non-gaming apps earned more than games. Perfect timing.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O2. Massive Underserved Market</span>
+                                <span class="item-desc">82.8% of apps earn &lt;$1K/month. 1M+ abandoned apps still have active users.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O3. Hybrid Monetization Uplift</span>
+                                <span class="item-desc">Ads + subscriptions = 45-70% higher ARPU, 28% better retention vs single-model.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O4. Platform Fee Changes</span>
+                                <span class="item-desc">Apple reducing commissions (30%→27%). External payments now permitted.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O5. Geographic Arbitrage</span>
+                                <span class="item-desc">North American apps monetize 4x better. Help non-US developers reach NA levels.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O6. Market Validation</span>
+                                <span class="item-desc">Tilting Point's $150M fund validates non-gaming partnership opportunity.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O7. Strong Ad Market</span>
+                                <span class="item-desc">$447B mobile ad market in 2025, 10% CAGR through 2035.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">O8. Subscription Opportunity</span>
+                                <span class="item-desc">Only 5% of apps have subscriptions but they generate 48% of revenue.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Threats -->
+                    <div class="swot-quadrant threats animate-on-scroll">
+                        <h3>
+                            <span class="icon">⚡</span>
+                            Threats
+                        </h3>
+                        <ul>
+                            <li>
+                                <span class="item-title">T1. Tilting Point Expansion</span>
+                                <span class="item-desc">$150M UA fund, $30M/year to non-gaming. MODERATE: UA-only, not full partnership.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T2. Gaming Publisher Pivots</span>
+                                <span class="item-desc">CrazyLabs, Voodoo have resources. Could enter non-gaming if they see opportunity.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T3. App Store Policy Changes</span>
+                                <span class="item-desc">Google per-install fees ($2.85-$3.65). Complex compliance requirements.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T4. Self-Service Tools Improving</span>
+                                <span class="item-desc">RevenueCat, AdMob making DIY easier. But tools alone don't fix under-monetization.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T5. Subscription Fatigue</span>
+                                <span class="item-desc">Monthly retention down 14% across apps. Hybrid models mitigate this risk.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T6. Economic Downturn Risk</span>
+                                <span class="item-desc">Recession could reduce ad spend. But app spending grew 15.7% in 2024.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T7. Fast Followers</span>
+                                <span class="item-desc">After proof of concept, larger players could enter with more capital.</span>
+                            </li>
+                            <li>
+                                <span class="item-title">T8. Download Decline</span>
+                                <span class="item-desc">Global downloads down 2.3%. But Moonshot focuses on monetizing existing users.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategic Implications -->
+            <section class="section" style="border-top: 1px solid rgba(255, 255, 255, 0.06);">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Strategic Implications</h2>
+                        <p>TOWS matrix: combining SWOT factors into actionable strategies</p>
+                    </div>
+                    <div class="section-tag">TOWS Analysis</div>
                 </div>
 
-                <!-- ST Strategies -->
-                <div class="strategy-card" style="border-left: 4px solid #f59e0b;">
-                    <h4 style="color: #fcd34d;">ST Strategies</h4>
-                    <p style="color: #64748b; font-size: 13px; margin-bottom: 12px;">Use strengths to mitigate threats</p>
-                    <ul>
-                        <li>Differentiate from Tilting Point: Emphasize "full-stack" (tech + monetization) vs "capital-only"</li>
-                        <li>Build developer relationships before competition intensifies—first-mover advantage is defensible</li>
-                        <li>Counter self-service tools: Position as "done-for-you" vs "do-it-yourself"</li>
-                    </ul>
+                <div class="strategy-grid">
+                    <!-- SO Strategies -->
+                    <div class="strategy-card strategy-so animate-on-scroll">
+                        <h4>SO Strategies</h4>
+                        <p class="strategy-desc">Use strengths to capture opportunities</p>
+                        <ul>
+                            <li>Leverage white space + market timing: Move aggressively while non-gaming partnership space is empty</li>
+                            <li>Apply proven hybrid monetization playbook (45-70% ARPU uplift) to under-monetized apps</li>
+                            <li>Target 1M+ abandoned apps with users—developers may welcome resurrection partners</li>
+                        </ul>
+                    </div>
+
+                    <!-- WO Strategies -->
+                    <div class="strategy-card strategy-wo animate-on-scroll">
+                        <h4>WO Strategies</h4>
+                        <p class="strategy-desc">Overcome weaknesses using opportunities</p>
+                        <ul>
+                            <li>Validate H2-H3 fast: Use Tilting Point's entry as conversation starter with developers</li>
+                            <li>Overcome lack of track record by offering first partners favorable terms (60/40 split)</li>
+                            <li>Reduce 8-week timeline risk by targeting simpler utilities first</li>
+                        </ul>
+                    </div>
+
+                    <!-- ST Strategies -->
+                    <div class="strategy-card strategy-st animate-on-scroll">
+                        <h4>ST Strategies</h4>
+                        <p class="strategy-desc">Use strengths to mitigate threats</p>
+                        <ul>
+                            <li>Differentiate from Tilting Point: Emphasize "full-stack" (tech + monetization) vs "capital-only"</li>
+                            <li>Build developer relationships before competition intensifies—first-mover advantage is defensible</li>
+                            <li>Counter self-service tools: Position as "done-for-you" vs "do-it-yourself"</li>
+                        </ul>
+                    </div>
+
+                    <!-- WT Strategies -->
+                    <div class="strategy-card strategy-wt animate-on-scroll">
+                        <h4>WT Strategies</h4>
+                        <p class="strategy-desc">Minimize weaknesses to avoid threats</p>
+                        <ul>
+                            <li>Accelerate validation to reduce exposure: Close pilot partnerships before well-funded entrants arrive</li>
+                            <li>Partner for iOS capability via contractor to reduce dual-platform execution risk</li>
+                            <li>Test multiple outreach channels (Step 6) to find cost-effective developer sourcing</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Items -->
+            <section class="section" style="border-top: 1px solid rgba(255, 255, 255, 0.06);">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Prioritized Action Items</h2>
+                        <p>Concrete next steps derived from SWOT analysis</p>
+                    </div>
+                    <div class="section-tag">Next Steps</div>
                 </div>
 
-                <!-- WT Strategies -->
-                <div class="strategy-card" style="border-left: 4px solid #ef4444;">
-                    <h4 style="color: #fca5a5;">WT Strategies</h4>
-                    <p style="color: #64748b; font-size: 13px; margin-bottom: 12px;">Minimize weaknesses to avoid threats</p>
-                    <ul>
-                        <li>Accelerate validation to reduce exposure: Close pilot partnerships before well-funded entrants arrive</li>
-                        <li>Partner for iOS capability via contractor to reduce dual-platform execution risk</li>
-                        <li>Test multiple outreach channels (Step 6) to find cost-effective developer sourcing</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+                <div class="action-grid">
+                    <!-- Immediate -->
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-immediate">Immediate (30 Days)</span>
+                        <h4>Validate H2 and H3</h4>
+                        <p>Complete Step 5 online research to confirm partnership demand and revenue share acceptance. This is the #1 risk to address.</p>
+                    </div>
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-immediate">Immediate (30 Days)</span>
+                        <h4>Identify 5 Pilot Candidates</h4>
+                        <p>Find apps matching target profile (15K-1M MAU, under-monetized, non-gaming) for potential first partnerships.</p>
+                    </div>
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-immediate">Immediate (30 Days)</span>
+                        <h4>Define Differentiation Messaging</h4>
+                        <p>Create clear "full-stack partnership vs UA funding" positioning against Tilting Point for outreach.</p>
+                    </div>
 
-    <!-- ACTION ITEMS -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Prioritized Action Items</h2>
-            <p class="section-subtitle">Concrete next steps derived from SWOT analysis</p>
+                    <!-- Near-Term -->
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-near">Near-Term (60 Days)</span>
+                        <h4>Close First Pilot Partnership</h4>
+                        <p>Offer favorable terms (60/40?) to first 1-2 partners to prove model and build case study.</p>
+                    </div>
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-near">Near-Term (60 Days)</span>
+                        <h4>Technical Feasibility Assessment</h4>
+                        <p>Evaluate 3-5 target apps for rewrite complexity to validate H5 (8-week timeline).</p>
+                    </div>
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-near">Near-Term (60 Days)</span>
+                        <h4>Establish Outreach Playbook</h4>
+                        <p>Test channels (Reddit, Indie Hackers, Twitter) and optimize developer acquisition cost per Step 6.</p>
+                    </div>
 
-            <div class="action-items">
-                <!-- Immediate -->
-                <div class="action-card">
-                    <span class="timeline timeline-immediate">Immediate (30 Days)</span>
-                    <h4>Validate H2 and H3</h4>
-                    <p>Complete Step 5 online research to confirm partnership demand and revenue share acceptance. This is the #1 risk to address.</p>
+                    <!-- Medium-Term -->
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-medium">Medium-Term (90 Days)</span>
+                        <h4>Launch and Monetize First App</h4>
+                        <p>Prove H4 (10x monetization potential) with real data from first partnership.</p>
+                    </div>
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-medium">Medium-Term (90 Days)</span>
+                        <h4>Document Playbook</h4>
+                        <p>Create repeatable processes for evaluation, partnership, rebuild, and monetization.</p>
+                    </div>
+                    <div class="action-card animate-on-scroll">
+                        <span class="timeline-badge timeline-medium">Medium-Term (90 Days)</span>
+                        <h4>Assess iOS Capability Gap</h4>
+                        <p>Determine whether to build, partner, or defer iOS support based on pilot results.</p>
+                    </div>
                 </div>
-                <div class="action-card">
-                    <span class="timeline timeline-immediate">Immediate (30 Days)</span>
-                    <h4>Identify 5 Pilot Candidates</h4>
-                    <p>Find apps matching target profile (15K-1M MAU, under-monetized, non-gaming) for potential first partnerships.</p>
-                </div>
-                <div class="action-card">
-                    <span class="timeline timeline-immediate">Immediate (30 Days)</span>
-                    <h4>Define Differentiation Messaging</h4>
-                    <p>Create clear "full-stack partnership vs UA funding" positioning against Tilting Point for outreach.</p>
-                </div>
+            </section>
 
-                <!-- Near-Term -->
-                <div class="action-card">
-                    <span class="timeline timeline-near">Near-Term (60 Days)</span>
-                    <h4>Close First Pilot Partnership</h4>
-                    <p>Offer favorable terms (60/40?) to first 1-2 partners to prove model and build case study.</p>
+            <!-- Sources -->
+            <section class="section" style="border-top: 1px solid rgba(255, 255, 255, 0.06);">
+                <div class="sources-section animate-on-scroll">
+                    <h3>Sources & References</h3>
+                    <div class="sources-grid">
+                        <a href="https://www.businessofapps.com/news/app-revenue-surpasses-games-for-the-first-time-in-q2-2025/" target="_blank">Business of Apps: App revenue surpasses games Q2 2025</a>
+                        <a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a>
+                        <a href="https://techcrunch.com/2024/03/12/most-subscription-mobile-apps-dont-make-money-new-report-shows/" target="_blank">TechCrunch: Most subscription apps don't make money</a>
+                        <a href="https://www.pixalate.com/blog/pixalates-q3-2024-abandoned-mobile-apps-report" target="_blank">Pixalate: Abandoned Apps Report Q3 2024</a>
+                        <a href="https://appwill.co/hybrid-monetization-combining-ads-and-subscriptions/" target="_blank">AppWill: Hybrid Monetization (45-70% ARPU uplift)</a>
+                        <a href="https://sqmagazine.co.uk/mobile-advertising-statistics/" target="_blank">SQ Magazine: Mobile Advertising Statistics 2025</a>
+                        <a href="https://www.pocketgamer.biz/tilting-point-pumps-30m-into-two-non-gaming-apps/" target="_blank">PocketGamer: Tilting Point non-gaming expansion</a>
+                        <a href="https://sqmagazine.co.uk/app-store-statistics/" target="_blank">SQ Magazine: App Store Statistics 2025</a>
+                        <a href="https://yeahthatcourtney.com/9-gamechanging-apple-app-store-policy-changes-2025-what-developers-need-now/" target="_blank">Apple App Store Policy Changes 2025</a>
+                        <a href="https://support.google.com/googleplay/android-developer/answer/16550159" target="_blank">Google Play Policy: Per-Install Fees 2025</a>
+                        <a href="https://www.techtimes.com/articles/312990/20251127/subscription-burnout-hits-streaming-services-2025-why-cancellations-are-rising.htm" target="_blank">TechTimes: Subscription Burnout 2025</a>
+                        <a href="https://asoworld.com/en/blog/global-app-economy-sees-a-decline-in-downloads-but-a-rise-in-consumer-spending/" target="_blank">ASO World: Download decline, spending rise</a>
+                    </div>
                 </div>
-                <div class="action-card">
-                    <span class="timeline timeline-near">Near-Term (60 Days)</span>
-                    <h4>Technical Feasibility Assessment</h4>
-                    <p>Evaluate 3-5 target apps for rewrite complexity to validate H5 (8-week timeline).</p>
-                </div>
-                <div class="action-card">
-                    <span class="timeline timeline-near">Near-Term (60 Days)</span>
-                    <h4>Establish Outreach Playbook</h4>
-                    <p>Test channels (Reddit, Indie Hackers, Twitter) and optimize developer acquisition cost per Step 6.</p>
-                </div>
+            </section>
 
-                <!-- Medium-Term -->
-                <div class="action-card">
-                    <span class="timeline timeline-medium">Medium-Term (90 Days)</span>
-                    <h4>Launch and Monetize First App</h4>
-                    <p>Prove H4 (10x monetization potential) with real data from first partnership.</p>
+            <!-- Verdict -->
+            <section class="verdict">
+                <div class="verdict-card animate-on-scroll">
+                    <div class="verdict-badge">
+                        <span>●</span>
+                        Strategic Position
+                    </div>
+                    <h2>Favorable</h2>
+                    <p>
+                        Moonshot enters at an optimal moment: non-gaming apps just surpassed gaming in revenue, the market is massively underserved (82.8% earning &lt;$1K/month), and no direct competitor offers full-stack partnership. The key risk is unvalidated developer demand—H2 and H3 must be proven quickly before well-funded entrants establish themselves.
+                    </p>
+                    <a href="../step-04-developer-personas/step4-developer-personas.html" class="verdict-btn">
+                        Next: Developer Personas
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
                 </div>
-                <div class="action-card">
-                    <span class="timeline timeline-medium">Medium-Term (90 Days)</span>
-                    <h4>Document Playbook</h4>
-                    <p>Create repeatable processes for evaluation, partnership, rebuild, and monetization.</p>
-                </div>
-                <div class="action-card">
-                    <span class="timeline timeline-medium">Medium-Term (90 Days)</span>
-                    <h4>Assess iOS Capability Gap</h4>
-                    <p>Determine whether to build, partner, or defer iOS support based on pilot results.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- SOURCES -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <div class="sources">
-                <h3>Sources & References</h3>
-                <ul>
-                    <li><a href="https://www.businessofapps.com/news/app-revenue-surpasses-games-for-the-first-time-in-q2-2025/" target="_blank">Business of Apps: App revenue surpasses games Q2 2025</a></li>
-                    <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
-                    <li><a href="https://techcrunch.com/2024/03/12/most-subscription-mobile-apps-dont-make-money-new-report-shows/" target="_blank">TechCrunch: Most subscription apps don't make money</a></li>
-                    <li><a href="https://www.pixalate.com/blog/pixalates-q3-2024-abandoned-mobile-apps-report" target="_blank">Pixalate: Abandoned Apps Report Q3 2024</a></li>
-                    <li><a href="https://appwill.co/hybrid-monetization-combining-ads-and-subscriptions/" target="_blank">AppWill: Hybrid Monetization (45-70% ARPU uplift)</a></li>
-                    <li><a href="https://sqmagazine.co.uk/mobile-advertising-statistics/" target="_blank">SQ Magazine: Mobile Advertising Statistics 2025</a></li>
-                    <li><a href="https://www.pocketgamer.biz/tilting-point-pumps-30m-into-two-non-gaming-apps/" target="_blank">PocketGamer: Tilting Point non-gaming expansion</a></li>
-                    <li><a href="https://sqmagazine.co.uk/app-store-statistics/" target="_blank">SQ Magazine: App Store Statistics 2025</a></li>
-                    <li><a href="https://yeahthatcourtney.com/9-gamechanging-apple-app-store-policy-changes-2025-what-developers-need-now/" target="_blank">Apple App Store Policy Changes 2025</a></li>
-                    <li><a href="https://support.google.com/googleplay/android-developer/answer/16550159" target="_blank">Google Play Policy: Per-Install Fees 2025</a></li>
-                    <li><a href="https://www.techtimes.com/articles/312990/20251127/subscription-burnout-hits-streaming-services-2025-why-cancellations-are-rising.htm" target="_blank">TechTimes: Subscription Burnout 2025</a></li>
-                    <li><a href="https://asoworld.com/en/blog/global-app-economy-sees-a-decline-in-downloads-but-a-rise-in-consumer-spending/" target="_blank">ASO World: Download decline, spending rise</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- VERDICT -->
-    <section class="verdict">
-        <div class="container">
-            <h2>Strategic Position: Favorable</h2>
-            <p>Moonshot enters at an optimal moment: non-gaming apps just surpassed gaming in revenue, the market is massively underserved (82.8% earning &lt;$1K/month), and no direct competitor offers full-stack partnership. The key risk is unvalidated developer demand—H2 and H3 must be proven quickly before well-funded entrants establish themselves.</p>
-            <a href="../step-04-developer-personas/step4-developer-personas.html" class="next-step">Next: Step 4 - Developer Personas →</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
             <!-- Step Navigation -->
             <div class="step-nav">
                 <a href="../step-02-competitive-landscape/step2-competitive-landscape.html">
-                    <span>←</span>
-                    <span>Previous: Competitive Landscape</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous: Competitive Landscape
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 3 of 14</div>
-                    <a href="../index.html">Back to Home</a>
+                    <div class="step-indicator">Step 3 of 15</div>
+                    <a href="../index.html">Back to Dashboard</a>
                 </div>
                 <a href="../step-04-developer-personas/step4-developer-personas.html">
-                    <span>Next: Developer Personas</span>
-                    <span>→</span>
+                    Next: Developer Personas
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Step 3: SWOT Analysis | December 2025</p>
         </div>
-    </footer>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <p>Moonshot Research | Step 3: SWOT Analysis | December 2025</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

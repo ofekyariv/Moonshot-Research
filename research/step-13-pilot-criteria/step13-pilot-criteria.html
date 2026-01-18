@@ -3,197 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 13 | Pilot Partner Criteria</title>
+    <title>Step 13 | Pilot Partner Criteria — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 40px;
         }
 
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
             padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
         }
 
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
         }
 
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step-badge {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
         }
 
         /* Hero */
         .hero {
-            padding: 80px 0 60px;
+            padding: 140px 40px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
             text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero h1 {
-            font-size: 52px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 64px);
             font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
 
         .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
+            font-size: 20px;
+            color: var(--text-secondary);
             max-width: 700px;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
+            font-size: 14px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        /* Big Stats */
-        .big-stats {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 40px;
         }
 
-        .big-stat {
+        .stat {
             text-align: center;
-            padding: 20px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .big-stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.1;
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
-        .big-stat-number.green {
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .stat-value.amber { color: var(--amber-glow); }
+        .stat-value.green { color: var(--success-green); }
+        .stat-value.cyan { color: var(--cyan-soft); }
 
-        .big-stat-number.purple {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .big-stat-number.yellow {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .big-stat-label {
-            color: #a0aec0;
+        .stat-label {
             font-size: 14px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Section */
@@ -202,13 +297,15 @@
         }
 
         .section-title {
+            font-family: 'Syne', sans-serif;
             font-size: 32px;
             font-weight: 700;
+            letter-spacing: -1px;
             margin-bottom: 12px;
         }
 
         .section-subtitle {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 18px;
             margin-bottom: 40px;
             max-width: 700px;
@@ -230,42 +327,70 @@
         }
 
         .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card.green {
-            border-color: rgba(34, 197, 94, 0.3);
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .card.green::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
         }
 
         .card.yellow {
-            border-color: rgba(245, 158, 11, 0.3);
+            border-color: rgba(251, 191, 36, 0.3);
         }
 
         .card.red {
             border-color: rgba(239, 68, 68, 0.3);
         }
 
+        .card.red::before {
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
+        }
+
         .card h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
+            font-weight: 600;
             margin-bottom: 12px;
-            color: #a5b4fc;
+            color: var(--amber-glow);
         }
 
         .card.green h3 {
-            color: #86efac;
+            color: var(--success-green);
         }
 
         .card.yellow h3 {
-            color: #fcd34d;
+            color: var(--amber-bright);
         }
 
         .card.red h3 {
@@ -273,23 +398,24 @@
         }
 
         .card p {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 15px;
         }
 
         .card .highlight {
+            font-family: 'Syne', sans-serif;
             font-size: 28px;
             font-weight: 800;
-            color: #fff;
+            color: var(--text-primary);
             margin-bottom: 8px;
         }
 
         .card.green .highlight {
-            color: #22c55e;
+            color: var(--success-green);
         }
 
         .card.yellow .highlight {
-            color: #f59e0b;
+            color: var(--amber-glow);
         }
 
         .card.red .highlight {
@@ -301,30 +427,39 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 24px;
+            background: var(--space-mid);
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .data-table th,
         .data-table td {
             padding: 16px 20px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .data-table th {
-            color: #a5b4fc;
+            color: var(--amber-glow);
+            font-family: 'Syne', sans-serif;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .data-table td {
-            color: #e2e8f0;
+            color: var(--text-primary);
             font-size: 15px;
         }
 
-        .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
+        .data-table tr:hover td {
+            background: rgba(251, 191, 36, 0.03);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
         }
 
         /* Scorecard */
@@ -336,16 +471,23 @@
         }
 
         .scorecard-item {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .scorecard-item:hover {
+            border-color: rgba(251, 191, 36, 0.2);
         }
 
         .scorecard-item h4 {
+            font-family: 'Syne', sans-serif;
             font-size: 14px;
-            color: #a5b4fc;
+            color: var(--amber-glow);
             margin-bottom: 12px;
+            font-weight: 600;
         }
 
         .score-bar {
@@ -363,52 +505,52 @@
             justify-content: center;
             font-size: 11px;
             font-weight: 600;
-            background: rgba(255,255,255,0.1);
-            color: #64748b;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
         }
 
-        .score-dot.active-1 { background: #22c55e; color: #fff; }
-        .score-dot.active-2 { background: #84cc16; color: #fff; }
-        .score-dot.active-3 { background: #f59e0b; color: #fff; }
-        .score-dot.active-4 { background: #f97316; color: #fff; }
-        .score-dot.active-5 { background: #ef4444; color: #fff; }
+        .score-dot.active-1 { background: var(--success-green); color: var(--space-deep); }
+        .score-dot.active-2 { background: #84cc16; color: var(--space-deep); }
+        .score-dot.active-3 { background: var(--amber-glow); color: var(--space-deep); }
+        .score-dot.active-4 { background: #f97316; color: var(--space-deep); }
+        .score-dot.active-5 { background: #ef4444; color: var(--space-deep); }
 
         .score-labels {
             display: flex;
             justify-content: space-between;
             font-size: 11px;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         /* Weight Badge */
         .weight-badge {
             display: inline-block;
-            padding: 2px 8px;
+            padding: 2px 10px;
             border-radius: 10px;
             font-size: 11px;
             font-weight: 600;
-            background: rgba(102, 126, 234, 0.2);
-            color: #a5b4fc;
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--amber-glow);
             margin-left: 8px;
         }
 
         /* Decision Tree */
         .decision-tree {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.2);
             border-radius: 16px;
             padding: 32px;
             font-family: 'Courier New', monospace;
             font-size: 14px;
             line-height: 1.8;
-            color: #a0aec0;
+            color: var(--text-secondary);
             overflow-x: auto;
         }
 
-        .decision-tree .green { color: #22c55e; }
+        .decision-tree .green { color: var(--success-green); }
         .decision-tree .red { color: #ef4444; }
-        .decision-tree .yellow { color: #f59e0b; }
-        .decision-tree .purple { color: #a5b4fc; }
+        .decision-tree .yellow { color: var(--amber-glow); }
+        .decision-tree .purple { color: var(--cyan-soft); }
 
         /* Checklist */
         .checklist {
@@ -417,12 +559,12 @@
 
         .checklist li {
             padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             gap: 12px;
             font-size: 15px;
-            color: #e2e8f0;
+            color: var(--text-primary);
         }
 
         .checklist li::before {
@@ -438,13 +580,13 @@
         }
 
         .checklist.must li::before {
-            background: rgba(34, 197, 94, 0.2);
-            color: #22c55e;
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--success-green);
         }
 
         .checklist.nice li::before {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--amber-glow);
             content: "○";
         }
 
@@ -464,26 +606,55 @@
         .tier-card {
             border-radius: 16px;
             padding: 32px;
-            transition: transform 0.2s;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .tier-card:hover {
             transform: translateY(-4px);
         }
 
+        .tier-card:hover::before {
+            opacity: 1;
+        }
+
         .tier-card.priority-1 {
-            background: rgba(34, 197, 94, 0.1);
-            border: 2px solid rgba(34, 197, 94, 0.4);
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .tier-card.priority-1::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
         }
 
         .tier-card.priority-2 {
-            background: rgba(245, 158, 11, 0.1);
-            border: 2px solid rgba(245, 158, 11, 0.4);
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .tier-card.priority-2::before {
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
         }
 
         .tier-card.priority-3 {
-            background: rgba(239, 68, 68, 0.1);
-            border: 2px solid rgba(239, 68, 68, 0.4);
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .tier-card.priority-3::before {
+            background: linear-gradient(90deg, transparent, #ef4444, transparent);
         }
 
         .tier-header {
@@ -496,33 +667,37 @@
         .tier-badge {
             padding: 6px 14px;
             border-radius: 8px;
+            font-family: 'Syne', sans-serif;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .tier-badge.priority-1 {
-            background: rgba(34, 197, 94, 0.3);
-            color: #86efac;
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--success-green);
         }
 
         .tier-badge.priority-2 {
-            background: rgba(245, 158, 11, 0.3);
-            color: #fcd34d;
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--amber-bright);
         }
 
         .tier-badge.priority-3 {
-            background: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.2);
             color: #fca5a5;
         }
 
         .tier-title {
-            font-size: 24px;
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
             font-weight: 700;
             margin-bottom: 8px;
         }
 
-        .tier-card.priority-1 .tier-title { color: #22c55e; }
-        .tier-card.priority-2 .tier-title { color: #f59e0b; }
+        .tier-card.priority-1 .tier-title { color: var(--success-green); }
+        .tier-card.priority-2 .tier-title { color: var(--amber-glow); }
         .tier-card.priority-3 .tier-title { color: #ef4444; }
 
         .tier-criteria {
@@ -531,10 +706,10 @@
         }
 
         .tier-criteria li {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 14px;
             padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* App Profiles */
@@ -543,28 +718,32 @@
             align-items: center;
             gap: 20px;
             padding: 20px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             margin-bottom: 12px;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
         }
 
         .app-profile:hover {
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateX(4px);
         }
 
         .app-rank {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Syne', sans-serif;
             font-weight: 700;
             font-size: 16px;
+            color: var(--space-deep);
             flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
         .app-info {
@@ -572,12 +751,15 @@
         }
 
         .app-info h4 {
+            font-family: 'Syne', sans-serif;
             font-size: 16px;
+            font-weight: 600;
             margin-bottom: 4px;
+            color: var(--text-primary);
         }
 
         .app-info p {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 13px;
         }
 
@@ -593,22 +775,24 @@
             font-weight: 500;
         }
 
-        .app-tag.green { background: rgba(34, 197, 94, 0.2); color: #86efac; }
-        .app-tag.purple { background: rgba(102, 126, 234, 0.2); color: #a5b4fc; }
-        .app-tag.yellow { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+        .app-tag.green { background: rgba(52, 211, 153, 0.15); color: var(--success-green); }
+        .app-tag.purple { background: rgba(251, 191, 36, 0.15); color: var(--amber-glow); }
+        .app-tag.yellow { background: rgba(251, 191, 36, 0.15); color: var(--amber-bright); }
 
         /* Sources */
         .sources {
-            background: rgba(255,255,255,0.03);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 32px;
             margin-top: 40px;
         }
 
         .sources h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
             margin-bottom: 16px;
-            color: #a5b4fc;
+            color: var(--amber-glow);
         }
 
         .sources ul {
@@ -619,17 +803,18 @@
         }
 
         .sources li {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 14px;
         }
 
         .sources a {
-            color: #667eea;
+            color: var(--cyan-soft);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .sources a:hover {
-            text-decoration: underline;
+            color: var(--amber-glow);
         }
 
         /* Step Navigation */
@@ -638,7 +823,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             margin-top: 40px;
         }
 
@@ -646,21 +831,21 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 8px;
-            color: #a0aec0;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
         .step-nav-center {
@@ -668,96 +853,161 @@
         }
 
         .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border: none;
-            color: #fff;
+            color: var(--space-deep);
+            font-weight: 600;
+        }
+
+        .step-nav-center a:hover {
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
         }
 
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Footer */
         footer {
-            padding: 40px 0;
+            padding: 48px 40px;
             text-align: center;
-            color: #475569;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        footer p {
+            color: var(--text-muted);
             font-size: 14px;
         }
 
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .scorecard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .big-stats, .cards, .tier-cards, .scorecard-grid { grid-template-columns: 1fr; }
-            .cards-2, .cards-4 { grid-template-columns: 1fr; }
-            .sources ul { grid-template-columns: 1fr; }
+            .hero {
+                padding: 120px 24px 40px;
+            }
+            .hero h1 {
+                font-size: 32px;
+                letter-spacing: -1px;
+            }
+            .container {
+                padding: 0 24px;
+            }
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            .cards, .tier-cards, .scorecard-grid {
+                grid-template-columns: 1fr;
+            }
+            .cards-2, .cards-4 {
+                grid-template-columns: 1fr;
+            }
+            .sources ul {
+                grid-template-columns: 1fr;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .app-profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            .app-tags {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
+
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-status">
+                    <span class="step-badge">STEP 13</span>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>›</span>
-            <a href="../index.html">Phase 5: Launch Prep</a>
-            <span>›</span>
-            Step 13
-        </div>
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 13</div>
-        </header>
-    </div>
-
-    <section class="hero">
-        <div class="container">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span>◆</span>
+                Phase 5: Launch Prep
+            </div>
             <h1>Pilot Partner Criteria</h1>
             <p class="tagline">A clear rubric for evaluating and selecting the first 3-5 partner apps. Designed for de-risked pilots with high learning velocity.</p>
             <p class="subtitle">Research Date: December 29, 2025 | Based on Steps 1-12 Findings + B2B Pilot Best Practices</p>
-        </div>
-    </section>
+        </section>
 
-    <section class="big-stats">
-        <div class="container" style="display: contents;">
-            <div class="big-stat">
-                <div class="big-stat-number green">3-5</div>
-                <div class="big-stat-label">First Cohort Partners</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number purple">60 days</div>
-                <div class="big-stat-label">Pilot Duration</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number yellow">70/30</div>
-                <div class="big-stat-label">Pilot Revenue Split</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number green">30%+</div>
-                <div class="big-stat-label">Target Revenue Lift</div>
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value green">3-5</div>
+                    <div class="stat-label">First Cohort Partners</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value cyan">60 days</div>
+                    <div class="stat-label">Pilot Duration</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value amber">70/30</div>
+                    <div class="stat-label">Pilot Revenue Split</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value green">30%+</div>
+                    <div class="stat-label">Target Revenue Lift</div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- Ideal Pilot Profile -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
         <div class="container">
-            <h2 class="section-title">Ideal First Partner Profile</h2>
-            <p class="section-subtitle">Based on findings from Steps 4, 7, and 8, here's what makes the best pilot partner.</p>
+            <!-- Ideal Pilot Profile -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Ideal First Partner Profile</h2>
+                <p class="section-subtitle">Based on findings from Steps 4, 7, and 8, here's what makes the best pilot partner.</p>
 
-            <div class="cards">
+                <div class="cards">
                 <div class="card green">
                     <div class="highlight">50K-150K</div>
                     <h3>Monthly Active Users</h3>
@@ -775,38 +1025,36 @@
                 </div>
             </div>
 
-            <div class="cards cards-2" style="margin-top: 24px;">
-                <div class="card" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.4);">
-                    <h3 style="color: #86efac;">Best Fit Persona: Burned Out Solo Dev</h3>
-                    <p style="margin-bottom: 16px;">From Step 4 research, this persona is most likely to partner:</p>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="padding: 6px 0; color: #e2e8f0;">Wants "set it and forget it" passive income</li>
-                        <li style="padding: 6px 0; color: #e2e8f0;">Low control priority — willing to hand off operations</li>
-                        <li style="padding: 6px 0; color: #e2e8f0;">Fast decision timeline (2-4 weeks)</li>
-                        <li style="padding: 6px 0; color: #e2e8f0;">Key message: "We handle everything"</li>
-                    </ul>
+                <div class="cards cards-2" style="margin-top: 24px;">
+                    <div class="card" style="background: rgba(52, 211, 153, 0.08); border-color: rgba(52, 211, 153, 0.3);">
+                        <h3 style="color: var(--success-green); font-size: 20px; margin-bottom: 16px;">Best Fit Persona: Burned Out Solo Dev</h3>
+                        <p style="margin-bottom: 16px;">From Step 4 research, this persona is most likely to partner:</p>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="padding: 6px 0; color: var(--text-primary);">Wants "set it and forget it" passive income</li>
+                            <li style="padding: 6px 0; color: var(--text-primary);">Low control priority — willing to hand off operations</li>
+                            <li style="padding: 6px 0; color: var(--text-primary);">Fast decision timeline (2-4 weeks)</li>
+                            <li style="padding: 6px 0; color: var(--text-primary);">Key message: "We handle everything"</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="background: rgba(251, 191, 36, 0.08); border-color: rgba(251, 191, 36, 0.3);">
+                        <h3 style="color: var(--amber-glow); font-size: 20px; margin-bottom: 16px;">Target Categories</h3>
+                        <p style="margin-bottom: 16px;">App types with proven monetization potential and low complexity:</p>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="padding: 6px 0; color: var(--text-primary);">Productivity (timers, focus apps, trackers)</li>
+                            <li style="padding: 6px 0; color: var(--text-primary);">Utilities (converters, calculators, tools)</li>
+                            <li style="padding: 6px 0; color: var(--text-primary);">Education (flashcards, study aids, quizzes)</li>
+                            <li style="padding: 6px 0; color: var(--text-primary);">Lifestyle (journals, habit trackers, planners)</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="card" style="background: rgba(102, 126, 234, 0.1); border-color: rgba(102, 126, 234, 0.4);">
-                    <h3 style="color: #a5b4fc;">Target Categories</h3>
-                    <p style="margin-bottom: 16px;">App types with proven monetization potential and low complexity:</p>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="padding: 6px 0; color: #e2e8f0;">Productivity (timers, focus apps, trackers)</li>
-                        <li style="padding: 6px 0; color: #e2e8f0;">Utilities (converters, calculators, tools)</li>
-                        <li style="padding: 6px 0; color: #e2e8f0;">Education (flashcards, study aids, quizzes)</li>
-                        <li style="padding: 6px 0; color: #e2e8f0;">Lifestyle (journals, habit trackers, planners)</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Weighted Scoring Rubric -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Weighted Scoring Rubric</h2>
-            <p class="section-subtitle">Score each criterion 1-5. Apply weights. Total score determines priority tier.</p>
+            <!-- Weighted Scoring Rubric -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Weighted Scoring Rubric</h2>
+                <p class="section-subtitle">Score each criterion 1-5. Apply weights. Total score determines priority tier.</p>
 
-            <h3 style="color: #a5b4fc; margin-bottom: 24px; font-size: 20px;">User & Business Metrics <span class="weight-badge">40% of total</span></h3>
+                <h3 style="color: var(--amber-glow); margin-bottom: 24px; font-size: 20px; font-family: 'Syne', sans-serif;">User & Business Metrics <span class="weight-badge">40% of total</span></h3>
 
             <table class="data-table">
                 <thead>
@@ -857,9 +1105,9 @@
                 </tbody>
             </table>
 
-            <h3 style="color: #a5b4fc; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Technical Complexity <span class="weight-badge">30% of total</span></h3>
+                <h3 style="color: var(--amber-glow); margin-top: 48px; margin-bottom: 24px; font-size: 20px; font-family: 'Syne', sans-serif;">Technical Complexity <span class="weight-badge">30% of total</span></h3>
 
-            <p style="color: #a0aec0; margin-bottom: 24px;">Use the 8-point scorecard from Step 8. Lower scores = better (simpler apps).</p>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">Use the 8-point scorecard from Step 8. Lower scores = better (simpler apps).</p>
 
             <div class="scorecard-grid">
                 <div class="scorecard-item">
@@ -999,7 +1247,7 @@
                 </div>
             </div>
 
-            <h3 style="color: #a5b4fc; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Developer Fit <span class="weight-badge">30% of total</span></h3>
+                <h3 style="color: var(--amber-glow); margin-top: 48px; margin-bottom: 24px; font-size: 20px; font-family: 'Syne', sans-serif;">Developer Fit <span class="weight-badge">30% of total</span></h3>
 
             <table class="data-table">
                 <thead>
@@ -1056,18 +1304,16 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </section>
+            </section>
 
-    <!-- Must-Haves vs Nice-to-Haves -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Must-Haves vs Nice-to-Haves</h2>
-            <p class="section-subtitle">Absolute requirements versus preferential criteria for pilot selection.</p>
+            <!-- Must-Haves vs Nice-to-Haves -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Must-Haves vs Nice-to-Haves</h2>
+                <p class="section-subtitle">Absolute requirements versus preferential criteria for pilot selection.</p>
 
-            <div class="cards cards-2">
-                <div class="card" style="background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.4);">
-                    <h3 style="color: #86efac; font-size: 22px; margin-bottom: 20px;">Must-Haves (Non-Negotiable)</h3>
+                <div class="cards cards-2">
+                    <div class="card" style="background: rgba(52, 211, 153, 0.06); border-color: rgba(52, 211, 153, 0.3);">
+                        <h3 style="color: var(--success-green); font-size: 20px; margin-bottom: 20px;">Must-Haves (Non-Negotiable)</h3>
                     <ul class="checklist must">
                         <li>MAU: 25K-150K (enough for meaningful results)</li>
                         <li>Current revenue: &lt;$1K/month (clear upside)</li>
@@ -1082,9 +1328,9 @@
                         <li>Available for weekly 30-min sync calls</li>
                         <li>Willing to sign 60-day pilot agreement</li>
                     </ul>
-                </div>
-                <div class="card" style="background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.4);">
-                    <h3 style="color: #fcd34d; font-size: 22px; margin-bottom: 20px;">Nice-to-Haves (Preferential)</h3>
+                    </div>
+                    <div class="card" style="background: rgba(251, 191, 36, 0.06); border-color: rgba(251, 191, 36, 0.3);">
+                        <h3 style="color: var(--amber-glow); font-size: 20px; margin-bottom: 20px;">Nice-to-Haves (Preferential)</h3>
                     <ul class="checklist nice">
                         <li>Warm introduction or existing relationship</li>
                         <li>iOS-primary (5.4x higher subscription ARPU)</li>
@@ -1100,15 +1346,13 @@
                         <li>App has growing (not declining) user base</li>
                     </ul>
                 </div>
-            </div>
-        </div>
-    </section>
+                </div>
+            </section>
 
-    <!-- Risk Assessment Framework -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Risk Assessment Framework</h2>
-            <p class="section-subtitle">Identify, categorize, and mitigate risks before committing to a pilot.</p>
+            <!-- Risk Assessment Framework -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Risk Assessment Framework</h2>
+                <p class="section-subtitle">Identify, categorize, and mitigate risks before committing to a pilot.</p>
 
             <div class="tier-cards">
                 <div class="tier-card priority-1">
@@ -1158,54 +1402,52 @@
                 </div>
             </div>
 
-            <h3 style="color: #fca5a5; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Deal-Breakers (Automatic Rejection)</h3>
+                <h3 style="color: #fca5a5; margin-top: 48px; margin-bottom: 24px; font-size: 20px; font-family: 'Syne', sans-serif;">Deal-Breakers (Automatic Rejection)</h3>
 
-            <div class="cards cards-4">
-                <div class="card red">
-                    <h3>Technical</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
-                        <li style="padding: 4px 0;">Real-time multiplayer</li>
-                        <li style="padding: 4px 0;">Video/photo editing</li>
-                        <li style="padding: 4px 0;">Offline-first with sync</li>
-                        <li style="padding: 4px 0;">HIPAA/PCI compliance</li>
-                    </ul>
+                <div class="cards cards-4">
+                    <div class="card red">
+                        <h3>Technical</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
+                            <li style="padding: 4px 0;">Real-time multiplayer</li>
+                            <li style="padding: 4px 0;">Video/photo editing</li>
+                            <li style="padding: 4px 0;">Offline-first with sync</li>
+                            <li style="padding: 4px 0;">HIPAA/PCI compliance</li>
+                        </ul>
+                    </div>
+                    <div class="card red">
+                        <h3>Business</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
+                            <li style="padding: 4px 0;">Expensive third-party APIs</li>
+                            <li style="padding: 4px 0;">Ongoing content creation</li>
+                            <li style="padding: 4px 0;">UGC with moderation</li>
+                            <li style="padding: 4px 0;">Marketplace/e-commerce</li>
+                        </ul>
+                    </div>
+                    <div class="card red">
+                        <h3>Developer</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
+                            <li style="padding: 4px 0;">Refuses analytics access</li>
+                            <li style="padding: 4px 0;">Wants upfront guarantee</li>
+                            <li style="padding: 4px 0;">Ghosts or misses calls</li>
+                            <li style="padding: 4px 0;">Negative community rep</li>
+                        </ul>
+                    </div>
+                    <div class="card red">
+                        <h3>Legal</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
+                            <li style="padding: 4px 0;">IP/trademark issues</li>
+                            <li style="padding: 4px 0;">VC-backed or funded</li>
+                            <li style="padding: 4px 0;">Won't sign agreement</li>
+                            <li style="padding: 4px 0;">Direct competitor in portfolio</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="card red">
-                    <h3>Business</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
-                        <li style="padding: 4px 0;">Expensive third-party APIs</li>
-                        <li style="padding: 4px 0;">Ongoing content creation</li>
-                        <li style="padding: 4px 0;">UGC with moderation</li>
-                        <li style="padding: 4px 0;">Marketplace/e-commerce</li>
-                    </ul>
-                </div>
-                <div class="card red">
-                    <h3>Developer</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
-                        <li style="padding: 4px 0;">Refuses analytics access</li>
-                        <li style="padding: 4px 0;">Wants upfront guarantee</li>
-                        <li style="padding: 4px 0;">Ghosts or misses calls</li>
-                        <li style="padding: 4px 0;">Negative community rep</li>
-                    </ul>
-                </div>
-                <div class="card red">
-                    <h3>Legal</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
-                        <li style="padding: 4px 0;">IP/trademark issues</li>
-                        <li style="padding: 4px 0;">VC-backed or funded</li>
-                        <li style="padding: 4px 0;">Won't sign agreement</li>
-                        <li style="padding: 4px 0;">Direct competitor in portfolio</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Pilot Terms Recommendation -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Pilot Terms Recommendation</h2>
-            <p class="section-subtitle">Structured terms based on B2B pilot best practices and Step 4/10 findings.</p>
+            <!-- Pilot Terms Recommendation -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Pilot Terms Recommendation</h2>
+                <p class="section-subtitle">Structured terms based on B2B pilot best practices and Step 4/10 findings.</p>
 
             <table class="data-table">
                 <thead>
@@ -1242,7 +1484,7 @@
                 </tbody>
             </table>
 
-            <h3 style="color: #a5b4fc; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">60-Day Pilot Timeline</h3>
+                <h3 style="color: var(--amber-glow); margin-top: 48px; margin-bottom: 24px; font-size: 20px; font-family: 'Syne', sans-serif;">60-Day Pilot Timeline</h3>
 
             <div class="cards cards-4">
                 <div class="card">
@@ -1267,36 +1509,34 @@
                 </div>
             </div>
 
-            <div class="cards cards-2" style="margin-top: 32px;">
-                <div class="card" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.4);">
-                    <h3 style="color: #86efac;">Success Criteria (Convert to Full Partnership)</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="padding: 8px 0; color: #e2e8f0;">Revenue lift: 30%+ improvement from baseline</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Implementation: 3+ monetization improvements shipped</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Satisfaction: Developer NPS 8+ / 10</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Engagement: Attended 80%+ of sync calls</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Learning: 10+ documented insights</li>
-                    </ul>
+                <div class="cards cards-2" style="margin-top: 32px;">
+                    <div class="card" style="background: rgba(52, 211, 153, 0.06); border-color: rgba(52, 211, 153, 0.3);">
+                        <h3 style="color: var(--success-green);">Success Criteria (Convert to Full Partnership)</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="padding: 8px 0; color: var(--text-primary);">Revenue lift: 30%+ improvement from baseline</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Implementation: 3+ monetization improvements shipped</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Satisfaction: Developer NPS 8+ / 10</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Engagement: Attended 80%+ of sync calls</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Learning: 10+ documented insights</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="background: rgba(239, 68, 68, 0.06); border-color: rgba(239, 68, 68, 0.3);">
+                        <h3 style="color: #fca5a5;">Exit Criteria (Friendly Termination)</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="padding: 8px 0; color: var(--text-primary);">Revenue lift: &lt;15% improvement after 60 days</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Technical blockers: Unforeseen complexity emerged</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Misalignment: Goals or expectations diverged</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Communication: Developer disengaged or unresponsive</li>
+                            <li style="padding: 8px 0; color: var(--text-primary);">Mutual agreement: Either party can exit with 30 days notice</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="card" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.4);">
-                    <h3 style="color: #fca5a5;">Exit Criteria (Friendly Termination)</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="padding: 8px 0; color: #e2e8f0;">Revenue lift: &lt;15% improvement after 60 days</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Technical blockers: Unforeseen complexity emerged</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Misalignment: Goals or expectations diverged</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Communication: Developer disengaged or unresponsive</li>
-                        <li style="padding: 8px 0; color: #e2e8f0;">Mutual agreement: Either party can exit with 30 days notice</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Decision Tree -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Decision Tree for Go/No-Go</h2>
-            <p class="section-subtitle">Visual flowchart for evaluating potential pilot partners.</p>
+            <!-- Decision Tree -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Decision Tree for Go/No-Go</h2>
+                <p class="section-subtitle">Visual flowchart for evaluating potential pilot partners.</p>
 
             <div class="decision-tree">
 <pre style="margin: 0;">
@@ -1321,14 +1561,12 @@
                             └── <span class="red">Aspiring Entrepreneur → PRIORITY 3</span>
 </pre>
             </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Top 10 Target App Profiles -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Top 10 Target App Profiles</h2>
-            <p class="section-subtitle">Based on combined research from Steps 1-12, these app types are ideal for first pilots.</p>
+            <!-- Top 10 Target App Profiles -->
+            <section class="section animate-on-scroll">
+                <h2 class="section-title">Top 10 Target App Profiles</h2>
+                <p class="section-subtitle">Based on combined research from Steps 1-12, these app types are ideal for first pilots.</p>
 
             <div class="app-profile">
                 <div class="app-rank">1</div>
@@ -1451,22 +1689,22 @@
             </div>
 
             <!-- Prospecting Resources Section -->
-            <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 16px; padding: 32px; margin-top: 48px;">
-                <h3 style="color: #a5b4fc; font-size: 20px; margin-bottom: 20px;">Prospecting Resources</h3>
-                <p style="color: #a0aec0; margin-bottom: 24px;">Tools and strategies for finding target apps that match the ideal profile above.</p>
+            <div style="background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 16px; padding: 32px; margin-top: 48px;">
+                <h3 style="color: var(--amber-glow); font-size: 20px; margin-bottom: 20px; font-family: 'Syne', sans-serif;">Prospecting Resources</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">Tools and strategies for finding target apps that match the ideal profile above.</p>
 
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px;">
-                        <h4 style="color: #e2e8f0; font-size: 16px; margin-bottom: 12px;">App Intelligence Tools</h4>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                    <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px;">
+                        <h4 style="color: var(--text-primary); font-size: 16px; margin-bottom: 12px; font-family: 'Syne', sans-serif;">App Intelligence Tools</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
                             <li style="padding: 6px 0;"><strong>AppBrain.com</strong> - Filter by 50K-500K downloads, updated within 6 months</li>
                             <li style="padding: 6px 0;"><strong>AppStorespy.com</strong> - iOS app analytics and download estimates</li>
                             <li style="padding: 6px 0;"><strong>Sensor Tower / data.ai</strong> - Paid tools for deeper metrics</li>
                         </ul>
                     </div>
-                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px;">
-                        <h4 style="color: #e2e8f0; font-size: 16px; margin-bottom: 12px;">Community Outreach</h4>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #a0aec0;">
+                    <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px;">
+                        <h4 style="color: var(--text-primary); font-size: 16px; margin-bottom: 12px; font-family: 'Syne', sans-serif;">Community Outreach</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
                             <li style="padding: 6px 0;"><strong>r/androiddev</strong> - Reddit Android developers</li>
                             <li style="padding: 6px 0;"><strong>r/iOSProgramming</strong> - Reddit iOS developers</li>
                             <li style="padding: 6px 0;"><strong>Indie Hackers</strong> - Developers self-reporting revenue</li>
@@ -1475,13 +1713,13 @@
                     </div>
                 </div>
 
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; margin-top: 20px;">
-                    <h4 style="color: #86efac; font-size: 14px; margin-bottom: 8px;">Sample Lead Found</h4>
-                    <p style="color: #e2e8f0; font-size: 14px;"><strong>Itemlist</strong> (iOS home inventory app) - Developer: Damjan Dabo (<a href="https://twitter.com/DamjanDabo" style="color: #667eea;">@DamjanDabo</a>) - ~$1,400/mo peak revenue on Indie Hackers. Likely fits pilot criteria.</p>
+                <div style="background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.2); border-radius: 12px; padding: 20px; margin-top: 20px;">
+                    <h4 style="color: var(--success-green); font-size: 14px; margin-bottom: 8px; font-family: 'Syne', sans-serif;">Sample Lead Found</h4>
+                    <p style="color: var(--text-primary); font-size: 14px;"><strong>Itemlist</strong> (iOS home inventory app) - Developer: Damjan Dabo (<a href="https://twitter.com/DamjanDabo" style="color: var(--cyan-soft);">@DamjanDabo</a>) - ~$1,400/mo peak revenue on Indie Hackers. Likely fits pilot criteria.</p>
                 </div>
             </div>
 
-            <h3 style="color: #fca5a5; margin-top: 48px; margin-bottom: 24px; font-size: 20px;">Categories to Avoid for Pilot</h3>
+            <h3 style="color: #fca5a5; margin-top: 48px; margin-bottom: 24px; font-size: 20px; font-family: 'Syne', sans-serif;">Categories to Avoid for Pilot</h3>
 
             <div class="cards" style="grid-template-columns: repeat(4, 1fr);">
                 <div class="card red">
@@ -1500,15 +1738,13 @@
                     <h3>Compliance</h3>
                     <p>Healthcare (HIPAA), fintech (PCI), news aggregation</p>
                 </div>
-            </div>
-        </div>
-    </section>
+                </div>
+            </section>
 
-    <!-- Sources -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <div class="sources">
-                <h3>Sources & References</h3>
+            <!-- Sources -->
+            <section class="section animate-on-scroll">
+                <div class="sources">
+                    <h3>Sources & References</h3>
                 <ul>
                     <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
                     <li><a href="https://www.headway.io/blog/how-to-run-a-software-pilot-program-b2b-dos-and-donts" target="_blank">Headway: How to Run Software Pilot Programs</a></li>
@@ -1522,30 +1758,65 @@
                     <li><a href="../step-04-developer-personas/step4-developer-personas.html" target="_blank">Moonshot Step 4: Developer Personas</a></li>
                     <li><a href="../step-07-unit-economics/step7-unit-economics.html" target="_blank">Moonshot Step 7: Unit Economics</a></li>
                 </ul>
-            </div>
-
-            <!-- Step Navigation -->
-            <div class="step-nav">
-                <a href="../step-12-positioning/step12-positioning.html">
-                    <span>←</span>
-                    <span>Previous: Positioning</span>
-                </a>
-                <div class="step-nav-center">
-                    <div class="step-indicator">Step 13 of 14</div>
-                    <a href="../index.html">Back to Home</a>
                 </div>
-                <a href="../step-14-funding-strategy/step14-funding-strategy.html">
-                    <span>Next: Funding Strategy</span>
-                    <span>→</span>
-                </a>
-            </div>
-        </div>
-    </section>
 
+                <!-- Step Navigation -->
+                <div class="step-nav">
+                    <a href="../step-12-positioning/step12-positioning.html">
+                        <span>←</span>
+                        <span>Previous: Positioning</span>
+                    </a>
+                    <div class="step-nav-center">
+                        <div class="step-indicator">Step 13 of 15</div>
+                        <a href="../index.html">Back to Home</a>
+                    </div>
+                    <a href="../step-14-funding-strategy/step14-funding-strategy.html">
+                        <span>Next: Funding Strategy</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
         <div class="container">
             <p>Moonshot Research | Step 13: Pilot Partner Criteria | December 2025</p>
         </div>
     </footer>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

@@ -3,111 +3,334 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 11 | Operational Infrastructure Planning</title>
+    <title>Step 11 | Operational Infrastructure — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --warning-amber: #f59e0b;
+            --danger-red: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
-        /* Hero */
+        .nav-links a:hover {
+            color: var(--amber-glow);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 40px 0;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--amber-glow);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--amber-bright);
+        }
+
+        .breadcrumb span {
+            margin: 0 10px;
+            opacity: 0.5;
+        }
+
+        /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
-            text-align: center;
+            padding: 40px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 72px);
             font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #667eea 0%, #a5b4fc 100%);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
             max-width: 700px;
-            margin: 0 auto 20px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
+        .hero-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        /* Big Stats */
-        .big-stats {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 40px;
         }
 
-        .big-stat {
+        .stat {
             text-align: center;
-            padding: 20px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .big-stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
-        .big-stat-label {
-            color: #a0aec0;
+        .stat-label {
             font-size: 14px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
         }
 
         /* Section */
@@ -115,180 +338,200 @@
             padding: 80px 0;
         }
 
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        /* Cards */
-        .cards {
+        .section-header {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #a5b4fc;
-        }
-
-        .card p {
-            color: #a0aec0;
+        .section-header p {
+            color: var(--text-muted);
             font-size: 15px;
         }
 
-        .card .highlight {
-            font-size: 28px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .card .price {
-            font-size: 14px;
-            color: #22c55e;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .source-link {
-            display: block;
-            margin-top: 12px;
-            color: #667eea;
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
             font-size: 12px;
-            text-decoration: none;
-        }
-
-        .source-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Data Table */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 24px;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .data-table th {
-            color: #a5b4fc;
             font-weight: 600;
-            font-size: 14px;
+            color: var(--amber-glow);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .data-table td {
-            color: #e2e8f0;
-            font-size: 15px;
-        }
-
-        .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-
-        .data-table .value {
-            font-weight: 700;
-            color: #fff;
-        }
-
-        /* Year Timeline */
-        .timeline {
+        /* Timeline Cards */
+        .timeline-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            margin-top: 40px;
         }
 
-        .timeline-year {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+        .timeline-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 32px;
             position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
         }
 
-        .timeline-year.active {
-            border-color: rgba(102, 126, 234, 0.5);
-            background: rgba(102, 126, 234, 0.1);
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--success-green), var(--cyan-soft));
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .year-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+        .timeline-card.active {
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .timeline-card.active::before {
+            opacity: 1;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(251, 191, 36, 0.3);
         }
 
         .year-badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             padding: 8px 16px;
             border-radius: 8px;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .year-title {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .year-details {
-            color: #a0aec0;
+            font-family: 'Syne', sans-serif;
             font-size: 14px;
-            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--space-deep);
+            margin-bottom: 16px;
         }
 
-        .year-cost {
-            font-size: 32px;
-            font-weight: 800;
-            color: #22c55e;
+        .timeline-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .timeline-details {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .timeline-cost {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--success-green);
             margin-bottom: 8px;
         }
 
-        .year-per-app {
+        .timeline-per-app {
             font-size: 14px;
-            color: #86efac;
+            color: var(--cyan-soft);
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 32px;
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+        }
+
+        .arch-layer:last-child {
+            border-bottom: none;
+        }
+
+        .arch-label {
+            width: 140px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .arch-tools {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .arch-tool {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .arch-tool:hover {
+            border-color: rgba(251, 191, 36, 0.4);
+            background: rgba(251, 191, 36, 0.15);
+        }
+
+        .arch-tool.free {
+            background: rgba(52, 211, 153, 0.1);
+            border-color: rgba(52, 211, 153, 0.2);
+            color: var(--success-green);
+        }
+
+        .arch-tool.free:hover {
+            background: rgba(52, 211, 153, 0.15);
+            border-color: rgba(52, 211, 153, 0.4);
         }
 
         /* Tool Categories */
         .tool-category {
-            margin-bottom: 40px;
+            margin-bottom: 48px;
         }
 
         .tool-category h3 {
-            font-size: 20px;
-            color: #a5b4fc;
-            margin-bottom: 16px;
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -301,255 +544,314 @@
         }
 
         .tool-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-2px);
         }
 
         .tool-card.recommended {
-            border-color: rgba(34, 197, 94, 0.5);
-            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(52, 211, 153, 0.3);
+            background: rgba(52, 211, 153, 0.05);
+        }
+
+        .tool-card.recommended:hover {
+            border-color: rgba(52, 211, 153, 0.5);
         }
 
         .tool-name {
+            font-family: 'Syne', sans-serif;
             font-weight: 600;
             font-size: 16px;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge-rec {
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--success-green);
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .tool-price {
-            font-size: 13px;
-            color: #22c55e;
+            font-size: 14px;
+            color: var(--success-green);
             margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .tool-score {
             font-size: 12px;
-            color: #fcd34d;
+            color: var(--amber-glow);
         }
 
-        .badge-rec {
-            background: rgba(34, 197, 94, 0.2);
-            color: #86efac;
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        /* Architecture Diagram */
-        .architecture {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+        /* Data Tables */
+        .data-table-wrapper {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 40px;
-            margin-top: 40px;
+            overflow: hidden;
+            margin-bottom: 32px;
         }
 
-        .arch-layer {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 20px 0;
-            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        .table-header {
+            padding: 20px 28px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .arch-layer:last-child {
+        .table-header h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--amber-glow);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 28px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .data-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .data-table td {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .data-table tr:last-child td {
             border-bottom: none;
         }
 
-        .arch-label {
-            width: 120px;
+        .data-table .value {
             font-weight: 600;
-            color: #a5b4fc;
-            font-size: 14px;
+            color: var(--text-primary);
         }
 
-        .arch-tools {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+        .data-table .value.free {
+            color: var(--success-green);
         }
 
-        .arch-tool {
-            background: rgba(102, 126, 234, 0.2);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #a5b4fc;
+        .data-table .total-row {
+            background: rgba(52, 211, 153, 0.05);
         }
 
-        .arch-tool.free {
-            background: rgba(34, 197, 94, 0.2);
-            border-color: rgba(34, 197, 94, 0.3);
-            color: #86efac;
+        .data-table .total-row td {
+            font-weight: 700;
+            color: var(--success-green);
+            font-size: 18px;
         }
 
-        /* Key Insights */
-        .insights {
+        .data-table .total-row.year2 {
+            background: rgba(251, 191, 36, 0.05);
+        }
+
+        .data-table .total-row.year2 td {
+            color: var(--amber-glow);
+        }
+
+        .data-table .total-row.year3 {
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .data-table .total-row.year3 td {
+            color: #fca5a5;
+        }
+
+        /* Insights Grid */
+        .insights-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
         }
 
-        .insight {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
+        .insight-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.15);
             border-radius: 16px;
-            padding: 28px;
+            padding: 32px;
+            transition: all 0.3s ease;
         }
 
-        .insight h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #a5b4fc;
+        .insight-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-2px);
         }
 
-        .insight p {
-            color: #a0aec0;
+        .insight-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--amber-glow);
+        }
+
+        .insight-card p {
+            color: var(--text-secondary);
             font-size: 15px;
+            margin-bottom: 16px;
         }
 
-        .insight ul {
+        .insight-card ul {
             list-style: none;
-            margin-top: 12px;
         }
 
-        .insight li {
-            color: #a0aec0;
+        .insight-card li {
+            color: var(--text-secondary);
             font-size: 14px;
-            padding: 4px 0;
-            padding-left: 20px;
+            padding: 8px 0;
+            padding-left: 24px;
             position: relative;
         }
 
-        .insight li::before {
-            content: "\2713";
+        .insight-card li::before {
+            content: "✓";
             position: absolute;
             left: 0;
-            color: #22c55e;
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        /* Tools NOT Recommended */
+        .avoid-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .avoid-card {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .avoid-card:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .avoid-card .tool-name {
+            color: #fca5a5;
+        }
+
+        .avoid-card .tool-price {
+            color: var(--danger-red);
+        }
+
+        .avoid-card p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        /* Migration Path Table */
+        .migration-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .migration-card {
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .migration-card.year1 {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .migration-card.year2 {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .migration-card.year3 {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .migration-card .cost {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .migration-card.year1 .cost { color: var(--success-green); }
+        .migration-card.year2 .cost { color: var(--amber-glow); }
+        .migration-card.year3 .cost { color: #fca5a5; }
+
+        .migration-card .label {
+            font-size: 14px;
+            color: var(--text-muted);
         }
 
         /* Sources */
-        .sources {
-            background: rgba(255,255,255,0.03);
+        .sources-section {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 32px;
             margin-top: 40px;
         }
 
-        .sources h3 {
-            font-size: 18px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
+        .sources-section h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--amber-glow);
         }
 
-        .sources ul {
-            list-style: none;
+        .sources-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-        .sources li {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .sources a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .sources a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: #475569;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .big-stats { grid-template-columns: repeat(2, 1fr); }
-            .cards, .timeline, .insights, .sources ul, .tool-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
+        .sources-grid a {
+            color: var(--text-muted);
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
+            transition: color 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
+        .sources-grid a:hover {
+            color: var(--amber-glow);
         }
 
         /* Step Navigation */
@@ -557,35 +859,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 40px;
+            padding: 48px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 60px;
         }
 
         .step-nav a {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #a0aec0;
+            gap: 12px;
+            padding: 16px 28px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
-        }
-
-        .step-nav .disabled {
-            opacity: 0.3;
-            pointer-events: none;
+            background: var(--space-light);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
         }
 
         .step-nav-center {
@@ -593,631 +890,762 @@
         }
 
         .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
+            color: var(--space-deep);
             border: none;
-            color: #fff;
+        }
+
+        .step-nav-center a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.3);
         }
 
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner,
+            .timeline-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tool-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 30px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+            .stats-inner,
+            .timeline-grid,
+            .tool-grid,
+            .insights-grid,
+            .avoid-grid,
+            .migration-summary,
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .nav-inner,
+            .breadcrumb {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+            .arch-layer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .arch-label {
+                margin-bottom: 12px;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .step-nav a {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
-            </div>
-        </div>
-    </nav>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
 
-    <div class="container">
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">← Back to Research</a>
+                    <span class="step-badge">Step 11</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
         <div class="breadcrumb">
-            <a href="../index.html">Home</a>
+            <a href="../index.html">Research</a>
             <span>›</span>
-            <a href="../index.html">Phase 4: Operations</a>
+            <a href="../index.html#research">Operations</a>
             <span>›</span>
-            Step 11
+            Step 11: Infrastructure
         </div>
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 11</div>
-        </header>
-    </div>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Infrastructure That Scales</h1>
-            <p class="tagline">From 2-person team managing 10 apps to 100-person company with 50 apps. Here's the infrastructure roadmap.</p>
-            <p class="subtitle">Research Date: December 28, 2025 | Focus: iOS + Android Portfolio</p>
-        </div>
-    </section>
-
-    <section class="big-stats">
-        <div class="container" style="display: contents;">
-            <div class="big-stat">
-                <div class="big-stat-number">$109</div>
-                <div class="big-stat-label">Year 1 monthly infra cost</div>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge animate-on-scroll">
+                <span>⚡</span>
+                Phase 4: Operations
             </div>
-            <div class="big-stat">
-                <div class="big-stat-number">$11-22</div>
-                <div class="big-stat-label">Per-app cost (Year 1)</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">4</div>
-                <div class="big-stat-label">Tools that stay FREE at any scale</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">$0</div>
-                <div class="big-stat-label">Ad mediation cost (MAX is free)</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3-Year Scaling Timeline -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Infrastructure Scaling Roadmap</h2>
-            <p class="section-subtitle">How costs and tooling evolve from bootstrap to scale.</p>
-
-            <div class="timeline">
-                <div class="timeline-year active">
-                    <div class="year-header">
-                        <span class="year-badge">Year 1</span>
-                        <span class="year-title">Bootstrap</span>
-                    </div>
-                    <div class="year-details">
-                        <strong>2 people</strong> (solo + iOS eng)<br>
-                        <strong>5-10 apps</strong> in portfolio<br>
-                        Focus: Free tiers, minimal ops
-                    </div>
-                    <div class="year-cost">$109/mo</div>
-                    <div class="year-per-app">~$11-22 per app</div>
-                </div>
-
-                <div class="timeline-year">
-                    <div class="year-header">
-                        <span class="year-badge">Year 2</span>
-                        <span class="year-title">Growth</span>
-                    </div>
-                    <div class="year-details">
-                        <strong>5-10 people</strong><br>
-                        <strong>10-25 apps</strong> in portfolio<br>
-                        Focus: Paid tiers, automation
-                    </div>
-                    <div class="year-cost">$651-1,576/mo</div>
-                    <div class="year-per-app">~$26-63 per app</div>
-                </div>
-
-                <div class="timeline-year">
-                    <div class="year-header">
-                        <span class="year-badge">Year 3</span>
-                        <span class="year-title">Scale</span>
-                    </div>
-                    <div class="year-details">
-                        <strong>20-100 people</strong><br>
-                        <strong>25-50 apps</strong> in portfolio<br>
-                        Focus: Enterprise, dedicated ops
-                    </div>
-                    <div class="year-cost">$2,536-4,797/mo</div>
-                    <div class="year-per-app">~$51-96 per app</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Architecture Diagram -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Recommended Architecture</h2>
-            <p class="section-subtitle">Shared infrastructure stack for multi-app portfolio management.</p>
-
-            <div class="architecture">
-                <div class="arch-layer">
-                    <div class="arch-label">Analytics</div>
-                    <div class="arch-tools">
-                        <span class="arch-tool free">Firebase Analytics (FREE)</span>
-                        <span class="arch-tool">Mixpanel / Amplitude</span>
-                        <span class="arch-tool free">RevenueCat (FREE <$10K)</span>
-                    </div>
-                </div>
-                <div class="arch-layer">
-                    <div class="arch-label">Monetization</div>
-                    <div class="arch-tools">
-                        <span class="arch-tool free">MAX by AppLovin (FREE)</span>
-                        <span class="arch-tool">AdMob</span>
-                        <span class="arch-tool">Unity Ads</span>
-                    </div>
-                </div>
-                <div class="arch-layer">
-                    <div class="arch-label">Backend</div>
-                    <div class="arch-tools">
-                        <span class="arch-tool free">Firebase (Spark FREE)</span>
-                        <span class="arch-tool">Cloud Functions</span>
-                        <span class="arch-tool">Firestore</span>
-                    </div>
-                </div>
-                <div class="arch-layer">
-                    <div class="arch-label">CI/CD</div>
-                    <div class="arch-tools">
-                        <span class="arch-tool free">Fastlane (FREE)</span>
-                        <span class="arch-tool">GitHub Actions</span>
-                        <span class="arch-tool">TestFlight / Play Console</span>
-                    </div>
-                </div>
-                <div class="arch-layer">
-                    <div class="arch-label">Monitoring</div>
-                    <div class="arch-tools">
-                        <span class="arch-tool free">Firebase Crashlytics (FREE)</span>
-                        <span class="arch-tool">Sentry (advanced)</span>
-                        <span class="arch-tool free">Firebase Remote Config (FREE)</span>
-                    </div>
-                </div>
-                <div class="arch-layer">
-                    <div class="arch-label">Operations</div>
-                    <div class="arch-tools">
-                        <span class="arch-tool">Help Scout ($25/user)</span>
-                        <span class="arch-tool">ASOdesk ($59+)</span>
-                        <span class="arch-tool">Linear / Notion</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tool Categories -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Tool Recommendations by Category</h2>
-            <p class="section-subtitle">Best tools for managing a portfolio of 5-50 mobile apps.</p>
-
-            <!-- Analytics -->
-            <div class="tool-category">
-                <h3>Analytics & Revenue Tracking</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">Firebase Analytics <span class="badge-rec">ESSENTIAL</span></div>
-                        <div class="tool-price">FREE (unlimited apps, events)</div>
-                        <div class="tool-score">Multi-app: 5/5</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Mixpanel</div>
-                        <div class="tool-price">Free: 1M events | $25/mo+</div>
-                        <div class="tool-score">Multi-app: 4/5</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Amplitude</div>
-                        <div class="tool-price">Free: 1M events | $49/mo+</div>
-                        <div class="tool-score">Multi-app: 4/5</div>
-                    </div>
-                    <div class="tool-card recommended">
-                        <div class="tool-name">RevenueCat <span class="badge-rec">SUBSCRIPTIONS</span></div>
-                        <div class="tool-price">Free: <$10K MTR | $250/mo+</div>
-                        <div class="tool-score">Multi-app: 5/5</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ad Mediation -->
-            <div class="tool-category">
-                <h3>Ad Mediation</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">MAX by AppLovin <span class="badge-rec">BEST</span></div>
-                        <div class="tool-price">FREE (5% fee to advertisers)</div>
-                        <div class="tool-score">Multi-app: 5/5 | 60%+ market share</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">ironSource (Unity)</div>
-                        <div class="tool-price">FREE for publishers</div>
-                        <div class="tool-score">Multi-app: 4/5 | Gaming focus</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">AdMob Mediation</div>
-                        <div class="tool-price">FREE</div>
-                        <div class="tool-score">Multi-app: 3/5 | Simpler</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Customer Support -->
-            <div class="tool-category">
-                <h3>Customer Support</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">Help Scout <span class="badge-rec">BEST VALUE</span></div>
-                        <div class="tool-price">$25/user (unlimited mailboxes)</div>
-                        <div class="tool-score">Multi-brand: 5/5</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Freshdesk</div>
-                        <div class="tool-price">Free (10 agents) | $15-49/user</div>
-                        <div class="tool-score">Multi-brand: 4/5</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Zendesk</div>
-                        <div class="tool-price">$55-115/agent</div>
-                        <div class="tool-score">Multi-brand: 4/5 | Expensive</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Intercom</div>
-                        <div class="tool-price">$29-132/seat + usage</div>
-                        <div class="tool-score">Best for in-app chat</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Crash Reporting -->
-            <div class="tool-category">
-                <h3>Crash Reporting & Monitoring</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">Firebase Crashlytics <span class="badge-rec">DEFAULT</span></div>
-                        <div class="tool-price">FREE (unlimited)</div>
-                        <div class="tool-score">Multi-app: 5/5 | Industry standard</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Sentry</div>
-                        <div class="tool-price">Free tier | $29-89/mo</div>
-                        <div class="tool-score">Multi-app: 4/5 | Advanced</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Bugsnag</div>
-                        <div class="tool-price">$59-249/mo</div>
-                        <div class="tool-score">Multi-app: 3/5</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feature Flags -->
-            <div class="tool-category">
-                <h3>Feature Flags & Remote Config</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">Firebase Remote Config <span class="badge-rec">BASIC</span></div>
-                        <div class="tool-price">FREE (unlimited)</div>
-                        <div class="tool-score">Multi-app: 4/5</div>
-                    </div>
-                    <div class="tool-card recommended">
-                        <div class="tool-name">Statsig <span class="badge-rec">ADVANCED</span></div>
-                        <div class="tool-price">Free: 1M events | $150/mo</div>
-                        <div class="tool-score">Multi-app: 5/5</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">LaunchDarkly</div>
-                        <div class="tool-price">$12/connection + MAU</div>
-                        <div class="tool-score">Multi-app: 2/5 | Very expensive</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ASO & Reviews -->
-            <div class="tool-category">
-                <h3>ASO & Review Management</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">ASOdesk <span class="badge-rec">YEAR 1-2</span></div>
-                        <div class="tool-price">$59 (5 apps) - $399 (40 apps)</div>
-                        <div class="tool-score">Multi-app: 5/5 | Best value</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">AppFollow</div>
-                        <div class="tool-price">$97-597/mo by app count</div>
-                        <div class="tool-score">Multi-app: 4/5 | Best features</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">AppTweak</div>
-                        <div class="tool-price">Custom (~$200-800/mo)</div>
-                        <div class="tool-score">ASO-focused</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CI/CD -->
-            <div class="tool-category">
-                <h3>CI/CD for Mobile</h3>
-                <div class="tool-grid">
-                    <div class="tool-card recommended">
-                        <div class="tool-name">Fastlane <span class="badge-rec">FREE</span></div>
-                        <div class="tool-price">FREE (open source)</div>
-                        <div class="tool-score">Multi-app: 5/5 | Self-hosted</div>
-                    </div>
-                    <div class="tool-card recommended">
-                        <div class="tool-name">GitHub Actions <span class="badge-rec">BEST COMBO</span></div>
-                        <div class="tool-price">2,000 min free | $0.008/min macOS</div>
-                        <div class="tool-score">Multi-app: 4/5</div>
-                    </div>
-                    <div class="tool-card">
-                        <div class="tool-name">Bitrise</div>
-                        <div class="tool-price">$89-192/mo | $250/app release</div>
-                        <div class="tool-score">Multi-app: 3/5 | Mobile-focused</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cost Breakdown Tables -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Detailed Cost Breakdown</h2>
-            <p class="section-subtitle">Monthly infrastructure costs by year and category.</p>
-
-            <h3 style="color: #a5b4fc; margin: 40px 0 20px;">Year 1: Bootstrap (2 people, 5-10 apps)</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Tool</th>
-                        <th>Monthly Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Analytics</td><td>Firebase + Mixpanel Free</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>Ads</td><td>MAX by AppLovin</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>Backend</td><td>Firebase Spark</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>CI/CD</td><td>Fastlane + GitHub Actions</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>Support</td><td>Help Scout (2 users)</td><td class="value">$50</td></tr>
-                    <tr><td>Crashes</td><td>Firebase Crashlytics</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>Feature Flags</td><td>Firebase Remote Config</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>ASO/Reviews</td><td>ASOdesk Basic</td><td class="value">$59</td></tr>
-                    <tr><td>Subscriptions</td><td>RevenueCat Free</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr style="background: rgba(34, 197, 94, 0.1);"><td><strong>TOTAL</strong></td><td></td><td class="value" style="color: #22c55e; font-size: 18px;"><strong>$109/month</strong></td></tr>
-                </tbody>
-            </table>
-
-            <h3 style="color: #a5b4fc; margin: 40px 0 20px;">Year 2: Growth (5-10 people, 10-25 apps)</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Tool</th>
-                        <th>Monthly Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Analytics</td><td>Firebase + Mixpanel Growth</td><td class="value">$25-50</td></tr>
-                    <tr><td>Ads</td><td>MAX by AppLovin</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>Backend</td><td>Firebase Blaze (usage-based)</td><td class="value">$50-200</td></tr>
-                    <tr><td>CI/CD</td><td>GitHub Actions (paid tier)</td><td class="value">$50-100</td></tr>
-                    <tr><td>Support</td><td>Help Scout (4 users)</td><td class="value">$100-240</td></tr>
-                    <tr><td>Crashes</td><td>Sentry Team</td><td class="value">$29-89</td></tr>
-                    <tr><td>Feature Flags</td><td>Statsig Free/Pro</td><td class="value">$0-150</td></tr>
-                    <tr><td>ASO/Reviews</td><td>AppFollow Professional</td><td class="value">$297</td></tr>
-                    <tr><td>Subscriptions</td><td>RevenueCat (if >$10K MTR)</td><td class="value">$0-250</td></tr>
-                    <tr><td>Team Tools</td><td>Slack, Linear, Figma</td><td class="value">$100-200</td></tr>
-                    <tr style="background: rgba(245, 158, 11, 0.1);"><td><strong>TOTAL</strong></td><td></td><td class="value" style="color: #fcd34d; font-size: 18px;"><strong>$651-1,576/month</strong></td></tr>
-                </tbody>
-            </table>
-
-            <h3 style="color: #a5b4fc; margin: 40px 0 20px;">Year 3: Scale (20-100 people, 25-50 apps)</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Tool</th>
-                        <th>Monthly Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Analytics</td><td>Firebase + Amplitude Plus</td><td class="value">$50-100</td></tr>
-                    <tr><td>Ads</td><td>MAX by AppLovin</td><td class="value" style="color: #86efac;">$0</td></tr>
-                    <tr><td>Backend</td><td>Firebase Blaze + potential AWS</td><td class="value">$200-500</td></tr>
-                    <tr><td>CI/CD</td><td>Bitrise Pro or scaled GitHub</td><td class="value">$200-500</td></tr>
-                    <tr><td>Support</td><td>Help Scout (8+ users)</td><td class="value">$400-800</td></tr>
-                    <tr><td>Crashes</td><td>Sentry Business</td><td class="value">$89-200</td></tr>
-                    <tr><td>Feature Flags</td><td>Statsig Pro</td><td class="value">$150-300</td></tr>
-                    <tr><td>ASO/Reviews</td><td>AppFollow Business</td><td class="value">$597</td></tr>
-                    <tr><td>Subscriptions</td><td>RevenueCat Scale</td><td class="value">$250-500</td></tr>
-                    <tr><td>Monitoring</td><td>PagerDuty/OpsGenie</td><td class="value">$100-300</td></tr>
-                    <tr><td>Team Tools</td><td>Slack, Linear, Figma (team)</td><td class="value">$500-1,000</td></tr>
-                    <tr style="background: rgba(239, 68, 68, 0.1);"><td><strong>TOTAL</strong></td><td></td><td class="value" style="color: #fca5a5; font-size: 18px;"><strong>$2,536-4,797/month</strong></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <!-- Key Insights -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Key Insights</h2>
-            <p class="section-subtitle">Critical findings from infrastructure research.</p>
-
-            <div class="insights">
-                <div class="insight">
-                    <h3>Free Tier Winners</h3>
-                    <p>These tools scale from 0 to 50 apps without paid upgrades:</p>
-                    <ul>
-                        <li>Firebase Analytics - Unlimited apps/events</li>
-                        <li>Firebase Crashlytics - Unlimited crashes</li>
-                        <li>MAX by AppLovin - Free mediation (advertisers pay)</li>
-                        <li>Firebase Remote Config - Unlimited parameters</li>
-                    </ul>
-                </div>
-
-                <div class="insight">
-                    <h3>Cost Inflection Points</h3>
-                    <p>Watch for these thresholds that trigger paid tiers:</p>
-                    <ul>
-                        <li>$10K MTR - RevenueCat moves to paid</li>
-                        <li>10 apps - ASO tools tier up</li>
-                        <li>10 team members - Support costs jump</li>
-                        <li>1M events/mo - Analytics hit paid tiers</li>
-                    </ul>
-                </div>
-
-                <div class="insight">
-                    <h3>Hidden Costs to Watch</h3>
-                    <p>Often-overlooked expenses that add up:</p>
-                    <ul>
-                        <li>App store fees: $99/yr iOS + $25 Android</li>
-                        <li>macOS CI builds: 10x more than Linux</li>
-                        <li>Firebase Blaze: Cloud Functions can spike</li>
-                        <li>Support seats: Linear scaling with team</li>
-                    </ul>
-                </div>
-
-                <div class="insight">
-                    <h3>Architecture Recommendation</h3>
-                    <p>What to share vs. keep separate:</p>
-                    <ul>
-                        <li>SHARE: Analytics dashboard, ad account, support inbox, CI/CD</li>
-                        <li>SEPARATE: Firebase projects, app store listings, user DBs</li>
-                        <li>Use shared Fastlane + GitHub Actions workflows</li>
-                        <li>Keep Firebase projects isolated for billing clarity</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tools to Avoid -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Tools NOT Recommended</h2>
-            <p class="section-subtitle">Too expensive for early-stage portfolio management.</p>
-
-            <div class="tool-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <div class="tool-card" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05);">
-                    <div class="tool-name" style="color: #fca5a5;">data.ai (App Annie)</div>
-                    <div class="tool-price" style="color: #ef4444;">$20,000-50,000+/year</div>
-                    <p style="color: #94a3b8; font-size: 13px; margin-top: 8px;">Enterprise-only. Overkill for portfolio management. Consider Year 3+ only if investors require it.</p>
-                </div>
-                <div class="tool-card" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05);">
-                    <div class="tool-name" style="color: #fca5a5;">Sensor Tower</div>
-                    <div class="tool-price" style="color: #ef4444;">$499-2,000+/month</div>
-                    <p style="color: #94a3b8; font-size: 13px; margin-top: 8px;">Too expensive for early stage. Great competitive intelligence but not worth the cost until scale.</p>
-                </div>
-                <div class="tool-card" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05);">
-                    <div class="tool-name" style="color: #fca5a5;">LaunchDarkly</div>
-                    <div class="tool-price" style="color: #ef4444;">$500-2,000+/month at scale</div>
-                    <p style="color: #94a3b8; font-size: 13px; margin-top: 8px;">Pricing scales VERY fast with MAU. Use Statsig or Firebase Remote Config instead.</p>
-                </div>
-                <div class="tool-card" style="border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05);">
-                    <div class="tool-name" style="color: #fca5a5;">Zendesk Suite</div>
-                    <div class="tool-price" style="color: #ef4444;">$55-115/agent/month</div>
-                    <p style="color: #94a3b8; font-size: 13px; margin-top: 8px;">2-3x more expensive than Help Scout with similar features. Enterprise-focused.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Migration Path -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Tool Migration Path</h2>
-            <p class="section-subtitle">How to evolve your stack as you scale.</p>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th style="color: #86efac;">Year 1</th>
-                        <th style="color: #fcd34d;">Year 2</th>
-                        <th style="color: #fca5a5;">Year 3</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Analytics</td>
-                        <td>Firebase + Mixpanel Free</td>
-                        <td>Firebase + Mixpanel Growth</td>
-                        <td>Firebase + Amplitude Plus</td>
-                    </tr>
-                    <tr>
-                        <td>Support</td>
-                        <td>Help Scout Standard ($25/user)</td>
-                        <td>Help Scout Plus ($60/user)</td>
-                        <td>Help Scout Plus (6+ users)</td>
-                    </tr>
-                    <tr>
-                        <td>Crash Reporting</td>
-                        <td>Firebase Crashlytics</td>
-                        <td>Crashlytics + Sentry Team</td>
-                        <td>Sentry Business</td>
-                    </tr>
-                    <tr>
-                        <td>Feature Flags</td>
-                        <td>Firebase Remote Config</td>
-                        <td>Statsig Free</td>
-                        <td>Statsig Pro</td>
-                    </tr>
-                    <tr>
-                        <td>ASO/Reviews</td>
-                        <td>ASOdesk Basic ($59)</td>
-                        <td>AppFollow Pro ($297)</td>
-                        <td>AppFollow Business ($597)</td>
-                    </tr>
-                    <tr>
-                        <td>CI/CD</td>
-                        <td>Fastlane + GitHub Free</td>
-                        <td>GitHub Actions paid</td>
-                        <td>Bitrise Pro or scaled GitHub</td>
-                    </tr>
-                    <tr>
-                        <td>Subscriptions</td>
-                        <td>RevenueCat Free</td>
-                        <td>RevenueCat Free (if &lt;$10K MTR)</td>
-                        <td>RevenueCat Growth/Scale</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 24px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 800; color: #22c55e;">$1,308</div>
-                    <div style="color: #86efac; font-size: 14px; margin-top: 4px;">Year 1 Annual</div>
-                </div>
-                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 24px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 800; color: #f59e0b;">$7.8K-19K</div>
-                    <div style="color: #fcd34d; font-size: 14px; margin-top: 4px;">Year 2 Annual</div>
-                </div>
-                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 24px; text-align: center;">
-                    <div style="font-size: 32px; font-weight: 800; color: #ef4444;">$30K-58K</div>
-                    <div style="color: #fca5a5; font-size: 14px; margin-top: 4px;">Year 3 Annual</div>
-                </div>
-            </div>
-
-            <p style="margin-top: 24px; color: #64748b; text-align: center; font-size: 14px;">
-                Note: Infrastructure costs only. Does not include salaries, app store fees ($99/yr iOS + $25 Android), marketing, or legal costs.
+            <h1 class="animate-on-scroll">
+                Infrastructure<br>
+                <span class="highlight">That Scales</span>
+            </h1>
+            <p class="hero-subtitle animate-on-scroll">
+                From 2-person team managing 10 apps to 100-person company with 50 apps. Here's the infrastructure roadmap.
             </p>
-        </div>
-    </section>
+            <p class="hero-meta animate-on-scroll">
+                Research Date: December 28, 2025 — Focus: iOS + Android Portfolio
+            </p>
+        </section>
 
-    <!-- Sources -->
-    <section class="section">
-        <div class="container">
-            <div class="sources">
-                <h3>Sources & References</h3>
-                <ul>
-                    <li><a href="https://firebase.google.com/pricing" target="_blank">Firebase Pricing</a></li>
-                    <li><a href="https://mixpanel.com/pricing/" target="_blank">Mixpanel Pricing</a></li>
-                    <li><a href="https://amplitude.com" target="_blank">Amplitude Analytics</a></li>
-                    <li><a href="https://www.revenuecat.com/pricing/" target="_blank">RevenueCat Pricing</a></li>
-                    <li><a href="https://www.playwire.com/blog/how-does-applovin-make-money" target="_blank">AppLovin MAX Business Model</a></li>
-                    <li><a href="https://www.helpscout.com/pricing/" target="_blank">Help Scout Pricing</a></li>
-                    <li><a href="https://www.freshworks.com/freshdesk/pricing/" target="_blank">Freshdesk Pricing</a></li>
-                    <li><a href="https://www.zendesk.com/pricing" target="_blank">Zendesk Pricing</a></li>
-                    <li><a href="https://sentry.io/pricing/" target="_blank">Sentry Pricing</a></li>
-                    <li><a href="https://statsig.com/pricing" target="_blank">Statsig Pricing</a></li>
-                    <li><a href="https://launchdarkly.com/pricing/" target="_blank">LaunchDarkly Pricing</a></li>
-                    <li><a href="https://asodesk.com" target="_blank">ASOdesk Pricing</a></li>
-                    <li><a href="https://appfollow.io" target="_blank">AppFollow Pricing</a></li>
-                    <li><a href="https://bitrise.io/pricing" target="_blank">Bitrise Pricing</a></li>
-                    <li><a href="https://www.g2.com/compare/google-admob-vs-ironsource" target="_blank">AdMob vs ironSource Comparison</a></li>
-                    <li><a href="https://www.blog.udonis.co/mobile-marketing/top-ad-mediation-platforms-mobile-apps-games" target="_blank">Top Ad Mediation Platforms</a></li>
-                </ul>
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$109</div>
+                    <div class="stat-label">Year 1 Monthly Cost</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$11-22</div>
+                    <div class="stat-label">Per-App Cost (Y1)</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Forever Free Tools</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$0</div>
+                    <div class="stat-label">Ad Mediation Cost</div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <div class="container">
+        <div class="main">
+            <!-- Scaling Roadmap -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Infrastructure Scaling Roadmap</h2>
+                        <p>How costs and tooling evolve from bootstrap to scale.</p>
+                    </div>
+                    <div class="section-tag">3-Year Plan</div>
+                </div>
+
+                <div class="timeline-grid">
+                    <div class="timeline-card active animate-on-scroll">
+                        <div class="year-badge">Year 1</div>
+                        <h3>Bootstrap</h3>
+                        <div class="timeline-details">
+                            <strong>2 people</strong> (solo + iOS eng)<br>
+                            <strong>5-10 apps</strong> in portfolio<br>
+                            Focus: Free tiers, minimal ops
+                        </div>
+                        <div class="timeline-cost">$109/mo</div>
+                        <div class="timeline-per-app">~$11-22 per app</div>
+                    </div>
+
+                    <div class="timeline-card animate-on-scroll">
+                        <div class="year-badge">Year 2</div>
+                        <h3>Growth</h3>
+                        <div class="timeline-details">
+                            <strong>5-10 people</strong><br>
+                            <strong>10-25 apps</strong> in portfolio<br>
+                            Focus: Paid tiers, automation
+                        </div>
+                        <div class="timeline-cost">$651-1,576/mo</div>
+                        <div class="timeline-per-app">~$26-63 per app</div>
+                    </div>
+
+                    <div class="timeline-card animate-on-scroll">
+                        <div class="year-badge">Year 3</div>
+                        <h3>Scale</h3>
+                        <div class="timeline-details">
+                            <strong>20-100 people</strong><br>
+                            <strong>25-50 apps</strong> in portfolio<br>
+                            Focus: Enterprise, dedicated ops
+                        </div>
+                        <div class="timeline-cost">$2,536-4,797/mo</div>
+                        <div class="timeline-per-app">~$51-96 per app</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Architecture -->
+            <section class="section" style="padding-top: 0;">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Recommended Architecture</h2>
+                        <p>Shared infrastructure stack for multi-app portfolio management.</p>
+                    </div>
+                    <div class="section-tag">Tech Stack</div>
+                </div>
+
+                <div class="architecture animate-on-scroll">
+                    <div class="arch-layer">
+                        <div class="arch-label">Analytics</div>
+                        <div class="arch-tools">
+                            <span class="arch-tool free">Firebase Analytics (FREE)</span>
+                            <span class="arch-tool">Mixpanel / Amplitude</span>
+                            <span class="arch-tool free">RevenueCat (FREE &lt;$10K)</span>
+                        </div>
+                    </div>
+                    <div class="arch-layer">
+                        <div class="arch-label">Monetization</div>
+                        <div class="arch-tools">
+                            <span class="arch-tool free">MAX by AppLovin (FREE)</span>
+                            <span class="arch-tool">AdMob</span>
+                            <span class="arch-tool">Unity Ads</span>
+                        </div>
+                    </div>
+                    <div class="arch-layer">
+                        <div class="arch-label">Backend</div>
+                        <div class="arch-tools">
+                            <span class="arch-tool free">Firebase (Spark FREE)</span>
+                            <span class="arch-tool">Cloud Functions</span>
+                            <span class="arch-tool">Firestore</span>
+                        </div>
+                    </div>
+                    <div class="arch-layer">
+                        <div class="arch-label">CI/CD</div>
+                        <div class="arch-tools">
+                            <span class="arch-tool free">Fastlane (FREE)</span>
+                            <span class="arch-tool">GitHub Actions</span>
+                            <span class="arch-tool">TestFlight / Play Console</span>
+                        </div>
+                    </div>
+                    <div class="arch-layer">
+                        <div class="arch-label">Monitoring</div>
+                        <div class="arch-tools">
+                            <span class="arch-tool free">Firebase Crashlytics (FREE)</span>
+                            <span class="arch-tool">Sentry (advanced)</span>
+                            <span class="arch-tool free">Firebase Remote Config (FREE)</span>
+                        </div>
+                    </div>
+                    <div class="arch-layer">
+                        <div class="arch-label">Operations</div>
+                        <div class="arch-tools">
+                            <span class="arch-tool">Help Scout ($25/user)</span>
+                            <span class="arch-tool">ASOdesk ($59+)</span>
+                            <span class="arch-tool">Linear / Notion</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tool Categories -->
+            <section class="section" style="padding-top: 0;">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Tool Recommendations by Category</h2>
+                        <p>Best tools for managing a portfolio of 5-50 mobile apps.</p>
+                    </div>
+                    <div class="section-tag">Toolbox</div>
+                </div>
+
+                <!-- Analytics -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>Analytics & Revenue Tracking</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">Firebase Analytics <span class="badge-rec">ESSENTIAL</span></div>
+                            <div class="tool-price">FREE (unlimited apps, events)</div>
+                            <div class="tool-score">Multi-app: 5/5</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Mixpanel</div>
+                            <div class="tool-price">Free: 1M events | $25/mo+</div>
+                            <div class="tool-score">Multi-app: 4/5</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Amplitude</div>
+                            <div class="tool-price">Free: 1M events | $49/mo+</div>
+                            <div class="tool-score">Multi-app: 4/5</div>
+                        </div>
+                        <div class="tool-card recommended">
+                            <div class="tool-name">RevenueCat <span class="badge-rec">SUBSCRIPTIONS</span></div>
+                            <div class="tool-price">Free: &lt;$10K MTR | $250/mo+</div>
+                            <div class="tool-score">Multi-app: 5/5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Mediation -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>Ad Mediation</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">MAX by AppLovin <span class="badge-rec">BEST</span></div>
+                            <div class="tool-price">FREE (5% fee to advertisers)</div>
+                            <div class="tool-score">Multi-app: 5/5 | 60%+ market share</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">ironSource (Unity)</div>
+                            <div class="tool-price">FREE for publishers</div>
+                            <div class="tool-score">Multi-app: 4/5 | Gaming focus</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">AdMob Mediation</div>
+                            <div class="tool-price">FREE</div>
+                            <div class="tool-score">Multi-app: 3/5 | Simpler</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Support -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>Customer Support</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">Help Scout <span class="badge-rec">BEST VALUE</span></div>
+                            <div class="tool-price">$25/user (unlimited mailboxes)</div>
+                            <div class="tool-score">Multi-brand: 5/5</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Freshdesk</div>
+                            <div class="tool-price">Free (10 agents) | $15-49/user</div>
+                            <div class="tool-score">Multi-brand: 4/5</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Zendesk</div>
+                            <div class="tool-price">$55-115/agent</div>
+                            <div class="tool-score">Multi-brand: 4/5 | Expensive</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Intercom</div>
+                            <div class="tool-price">$29-132/seat + usage</div>
+                            <div class="tool-score">Best for in-app chat</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crash Reporting -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>Crash Reporting & Monitoring</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">Firebase Crashlytics <span class="badge-rec">DEFAULT</span></div>
+                            <div class="tool-price">FREE (unlimited)</div>
+                            <div class="tool-score">Multi-app: 5/5 | Industry standard</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Sentry</div>
+                            <div class="tool-price">Free tier | $29-89/mo</div>
+                            <div class="tool-score">Multi-app: 4/5 | Advanced</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Bugsnag</div>
+                            <div class="tool-price">$59-249/mo</div>
+                            <div class="tool-score">Multi-app: 3/5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Flags -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>Feature Flags & Remote Config</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">Firebase Remote Config <span class="badge-rec">BASIC</span></div>
+                            <div class="tool-price">FREE (unlimited)</div>
+                            <div class="tool-score">Multi-app: 4/5</div>
+                        </div>
+                        <div class="tool-card recommended">
+                            <div class="tool-name">Statsig <span class="badge-rec">ADVANCED</span></div>
+                            <div class="tool-price">Free: 1M events | $150/mo</div>
+                            <div class="tool-score">Multi-app: 5/5</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">LaunchDarkly</div>
+                            <div class="tool-price">$12/connection + MAU</div>
+                            <div class="tool-score">Multi-app: 2/5 | Very expensive</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASO & Reviews -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>ASO & Review Management</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">ASOdesk <span class="badge-rec">YEAR 1-2</span></div>
+                            <div class="tool-price">$59 (5 apps) - $399 (40 apps)</div>
+                            <div class="tool-score">Multi-app: 5/5 | Best value</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">AppFollow</div>
+                            <div class="tool-price">$97-597/mo by app count</div>
+                            <div class="tool-score">Multi-app: 4/5 | Best features</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">AppTweak</div>
+                            <div class="tool-price">Custom (~$200-800/mo)</div>
+                            <div class="tool-score">ASO-focused</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CI/CD -->
+                <div class="tool-category animate-on-scroll">
+                    <h3>CI/CD for Mobile</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card recommended">
+                            <div class="tool-name">Fastlane <span class="badge-rec">FREE</span></div>
+                            <div class="tool-price">FREE (open source)</div>
+                            <div class="tool-score">Multi-app: 5/5 | Self-hosted</div>
+                        </div>
+                        <div class="tool-card recommended">
+                            <div class="tool-name">GitHub Actions <span class="badge-rec">BEST COMBO</span></div>
+                            <div class="tool-price">2,000 min free | $0.008/min macOS</div>
+                            <div class="tool-score">Multi-app: 4/5</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-name">Bitrise</div>
+                            <div class="tool-price">$89-192/mo | $250/app release</div>
+                            <div class="tool-score">Multi-app: 3/5 | Mobile-focused</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cost Breakdown Tables -->
+            <section class="section" style="padding-top: 0;">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Detailed Cost Breakdown</h2>
+                        <p>Monthly infrastructure costs by year and category.</p>
+                    </div>
+                    <div class="section-tag">Financials</div>
+                </div>
+
+                <!-- Year 1 Table -->
+                <div class="data-table-wrapper animate-on-scroll">
+                    <div class="table-header">
+                        <h3>Year 1: Bootstrap (2 people, 5-10 apps)</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Tool</th>
+                                <th>Monthly Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Analytics</td><td>Firebase + Mixpanel Free</td><td class="value free">$0</td></tr>
+                            <tr><td>Ads</td><td>MAX by AppLovin</td><td class="value free">$0</td></tr>
+                            <tr><td>Backend</td><td>Firebase Spark</td><td class="value free">$0</td></tr>
+                            <tr><td>CI/CD</td><td>Fastlane + GitHub Actions</td><td class="value free">$0</td></tr>
+                            <tr><td>Support</td><td>Help Scout (2 users)</td><td class="value">$50</td></tr>
+                            <tr><td>Crashes</td><td>Firebase Crashlytics</td><td class="value free">$0</td></tr>
+                            <tr><td>Feature Flags</td><td>Firebase Remote Config</td><td class="value free">$0</td></tr>
+                            <tr><td>ASO/Reviews</td><td>ASOdesk Basic</td><td class="value">$59</td></tr>
+                            <tr><td>Subscriptions</td><td>RevenueCat Free</td><td class="value free">$0</td></tr>
+                            <tr class="total-row"><td><strong>TOTAL</strong></td><td></td><td><strong>$109/month</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Year 2 Table -->
+                <div class="data-table-wrapper animate-on-scroll">
+                    <div class="table-header">
+                        <h3>Year 2: Growth (5-10 people, 10-25 apps)</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Tool</th>
+                                <th>Monthly Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Analytics</td><td>Firebase + Mixpanel Growth</td><td class="value">$25-50</td></tr>
+                            <tr><td>Ads</td><td>MAX by AppLovin</td><td class="value free">$0</td></tr>
+                            <tr><td>Backend</td><td>Firebase Blaze (usage-based)</td><td class="value">$50-200</td></tr>
+                            <tr><td>CI/CD</td><td>GitHub Actions (paid tier)</td><td class="value">$50-100</td></tr>
+                            <tr><td>Support</td><td>Help Scout (4 users)</td><td class="value">$100-240</td></tr>
+                            <tr><td>Crashes</td><td>Sentry Team</td><td class="value">$29-89</td></tr>
+                            <tr><td>Feature Flags</td><td>Statsig Free/Pro</td><td class="value">$0-150</td></tr>
+                            <tr><td>ASO/Reviews</td><td>AppFollow Professional</td><td class="value">$297</td></tr>
+                            <tr><td>Subscriptions</td><td>RevenueCat (if >$10K MTR)</td><td class="value">$0-250</td></tr>
+                            <tr><td>Team Tools</td><td>Slack, Linear, Figma</td><td class="value">$100-200</td></tr>
+                            <tr class="total-row year2"><td><strong>TOTAL</strong></td><td></td><td><strong>$651-1,576/month</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Year 3 Table -->
+                <div class="data-table-wrapper animate-on-scroll">
+                    <div class="table-header">
+                        <h3>Year 3: Scale (20-100 people, 25-50 apps)</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Tool</th>
+                                <th>Monthly Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Analytics</td><td>Firebase + Amplitude Plus</td><td class="value">$50-100</td></tr>
+                            <tr><td>Ads</td><td>MAX by AppLovin</td><td class="value free">$0</td></tr>
+                            <tr><td>Backend</td><td>Firebase Blaze + potential AWS</td><td class="value">$200-500</td></tr>
+                            <tr><td>CI/CD</td><td>Bitrise Pro or scaled GitHub</td><td class="value">$200-500</td></tr>
+                            <tr><td>Support</td><td>Help Scout (8+ users)</td><td class="value">$400-800</td></tr>
+                            <tr><td>Crashes</td><td>Sentry Business</td><td class="value">$89-200</td></tr>
+                            <tr><td>Feature Flags</td><td>Statsig Pro</td><td class="value">$150-300</td></tr>
+                            <tr><td>ASO/Reviews</td><td>AppFollow Business</td><td class="value">$597</td></tr>
+                            <tr><td>Subscriptions</td><td>RevenueCat Scale</td><td class="value">$250-500</td></tr>
+                            <tr><td>Monitoring</td><td>PagerDuty/OpsGenie</td><td class="value">$100-300</td></tr>
+                            <tr><td>Team Tools</td><td>Slack, Linear, Figma (team)</td><td class="value">$500-1,000</td></tr>
+                            <tr class="total-row year3"><td><strong>TOTAL</strong></td><td></td><td><strong>$2,536-4,797/month</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Key Insights -->
+            <section class="section" style="padding-top: 0;">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Key Insights</h2>
+                        <p>Critical findings from infrastructure research.</p>
+                    </div>
+                    <div class="section-tag">Takeaways</div>
+                </div>
+
+                <div class="insights-grid">
+                    <div class="insight-card animate-on-scroll">
+                        <h3>Free Tier Winners</h3>
+                        <p>These tools scale from 0 to 50 apps without paid upgrades:</p>
+                        <ul>
+                            <li>Firebase Analytics - Unlimited apps/events</li>
+                            <li>Firebase Crashlytics - Unlimited crashes</li>
+                            <li>MAX by AppLovin - Free mediation (advertisers pay)</li>
+                            <li>Firebase Remote Config - Unlimited parameters</li>
+                        </ul>
+                    </div>
+
+                    <div class="insight-card animate-on-scroll">
+                        <h3>Cost Inflection Points</h3>
+                        <p>Watch for these thresholds that trigger paid tiers:</p>
+                        <ul>
+                            <li>$10K MTR - RevenueCat moves to paid</li>
+                            <li>10 apps - ASO tools tier up</li>
+                            <li>10 team members - Support costs jump</li>
+                            <li>1M events/mo - Analytics hit paid tiers</li>
+                        </ul>
+                    </div>
+
+                    <div class="insight-card animate-on-scroll">
+                        <h3>Hidden Costs to Watch</h3>
+                        <p>Often-overlooked expenses that add up:</p>
+                        <ul>
+                            <li>App store fees: $99/yr iOS + $25 Android</li>
+                            <li>macOS CI builds: 10x more than Linux</li>
+                            <li>Firebase Blaze: Cloud Functions can spike</li>
+                            <li>Support seats: Linear scaling with team</li>
+                        </ul>
+                    </div>
+
+                    <div class="insight-card animate-on-scroll">
+                        <h3>Architecture Recommendation</h3>
+                        <p>What to share vs. keep separate:</p>
+                        <ul>
+                            <li>SHARE: Analytics dashboard, ad account, support inbox, CI/CD</li>
+                            <li>SEPARATE: Firebase projects, app store listings, user DBs</li>
+                            <li>Use shared Fastlane + GitHub Actions workflows</li>
+                            <li>Keep Firebase projects isolated for billing clarity</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools NOT Recommended -->
+            <section class="section" style="padding-top: 0;">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Tools NOT Recommended</h2>
+                        <p>Too expensive for early-stage portfolio management.</p>
+                    </div>
+                    <div class="section-tag">Avoid</div>
+                </div>
+
+                <div class="avoid-grid">
+                    <div class="avoid-card animate-on-scroll">
+                        <div class="tool-name">data.ai (App Annie)</div>
+                        <div class="tool-price">$20,000-50,000+/year</div>
+                        <p>Enterprise-only. Overkill for portfolio management. Consider Year 3+ only if investors require it.</p>
+                    </div>
+                    <div class="avoid-card animate-on-scroll">
+                        <div class="tool-name">Sensor Tower</div>
+                        <div class="tool-price">$499-2,000+/month</div>
+                        <p>Too expensive for early stage. Great competitive intelligence but not worth the cost until scale.</p>
+                    </div>
+                    <div class="avoid-card animate-on-scroll">
+                        <div class="tool-name">LaunchDarkly</div>
+                        <div class="tool-price">$500-2,000+/month at scale</div>
+                        <p>Pricing scales VERY fast with MAU. Use Statsig or Firebase Remote Config instead.</p>
+                    </div>
+                    <div class="avoid-card animate-on-scroll">
+                        <div class="tool-name">Zendesk Suite</div>
+                        <div class="tool-price">$55-115/agent/month</div>
+                        <p>2-3x more expensive than Help Scout with similar features. Enterprise-focused.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Migration Path -->
+            <section class="section" style="padding-top: 0;">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Tool Migration Path</h2>
+                        <p>How to evolve your stack as you scale.</p>
+                    </div>
+                    <div class="section-tag">Evolution</div>
+                </div>
+
+                <div class="data-table-wrapper animate-on-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th style="color: var(--success-green);">Year 1</th>
+                                <th style="color: var(--amber-glow);">Year 2</th>
+                                <th style="color: #fca5a5;">Year 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Analytics</td>
+                                <td>Firebase + Mixpanel Free</td>
+                                <td>Firebase + Mixpanel Growth</td>
+                                <td>Firebase + Amplitude Plus</td>
+                            </tr>
+                            <tr>
+                                <td>Support</td>
+                                <td>Help Scout Standard ($25/user)</td>
+                                <td>Help Scout Plus ($60/user)</td>
+                                <td>Help Scout Plus (6+ users)</td>
+                            </tr>
+                            <tr>
+                                <td>Crash Reporting</td>
+                                <td>Firebase Crashlytics</td>
+                                <td>Crashlytics + Sentry Team</td>
+                                <td>Sentry Business</td>
+                            </tr>
+                            <tr>
+                                <td>Feature Flags</td>
+                                <td>Firebase Remote Config</td>
+                                <td>Statsig Free</td>
+                                <td>Statsig Pro</td>
+                            </tr>
+                            <tr>
+                                <td>ASO/Reviews</td>
+                                <td>ASOdesk Basic ($59)</td>
+                                <td>AppFollow Pro ($297)</td>
+                                <td>AppFollow Business ($597)</td>
+                            </tr>
+                            <tr>
+                                <td>CI/CD</td>
+                                <td>Fastlane + GitHub Free</td>
+                                <td>GitHub Actions paid</td>
+                                <td>Bitrise Pro or scaled GitHub</td>
+                            </tr>
+                            <tr>
+                                <td>Subscriptions</td>
+                                <td>RevenueCat Free</td>
+                                <td>RevenueCat Free (if &lt;$10K MTR)</td>
+                                <td>RevenueCat Growth/Scale</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="migration-summary">
+                    <div class="migration-card year1 animate-on-scroll">
+                        <div class="cost">$1,308</div>
+                        <div class="label">Year 1 Annual</div>
+                    </div>
+                    <div class="migration-card year2 animate-on-scroll">
+                        <div class="cost">$7.8K-19K</div>
+                        <div class="label">Year 2 Annual</div>
+                    </div>
+                    <div class="migration-card year3 animate-on-scroll">
+                        <div class="cost">$30K-58K</div>
+                        <div class="label">Year 3 Annual</div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 24px; color: var(--text-muted); text-align: center; font-size: 14px;" class="animate-on-scroll">
+                    Note: Infrastructure costs only. Does not include salaries, app store fees ($99/yr iOS + $25 Android), marketing, or legal costs.
+                </p>
+            </section>
+
+            <!-- Sources -->
+            <section class="section" style="padding-top: 0;">
+                <div class="sources-section animate-on-scroll">
+                    <h3>Sources & References</h3>
+                    <div class="sources-grid">
+                        <a href="https://firebase.google.com/pricing" target="_blank">Firebase Pricing</a>
+                        <a href="https://mixpanel.com/pricing/" target="_blank">Mixpanel Pricing</a>
+                        <a href="https://amplitude.com" target="_blank">Amplitude Analytics</a>
+                        <a href="https://www.revenuecat.com/pricing/" target="_blank">RevenueCat Pricing</a>
+                        <a href="https://www.playwire.com/blog/how-does-applovin-make-money" target="_blank">AppLovin MAX Business Model</a>
+                        <a href="https://www.helpscout.com/pricing/" target="_blank">Help Scout Pricing</a>
+                        <a href="https://www.freshworks.com/freshdesk/pricing/" target="_blank">Freshdesk Pricing</a>
+                        <a href="https://www.zendesk.com/pricing" target="_blank">Zendesk Pricing</a>
+                        <a href="https://sentry.io/pricing/" target="_blank">Sentry Pricing</a>
+                        <a href="https://statsig.com/pricing" target="_blank">Statsig Pricing</a>
+                        <a href="https://launchdarkly.com/pricing/" target="_blank">LaunchDarkly Pricing</a>
+                        <a href="https://asodesk.com" target="_blank">ASOdesk Pricing</a>
+                        <a href="https://appfollow.io" target="_blank">AppFollow Pricing</a>
+                        <a href="https://bitrise.io/pricing" target="_blank">Bitrise Pricing</a>
+                        <a href="https://www.g2.com/compare/google-admob-vs-ironsource" target="_blank">AdMob vs ironSource Comparison</a>
+                        <a href="https://www.blog.udonis.co/mobile-marketing/top-ad-mediation-platforms-mobile-apps-games" target="_blank">Top Ad Mediation Platforms</a>
+                    </div>
+                </div>
+            </section>
+
             <!-- Step Navigation -->
             <div class="step-nav">
                 <a href="../step-10-legal-structure/step10-legal-structure.html">
@@ -1225,16 +1653,53 @@
                     <span>Previous: Legal Structure</span>
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 11 of 14</div>
-                    <a href="../index.html">Back to Home</a>
+                    <div class="step-indicator">Step 11 of 15</div>
+                    <a href="../index.html">Back to Mission Control</a>
                 </div>
                 <a href="../step-12-positioning/step12-positioning.html">
                     <span>Next: Positioning</span>
                     <span>→</span>
                 </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Step 11: Operational Infrastructure | December 2025</p>
         </div>
-    </footer>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 Moonshot. Indie App Accelerator. Step 11: Operational Infrastructure</p>
+        </footer>
+    </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

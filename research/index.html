@@ -3,787 +3,1270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moonshot Research Findings</title>
+    <title>Moonshot — Indie App Accelerator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
             top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
         }
 
-        .top-nav .container {
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
             text-decoration: none;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
             font-weight: 500;
-            transition: color 0.2s;
+            color: var(--success-green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .nav-links a:hover {
-            color: #fff;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-green);
+            animation: pulse 2s ease-in-out infinite;
         }
 
-        .nav-links a.active {
-            color: #a5b4fc;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
         }
 
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            margin-bottom: 32px;
+            width: fit-content;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-decoration: none;
         }
 
-        /* Stats */
-        .stats {
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin-bottom: 48px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
+            color: var(--space-deep);
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 40px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .stat {
             text-align: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
         .stat-label {
-            color: #a0aec0;
-            font-size: 16px;
-            margin-top: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Section */
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Section Headers */
         .section {
-            padding: 80px 0;
+            padding: 100px 0;
         }
 
-        .section-title {
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
             font-size: 36px;
             font-weight: 700;
-            margin-bottom: 16px;
+            letter-spacing: -1px;
         }
 
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 48px;
-            max-width: 600px;
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 15px;
         }
 
-        /* Cards */
-        .cards {
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Value Props Grid */
+        .value-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+        .value-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 32px;
-            transition: transform 0.2s, border-color 0.2s;
+            padding: 36px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card:hover {
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .value-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
         }
 
-        .card-icon {
+        .value-card:hover::before {
+            opacity: 1;
+        }
+
+        .value-icon {
             font-size: 32px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        .card h3 {
+        .value-card h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 20px;
+            font-weight: 600;
             margin-bottom: 12px;
         }
 
-        .card p {
-            color: #a0aec0;
+        .value-card p {
+            color: var(--text-secondary);
             font-size: 15px;
+            line-height: 1.6;
         }
 
-        /* How it works */
-        .steps {
+        /* Process Steps */
+        .process-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            gap: 32px;
         }
 
-        .step {
+        .process-step {
             text-align: center;
+            padding: 40px 32px;
+            background: var(--space-mid);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
             position: relative;
         }
 
+        .process-step::after {
+            content: '→';
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: var(--amber-glow);
+            opacity: 0.5;
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
         .step-number {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
             font-weight: 700;
-            font-size: 20px;
-            margin: 0 auto 20px;
+            color: var(--space-deep);
+            margin: 0 auto 24px;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
         }
 
-        .step h3 {
+        .process-step h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 20px;
+            font-weight: 600;
             margin-bottom: 12px;
         }
 
-        .step p {
-            color: #a0aec0;
+        .process-step p {
+            color: var(--text-secondary);
             font-size: 15px;
         }
 
-        /* Target */
-        .target-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .target-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 24px;
+        /* Research Findings */
+        .research-divider {
             text-align: center;
+            padding: 80px 40px;
+            position: relative;
         }
 
-        .target-item h4 {
-            font-size: 18px;
-            margin-bottom: 8px;
+        .research-divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--amber-glow));
         }
 
-        .target-item p {
-            color: #a0aec0;
-            font-size: 14px;
-        }
-
-        /* Trust Badges */
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-top: 24px;
-            color: #a0aec0;
-            font-size: 14px;
-        }
-
-        .trust-badges span {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* FAQ Section */
-        .faq-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-
-        .faq-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 24px;
-        }
-
-        .faq-card h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #a5b4fc;
-        }
-
-        .faq-card p {
-            color: #a0aec0;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 80px 0 60px;
-            text-align: center;
-        }
-
-        .hero h1 {
+        .research-divider h2 {
+            font-family: 'Syne', sans-serif;
             font-size: 48px;
             font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
         }
 
-        /* Topic Sections */
+        .research-divider p {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* Topic Section */
         .topic-section {
             padding: 60px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .topic-section:last-of-type {
             border-bottom: none;
         }
 
-        .section-header {
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             margin-bottom: 32px;
         }
 
-        .section-header h2 {
-            font-size: 28px;
+        .topic-header h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 8px;
         }
 
-        .section-header p {
-            color: #a0aec0;
+        .topic-header span {
+            color: var(--text-muted);
+            font-size: 14px;
         }
 
         /* Finding Cards */
         .findings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 20px;
         }
 
         .finding-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 24px;
-            transition: all 0.2s ease;
+            padding: 28px;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .finding-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--amber-glow);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .finding-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.4);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .finding-card:hover::before {
+            opacity: 1;
+        }
+
+        .finding-step {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
         }
 
         .finding-title {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 12px;
-            color: #fff;
+            margin-bottom: 16px;
+            line-height: 1.3;
         }
 
         .finding-result {
+            background: rgba(52, 211, 153, 0.08);
+            border-left: 3px solid var(--success-green);
+            padding: 14px 16px;
+            border-radius: 0 8px 8px 0;
             font-size: 14px;
-            color: #86efac;
-            padding: 12px;
-            background: rgba(34, 197, 94, 0.1);
-            border-radius: 8px;
-            border-left: 3px solid #22c55e;
-            margin-bottom: 12px;
+            color: var(--cyan-soft);
+            margin-bottom: 16px;
+            flex-grow: 1;
         }
 
-        .view-report {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: #667eea;
-            font-weight: 500;
-        }
-
-        .view-report:after {
-            content: " \2192";
-        }
-
-        /* Final Assessment CTA */
-        .final-cta {
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .final-cta-card {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(22, 163, 74, 0.05));
-            border: 2px solid rgba(34, 197, 94, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            margin: 0 auto;
-            text-decoration: none;
-            display: block;
-            transition: all 0.2s ease;
-        }
-
-        .final-cta-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(34, 197, 94, 0.6);
-            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.2);
-        }
-
-        .final-cta-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #4ade80;
-            margin-bottom: 12px;
-        }
-
-        .final-cta-subtitle {
-            font-size: 16px;
-            color: #a0aec0;
-            margin-bottom: 20px;
-        }
-
-        .final-cta-link {
+        .finding-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 50px;
+            font-size: 13px;
             font-weight: 600;
+            color: var(--amber-glow);
+            transition: gap 0.3s ease;
+        }
+
+        .finding-card:hover .finding-link {
+            gap: 12px;
+        }
+
+        .finding-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 80px 0 100px;
+            text-align: center;
+        }
+
+        .final-card {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.08) 0%, rgba(34, 211, 238, 0.05) 100%);
+            border: 2px solid rgba(52, 211, 153, 0.2);
+            border-radius: 24px;
+            padding: 60px 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-decoration: none;
+            display: block;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .final-card:hover {
+            border-color: rgba(52, 211, 153, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(52, 211, 153, 0.15);
+        }
+
+        .final-card:hover::before {
+            opacity: 1;
+        }
+
+        .go-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--success-green);
+            color: var(--space-deep);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-family: 'Syne', sans-serif;
             font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 30px rgba(52, 211, 153, 0.4);
+        }
+
+        .final-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .final-card p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .final-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--success-green) 0%, #10b981 100%);
+            color: var(--space-deep);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .final-card:hover .final-btn {
+            transform: translateX(4px);
         }
 
         /* Footer */
-        footer {
-            padding: 40px 0;
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
             text-align: center;
-            color: #64748b;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
             font-size: 14px;
         }
 
-        footer a {
-            color: #667eea;
-            text-decoration: none;
+        .footer-links {
+            display: flex;
+            gap: 24px;
         }
 
-        footer a:hover {
-            text-decoration: underline;
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--amber-glow);
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-step::after {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 36px; }
-            .stats, .cards, .steps, .target-grid { grid-template-columns: 1fr; }
-            .trust-badges { flex-direction: column; gap: 12px; align-items: center; }
-            .faq-grid { grid-template-columns: 1fr; }
+            .hero {
+                padding: 100px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 40px;
+                letter-spacing: -1px;
+            }
+            .hero-subtitle {
+                font-size: 17px;
+            }
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .stat {
+                padding: 20px;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            .value-grid,
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+            .findings-grid {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .footer-inner {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="index.html" class="nav-brand">Moonshot</a>
-        </div>
-    </nav>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Turn Your App Into<br>Passive Income</h1>
-            <p style="font-size: 16px; color: #667eea; font-weight: 500; margin-bottom: 16px;">Partnership, not acquisition. Your app, your control.</p>
-            <p class="tagline" style="font-size: 22px; color: #a0aec0; max-width: 600px; margin: 0 auto 40px;">We partner with indie developers to scale and monetize their apps. You keep ownership. We do the heavy lifting. Revenue share starts at 70/30 in your favor.</p>
-            <div class="trust-badges">
-                <span>✓ 100% IP Ownership</span>
-                <span>✓ No Upfront Costs</span>
-                <span>✓ 30-Day Exit Clause</span>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-status">
+                    <span class="status-dot"></span>
+                    Research Complete
+                </div>
             </div>
-        </div>
-    </section>
+        </nav>
 
-    <div class="container">
-        <section class="stats">
-            <div class="stat">
-                <div class="stat-number">3-5x</div>
-                <div class="stat-label">Realistic Revenue Uplift</div>
-                <div style="color: #667eea; font-size: 13px; margin-top: 4px;">e.g. $500 → $2,000/mo</div>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span>◆</span>
+                Partnership, not acquisition
             </div>
-            <div class="stat">
-                <div class="stat-number">70/30</div>
-                <div class="stat-label">You Keep 70% to Start</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number">8-16 Wks</div>
-                <div class="stat-label">Based on Complexity</div>
+            <h1>
+                Turn Your App Into<br>
+                <span class="highlight">Passive Income</span>
+            </h1>
+            <p class="hero-subtitle">
+                We partner with indie developers to scale and monetize their apps.
+                You keep ownership. We do the heavy lifting. Revenue share starts at 70/30 in your favor.
+            </p>
+            <div class="hero-cta">
+                <a href="#research" class="btn btn-primary">
+                    View Research
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="step-15-final-assessment/step15-final-assessment.html" class="btn btn-secondary">
+                    Final Assessment
+                </a>
             </div>
         </section>
-    </div>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">The Problem We Solve</h2>
-            <p class="section-subtitle">You built something people love. Now let us help you get paid for it.</p>
-
-            <div class="cards">
-                <div class="card">
-                    <div class="card-icon">⏰</div>
-                    <h3>No Time to Scale</h3>
-                    <p>You have a day job. Your app is a side project with real users, but you can't dedicate the hours needed to optimize it.</p>
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">347K+</div>
+                    <div class="stat-label">Target Apps</div>
                 </div>
-                <div class="card">
-                    <div class="card-icon">💸</div>
-                    <h3>Under-Monetized</h3>
-                    <p>Thousands of active users but barely covering server costs. You know there's money to be made, but don't know how.</p>
+                <div class="stat animate-on-scroll" style="animation-delay: 0.1s">
+                    <div class="stat-value">3-5×</div>
+                    <div class="stat-label">Revenue Uplift</div>
                 </div>
-                <div class="card">
-                    <div class="card-icon">🔧</div>
-                    <h3>Technical Debt</h3>
-                    <p>Built with Flutter, React Native, or quick prototyping tools. It works, but it's not optimized for performance or growth.</p>
+                <div class="stat animate-on-scroll" style="animation-delay: 0.2s">
+                    <div class="stat-value">70/30</div>
+                    <div class="stat-label">Your Split</div>
                 </div>
-                <div class="card">
-                    <div class="card-icon">📊</div>
-                    <h3>No Analytics</h3>
-                    <p>Flying blind without proper metrics. You don't know where users drop off or what features drive retention.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">How It Works</h2>
-            <p class="section-subtitle">A simple partnership that lets you earn more while doing less.</p>
-
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>We Find You</h3>
-                    <p>We scout promising apps with 15K–1M users that are under-monetized. Or you reach out to us directly.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>We Optimize</h3>
-                    <p>Our team rebuilds your app in native code, implements analytics, and creates a monetization strategy.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>We Split Profits</h3>
-                    <p>You retain ownership. We handle operations. Revenue share starts at 70/30 in your favor. Earn passive income.</p>
+                <div class="stat animate-on-scroll" style="animation-delay: 0.3s">
+                    <div class="stat-value">8-16w</div>
+                    <div class="stat-label">Implementation</div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">What We Provide</h2>
-            <p class="section-subtitle">Everything you need to turn users into revenue.</p>
+        <div class="main">
+            <!-- Value Proposition -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>The Problem We Solve</h2>
+                        <p>You built something people love. Now let us help you get paid for it.</p>
+                    </div>
+                    <div class="section-tag">For Indie Devs</div>
+                </div>
+                <div class="value-grid">
+                    <div class="value-card animate-on-scroll">
+                        <div class="value-icon">⏰</div>
+                        <h3>No Time to Scale</h3>
+                        <p>You have a day job. Your app is a side project with real users, but you can't dedicate the hours needed to optimize it.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll">
+                        <div class="value-icon">💸</div>
+                        <h3>Under-Monetized</h3>
+                        <p>Thousands of active users but barely covering server costs. You know there's money to be made, but don't know how.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll">
+                        <div class="value-icon">🔧</div>
+                        <h3>Technical Debt</h3>
+                        <p>Built with cross-platform tools. It works, but it's not optimized for performance, retention, or growth.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll">
+                        <div class="value-icon">📊</div>
+                        <h3>Flying Blind</h3>
+                        <p>No proper analytics. You don't know where users drop off, what features drive retention, or how to improve.</p>
+                    </div>
+                </div>
+            </section>
 
-            <div class="cards">
-                <div class="card">
-                    <div class="card-icon">📱</div>
-                    <h3>Native Rewrite</h3>
-                    <p>High-quality native iOS and Android code that's fast, stable, and scalable.</p>
+            <!-- How It Works -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>How It Works</h2>
+                        <p>A simple partnership that lets you earn more while doing less.</p>
+                    </div>
+                    <div class="section-tag">3 Steps</div>
                 </div>
-                <div class="card">
-                    <div class="card-icon">💰</div>
-                    <h3>Monetization</h3>
-                    <p>Ads, subscriptions, in-app purchases, sponsorships—we implement what works for your users.</p>
+                <div class="process-grid">
+                    <div class="process-step animate-on-scroll">
+                        <div class="step-number">1</div>
+                        <h3>We Find You</h3>
+                        <p>We scout promising apps with 15K–1M users that are under-monetized. Or you reach out to us directly.</p>
+                    </div>
+                    <div class="process-step animate-on-scroll">
+                        <div class="step-number">2</div>
+                        <h3>We Optimize</h3>
+                        <p>Our team rebuilds in native code, implements analytics, and creates a monetization strategy tailored to your users.</p>
+                    </div>
+                    <div class="process-step animate-on-scroll">
+                        <div class="step-number">3</div>
+                        <h3>We Split Profits</h3>
+                        <p>You retain ownership. We handle operations. Revenue share starts at 70/30 in your favor. Passive income unlocked.</p>
+                    </div>
                 </div>
-                <div class="card">
-                    <div class="card-icon">📈</div>
-                    <h3>Analytics & Growth</h3>
-                    <p>Deep insights into user behavior, retention optimization, and growth strategies.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">⚖️</div>
-                    <h3>Legal & Ops</h3>
-                    <p>We handle the boring stuff—legal compliance, accounting, and operational overhead.</p>
-                </div>
+            </section>
+
+            <!-- Research Findings -->
+            <div class="research-divider" id="research">
+                <h2 class="animate-on-scroll">Mission Briefing</h2>
+                <p class="animate-on-scroll">15 research steps completed. All hypotheses validated.</p>
             </div>
+
+            <!-- Market & Competition -->
+            <section class="topic-section">
+                <div class="topic-header animate-on-scroll">
+                    <h3>Market & Competition</h3>
+                    <span>— Market size, competitive landscape, and strategic positioning</span>
+                </div>
+                <div class="findings-grid">
+                    <a href="step-01-market-validation/step1-market-validation.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 01</div>
+                        <div class="finding-title">347K+ Apps Fit Target Profile</div>
+                        <div class="finding-result">
+                            82.8% of apps earn &lt;$1K/month. Massive under-monetization in non-gaming verticals.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-02-competitive-landscape/step2-competitive-landscape.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 02</div>
+                        <div class="finding-title">White Space Confirmed</div>
+                        <div class="finding-result">
+                            No direct competitor offers partnership + operational lift for non-gaming indie mobile apps.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-03-swot-analysis/step3-swot-analysis.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 03</div>
+                        <div class="finding-title">Strategic Position Favorable</div>
+                        <div class="finding-result">
+                            Low break-even ($21.5K/mo). Key risk: validate developer demand before well-funded entrants.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Customer Insights -->
+            <section class="topic-section">
+                <div class="topic-header animate-on-scroll">
+                    <h3>Customer Insights</h3>
+                    <span>— Developer personas and partnership preferences</span>
+                </div>
+                <div class="findings-grid">
+                    <a href="step-04-developer-personas/step4-developer-personas.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 04</div>
+                        <div class="finding-title">4 Developer Personas Defined</div>
+                        <div class="finding-result">
+                            Burned Out Solo Dev (Best Fit), Accidental Success, Aspiring Entrepreneur, Emerging Market Builder.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-05-partnership-sentiment/step5-partnership-sentiment.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 05</div>
+                        <div class="finding-title">75% Prefer Partnership Over Sale</div>
+                        <div class="finding-result">
+                            50/50 is ceiling, not baseline. Recommended tiered: 70/30 pilot → 65/35 → 60/40.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Business Model -->
+            <section class="topic-section">
+                <div class="topic-header animate-on-scroll">
+                    <h3>Business Model</h3>
+                    <span>— Unit economics and monetization potential</span>
+                </div>
+                <div class="findings-grid">
+                    <a href="step-07-unit-economics/step7-unit-economics.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 07</div>
+                        <div class="finding-title">6-Month Payback Achievable</div>
+                        <div class="finding-result">
+                            10x uplift aggressive; 3-5x realistic. Target 100K+ MAU apps. Ops costs $125-$400/mo.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-09-monetization-validation/step9-monetization-validation.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 09</div>
+                        <div class="finding-title">3-5x Realistic, 10x Achievable</div>
+                        <div class="finding-result">
+                            14 case studies show 1.7x-10x improvements via multi-vector optimization over 6-12 months.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Operations -->
+            <section class="topic-section">
+                <div class="topic-header animate-on-scroll">
+                    <h3>Operations</h3>
+                    <span>— Technical feasibility, legal framework, and infrastructure</span>
+                </div>
+                <div class="findings-grid">
+                    <a href="step-08-technical-feasibility/step8-technical-feasibility.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 08</div>
+                        <div class="finding-title">6-8 Week Timeline for Tier 1</div>
+                        <div class="finding-result">
+                            Tiered complexity: Tier 1 (simple) 6-8 weeks, Tier 2 (medium) 10-12 weeks. 8-point scorecard.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-10-legal-structure/step10-legal-structure.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 10</div>
+                        <div class="finding-title">Legal Framework Ready</div>
+                        <div class="finding-result">
+                            Delaware LLC recommended. 70/30 split for pilots. Dual IP ownership. Year 1: ~$2.4K via Rocket Lawyer.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-11-infrastructure/step11-infrastructure.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 11</div>
+                        <div class="finding-title">$109/mo Infrastructure Stack</div>
+                        <div class="finding-result">
+                            Year 1: $11-22/app. 4 tools stay FREE at any scale. MAX ad mediation free. Firebase backbone.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Go-to-Market -->
+            <section class="topic-section">
+                <div class="topic-header animate-on-scroll">
+                    <h3>Go-to-Market</h3>
+                    <span>— Outreach, positioning, pilot criteria, and funding</span>
+                </div>
+                <div class="findings-grid">
+                    <a href="step-06-outreach-channels/step6-outreach-channels.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 06</div>
+                        <div class="finding-title">15+ Channels, 1M+ Developer Reach</div>
+                        <div class="finding-result">
+                            Top 5 are FREE: r/SideProject, Twitter/X, Indie Hackers. Expected 15-25% response rate.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-12-positioning/step12-positioning.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 12</div>
+                        <div class="finding-title">Messaging Framework Complete</div>
+                        <div class="finding-result">
+                            Primary value prop: "Turn Your Indie App Into Passive Income". 4 persona-specific variants.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-13-pilot-criteria/step13-pilot-criteria.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 13</div>
+                        <div class="finding-title">Partner Scoring Rubric Ready</div>
+                        <div class="finding-result">
+                            Ideal: 50-150K MAU, &lt;$1K/mo revenue, Tier 1 complexity. Pilot: 70/30 split, 60-day duration.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                    <a href="step-14-funding-strategy/step14-funding-strategy.html" class="finding-card animate-on-scroll">
+                        <div class="finding-step">Step 14</div>
+                        <div class="finding-title">Bootstrap-First, $150K Runway</div>
+                        <div class="finding-result">
+                            External funding only after 3+ partnerships at $10K+ MRR. Best-fit: Earnest Capital, Lighter Capital.
+                        </div>
+                        <div class="finding-link">
+                            View details
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Final CTA -->
+            <section class="final-cta">
+                <a href="step-15-final-assessment/step15-final-assessment.html" class="final-card animate-on-scroll">
+                    <div class="go-badge">
+                        <span>●</span>
+                        GO Decision
+                    </div>
+                    <h3>Research Complete — Ready to Launch</h3>
+                    <p>All hypotheses validated or refined. Next phase: First partnership acquisition.</p>
+                    <div class="final-btn">
+                        View Final Assessment
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </a>
+            </section>
         </div>
-    </section>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Who We Work With</h2>
-            <p class="section-subtitle">Indie developers in these verticals.</p>
-
-            <div class="target-grid">
-                <div class="target-item">
-                    <h4>🛠️ Utilities</h4>
-                    <p>Productivity tools, file managers, system utilities</p>
-                </div>
-                <div class="target-item">
-                    <h4>📚 Education</h4>
-                    <p>Learning apps, language tools, kids education</p>
-                </div>
-                <div class="target-item">
-                    <h4>🌿 Lifestyle</h4>
-                    <p>Health, fitness, habit tracking, wellness</p>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <p>© 2025 Moonshot. Indie App Accelerator.</p>
+                <div class="footer-links">
+                    <a href="step-15-final-assessment/step15-final-assessment.html">Final Assessment</a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Common Questions</h2>
-            <p class="section-subtitle">Everything you need to know about partnering with us.</p>
-
-            <div class="faq-grid">
-                <div class="faq-card">
-                    <h3>Do I lose ownership of my app?</h3>
-                    <p>No. You retain 100% IP ownership forever. This is a partnership, not an acquisition. Your app stays yours.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>How much of my time will this take?</h3>
-                    <p>About 2 hours per month. We handle all the heavy lifting—you just approve major decisions and collect revenue.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>What if I want to exit the partnership?</h3>
-                    <p>30-day exit clause, no penalty. If it's not working for you, you can walk away with your app and any improvements we made.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>What's the revenue split?</h3>
-                    <p>70/30 for pilot partners—you keep 70%. As we prove value together, terms can evolve toward 65/35 or 60/40.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>What will you actually change in my app?</h3>
-                    <p>Monetization only. Paywalls, pricing, ad placements, analytics. We never touch your core features without explicit approval.</p>
-                </div>
-                <div class="faq-card">
-                    <h3>Are there any upfront costs?</h3>
-                    <p>None. We invest our own resources—development, monetization, operations. You only pay from increased revenue.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Research Findings Divider -->
-    <div class="container">
-        <section class="hero" style="padding: 60px 0 40px;">
-            <h1 style="font-size: 36px;">Research Findings</h1>
-        </section>
-
-        <!-- Market & Competition -->
-        <section class="topic-section">
-            <div class="section-header">
-                <h2>Market & Competition</h2>
-                <p>Market size, competitive landscape, and strategic positioning</p>
-            </div>
-            <div class="findings-grid">
-                <a href="step-01-market-validation/step1-market-validation.html" class="finding-card">
-                    <div class="finding-title">347K+ Apps Fit Target Profile</div>
-                    <div class="finding-result">
-                        82.8% of apps earn &lt;$1K/month. Massive under-monetization in non-gaming verticals.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-02-competitive-landscape/step2-competitive-landscape.html" class="finding-card">
-                    <div class="finding-title">White Space Confirmed in Non-Gaming</div>
-                    <div class="finding-result">
-                        No direct competitor offers partnership + operational lift for non-gaming indie mobile apps.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-03-swot-analysis/step3-swot-analysis.html" class="finding-card">
-                    <div class="finding-title">Strategic Position Favorable</div>
-                    <div class="finding-result">
-                        Low break-even ($21.5K/mo). Key risk: validate developer demand before well-funded entrants.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Customer Insights -->
-        <section class="topic-section">
-            <div class="section-header">
-                <h2>Customer Insights</h2>
-                <p>Developer personas and partnership preferences</p>
-            </div>
-            <div class="findings-grid">
-                <a href="step-04-developer-personas/step4-developer-personas.html" class="finding-card">
-                    <div class="finding-title">4 Developer Personas Defined</div>
-                    <div class="finding-result">
-                        Burned Out Solo Dev (Best Fit), Accidental Success, Aspiring Entrepreneur, Emerging Market Builder.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-05-partnership-sentiment/step5-partnership-sentiment.html" class="finding-card">
-                    <div class="finding-title">75% Prefer Partnership Over Sale</div>
-                    <div class="finding-result">
-                        50/50 is ceiling, not baseline. Recommended tiered: 70/30 pilot &rarr; 65/35 &rarr; 60/40.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Business Model -->
-        <section class="topic-section">
-            <div class="section-header">
-                <h2>Business Model</h2>
-                <p>Unit economics and monetization potential</p>
-            </div>
-            <div class="findings-grid">
-                <a href="step-07-unit-economics/step7-unit-economics.html" class="finding-card">
-                    <div class="finding-title">6-Month Payback Achievable</div>
-                    <div class="finding-result">
-                        10x uplift aggressive; 3-5x realistic. Target 100K+ MAU apps. Ops costs $125-$400/mo.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-09-monetization-validation/step9-monetization-validation.html" class="finding-card">
-                    <div class="finding-title">3-5x Realistic, 10x Achievable</div>
-                    <div class="finding-result">
-                        14 case studies show 1.7x-10x improvements via multi-vector optimization over 6-12 months.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Operations -->
-        <section class="topic-section">
-            <div class="section-header">
-                <h2>Operations</h2>
-                <p>Technical feasibility, legal framework, and infrastructure</p>
-            </div>
-            <div class="findings-grid">
-                <a href="step-08-technical-feasibility/step8-technical-feasibility.html" class="finding-card">
-                    <div class="finding-title">6-8 Week Timeline for Tier 1</div>
-                    <div class="finding-result">
-                        Tiered complexity: Tier 1 (simple) 6-8 weeks, Tier 2 (medium) 10-12 weeks. 8-point scorecard.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-10-legal-structure/step10-legal-structure.html" class="finding-card">
-                    <div class="finding-title">Legal Framework Ready</div>
-                    <div class="finding-result">
-                        Delaware LLC recommended. 70/30 split for pilots. Dual IP ownership. Year 1: ~$2.4K via Rocket Lawyer.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-11-infrastructure/step11-infrastructure.html" class="finding-card">
-                    <div class="finding-title">$109/mo Infrastructure Stack</div>
-                    <div class="finding-result">
-                        Year 1: $11-22/app. 4 tools stay FREE at any scale. MAX ad mediation free. Firebase backbone.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Go-to-Market -->
-        <section class="topic-section">
-            <div class="section-header">
-                <h2>Go-to-Market</h2>
-                <p>Outreach, positioning, pilot criteria, and funding</p>
-            </div>
-            <div class="findings-grid">
-                <a href="step-06-outreach-channels/step6-outreach-channels.html" class="finding-card">
-                    <div class="finding-title">15+ Channels, 1M+ Developer Reach</div>
-                    <div class="finding-result">
-                        Top 5 are FREE: r/SideProject, Twitter/X, Indie Hackers. Expected 15-25% response rate.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-12-positioning/step12-positioning.html" class="finding-card">
-                    <div class="finding-title">Messaging Framework Complete</div>
-                    <div class="finding-result">
-                        Primary value prop: "Turn Your Indie App Into Passive Income". 4 persona-specific variants.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-13-pilot-criteria/step13-pilot-criteria.html" class="finding-card">
-                    <div class="finding-title">Partner Scoring Rubric Ready</div>
-                    <div class="finding-result">
-                        Ideal: 50-150K MAU, &lt;$1K/mo revenue, Tier 1 complexity. Pilot: 70/30 split, 60-day duration.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-
-                <a href="step-14-funding-strategy/step14-funding-strategy.html" class="finding-card">
-                    <div class="finding-title">Bootstrap-First, $150K Runway</div>
-                    <div class="finding-result">
-                        External funding only after 3+ partnerships at $10K+ MRR. Best-fit: Earnest Capital, Lighter Capital.
-                    </div>
-                    <div class="view-report">View details</div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Final Assessment CTA -->
-        <section class="final-cta">
-            <a href="step-15-final-assessment/step15-final-assessment.html" class="final-cta-card">
-                <div class="final-cta-title">GO Decision: Research Complete</div>
-                <div class="final-cta-subtitle">All hypotheses validated or refined. Ready to launch first partnership.</div>
-                <div class="final-cta-link">
-                    View Final Assessment
-                    <span>&rarr;</span>
-                </div>
-            </a>
-        </section>
-
-        <footer>
-            <p>&copy; 2025 Moonshot. Indie App Accelerator.</p>
         </footer>
     </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

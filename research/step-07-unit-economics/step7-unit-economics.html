@@ -3,234 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 7 | Unit Economics Stress Test</title>
+    <title>Step 7 | Unit Economics Stress Test — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --warning-orange: #fb923c;
+            --danger-red: #f87171;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .back-link {
-            color: #667eea;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .nav-back:hover {
+            color: var(--amber-glow);
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
+        .nav-back svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
-            font-size: 14px;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Hero */
+        /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
+            padding: 140px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
             text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 64px);
             font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero .tagline {
+        .hero-subtitle {
             font-size: 20px;
-            color: #a0aec0;
+            color: var(--text-secondary);
             max-width: 700px;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
+        .hero-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        /* Big Stats */
-        .big-stats {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 40px;
         }
 
-        .big-stat {
+        .stat {
             text-align: center;
-            padding: 20px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .big-stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
-        .big-stat-number.warning {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .stat-value.warning {
+            color: var(--warning-orange);
+            text-shadow: 0 0 40px rgba(251, 146, 60, 0.3);
         }
 
-        .big-stat-number.success {
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .stat-value.success {
+            color: var(--success-green);
+            text-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
         }
 
-        .big-stat-label {
-            color: #a0aec0;
+        .stat-label {
             font-size: 14px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
         }
 
         /* Section */
         .section {
             padding: 80px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        .section:last-child {
+        .section:last-of-type {
             border-bottom: none;
         }
 
-        .section-title {
+        .section-header {
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
             font-size: 32px;
             font-weight: 700;
+            letter-spacing: -1px;
             margin-bottom: 12px;
         }
 
-        .section-subtitle {
-            color: #a0aec0;
+        .section-header p {
+            color: var(--text-secondary);
             font-size: 18px;
-            margin-bottom: 40px;
             max-width: 700px;
         }
 
-        /* Cards */
-        .cards {
+        /* Cards Grid */
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
-        .cards-2 {
+        .cards-grid-2 {
             grid-template-columns: repeat(2, 1fr);
         }
 
         .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
         }
 
-        .card.warning {
-            border-color: rgba(245, 158, 11, 0.3);
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card.success {
-            border-color: rgba(34, 197, 94, 0.3);
+            border-color: rgba(52, 211, 153, 0.2);
         }
 
-        .card.danger {
-            border-color: rgba(239, 68, 68, 0.3);
+        .card.success::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
+        }
+
+        .card.warning {
+            border-color: rgba(251, 146, 60, 0.2);
+        }
+
+        .card.warning::before {
+            background: linear-gradient(90deg, transparent, var(--warning-orange), transparent);
         }
 
         .card-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
         }
 
         .card-title {
+            font-family: 'Syne', sans-serif;
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .card-value {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--success-green);
         }
 
         .card-value.warning {
-            color: #f59e0b;
-        }
-
-        .card-value.success {
-            color: #22c55e;
+            color: var(--warning-orange);
         }
 
         .card-value.danger {
-            color: #ef4444;
+            color: var(--danger-red);
         }
 
         .card-description {
-            color: #a0aec0;
-            font-size: 14px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
         }
 
         /* Table */
         .table-wrapper {
             overflow-x: auto;
-            margin: 24px 0;
+            margin: 32px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         table {
@@ -240,46 +466,58 @@
         }
 
         th, td {
-            padding: 16px;
+            padding: 16px 20px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         th {
-            background: rgba(255,255,255,0.05);
+            background: var(--space-mid);
             font-weight: 600;
-            color: #a0aec0;
+            color: var(--text-muted);
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 0.5px;
         }
 
         td {
-            color: #e2e8f0;
+            color: var(--text-primary);
+            background: var(--space-navy);
         }
 
-        tr:hover {
-            background: rgba(255,255,255,0.02);
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .highlight {
-            color: #22c55e;
+            color: var(--success-green);
             font-weight: 600;
         }
 
         .warning-text {
-            color: #f59e0b;
+            color: var(--warning-orange);
             font-weight: 600;
         }
 
         .danger-text {
-            color: #ef4444;
+            color: var(--danger-red);
             font-weight: 600;
         }
 
         /* Chart Bars */
         .chart-container {
-            margin: 32px 0;
+            margin: 40px 0;
+        }
+
+        .chart-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
         }
 
         .chart-bar-wrapper {
@@ -294,16 +532,16 @@
         }
 
         .chart-bar-label span:first-child {
-            color: #e2e8f0;
+            color: var(--text-primary);
         }
 
         .chart-bar-label span:last-child {
-            color: #a0aec0;
+            color: var(--text-muted);
         }
 
         .chart-bar {
             height: 32px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             overflow: hidden;
         }
@@ -311,11 +549,11 @@
         .chart-bar-fill {
             height: 100%;
             border-radius: 8px;
-            transition: width 0.5s ease;
+            transition: width 0.8s ease;
         }
 
-        .chart-bar-fill.purple {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+        .chart-bar-fill.amber {
+            background: linear-gradient(90deg, var(--amber-glow), var(--amber-bright));
         }
 
         .chart-bar-fill.green {
@@ -323,33 +561,37 @@
         }
 
         .chart-bar-fill.orange {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
+            background: linear-gradient(90deg, var(--warning-orange), #ea580c);
         }
 
         .chart-bar-fill.red {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
+            background: linear-gradient(90deg, var(--danger-red), #dc2626);
         }
 
-        /* Key Insight Box */
+        /* Insight Box */
         .insight-box {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-left: 4px solid var(--amber-glow);
+            border-radius: 0 12px 12px 0;
             padding: 24px;
             margin: 32px 0;
         }
 
         .insight-box.warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(251, 146, 60, 0.08);
+            border-color: rgba(251, 146, 60, 0.2);
+            border-left-color: var(--warning-orange);
         }
 
         .insight-box.success {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.3);
+            background: rgba(52, 211, 153, 0.08);
+            border-color: rgba(52, 211, 153, 0.2);
+            border-left-color: var(--success-green);
         }
 
         .insight-box-title {
+            font-family: 'Syne', sans-serif;
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 8px;
@@ -359,8 +601,13 @@
         }
 
         .insight-box-content {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .insight-box-content strong {
+            color: var(--text-primary);
         }
 
         /* Scenario Cards */
@@ -368,50 +615,57 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
-            margin-top: 32px;
+            margin-top: 40px;
         }
 
         .scenario-card {
-            background: rgba(255,255,255,0.03);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
             border: 2px solid;
             border-radius: 16px;
             padding: 32px;
             text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-4px);
         }
 
         .scenario-card.pessimistic {
-            border-color: rgba(239, 68, 68, 0.5);
+            border-color: rgba(248, 113, 113, 0.4);
         }
 
         .scenario-card.base {
-            border-color: rgba(245, 158, 11, 0.5);
+            border-color: rgba(251, 146, 60, 0.4);
         }
 
         .scenario-card.optimistic {
-            border-color: rgba(34, 197, 94, 0.5);
+            border-color: rgba(52, 211, 153, 0.4);
         }
 
         .scenario-label {
             font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
         }
 
         .scenario-card.pessimistic .scenario-label {
-            color: #ef4444;
+            color: var(--danger-red);
         }
 
         .scenario-card.base .scenario-label {
-            color: #f59e0b;
+            color: var(--warning-orange);
         }
 
         .scenario-card.optimistic .scenario-label {
-            color: #22c55e;
+            color: var(--success-green);
         }
 
         .scenario-title {
-            font-size: 24px;
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 24px;
         }
@@ -422,54 +676,75 @@
 
         .scenario-metric-label {
             font-size: 13px;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .scenario-metric-value {
             font-size: 18px;
             font-weight: 600;
+            color: var(--text-primary);
         }
 
         .scenario-payback {
-            font-size: 36px;
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
             font-weight: 800;
             margin-top: 16px;
         }
 
         .scenario-card.pessimistic .scenario-payback {
-            color: #ef4444;
+            color: var(--danger-red);
         }
 
         .scenario-card.base .scenario-payback {
-            color: #f59e0b;
+            color: var(--warning-orange);
         }
 
         .scenario-card.optimistic .scenario-payback {
-            color: #22c55e;
+            color: var(--success-green);
         }
 
         .scenario-payback-label {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 4px;
         }
 
+        .scenario-verdict {
+            margin-top: 16px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .scenario-card.pessimistic .scenario-verdict {
+            color: var(--danger-red);
+        }
+
+        .scenario-card.base .scenario-verdict {
+            color: var(--warning-orange);
+        }
+
+        .scenario-card.optimistic .scenario-verdict {
+            color: var(--success-green);
+        }
+
         /* Sources */
-        .sources {
+        .sources-section {
             padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .sources-title {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
             font-weight: 700;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .sources-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 32px;
+            gap: 40px;
         }
 
         .sources-category {
@@ -477,10 +752,10 @@
         }
 
         .sources-category-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: #667eea;
-            margin-bottom: 12px;
+            color: var(--amber-glow);
+            margin-bottom: 16px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -490,124 +765,18 @@
         }
 
         .sources-list li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .sources-list a {
-            color: #a0aec0;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
-            transition: color 0.2s;
+            transition: color 0.3s ease;
         }
 
         .sources-list a:hover {
-            color: #667eea;
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: #64748b;
-            font-size: 14px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .big-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .cards {
-                grid-template-columns: 1fr;
-            }
-            .scenario-grid {
-                grid-template-columns: 1fr;
-            }
-            .sources-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero h1 {
-                font-size: 32px;
-            }
-        }
-
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
+            color: var(--amber-glow);
         }
 
         /* Step Navigation */
@@ -615,582 +784,751 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 48px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             margin-top: 40px;
         }
 
-        .step-nav a {
+        .step-nav-link {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #a0aec0;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+        .step-nav-link:hover {
+            background: var(--space-light);
+            border-color: rgba(251, 191, 36, 0.2);
+            color: var(--text-primary);
+        }
+
+        .step-nav-link svg {
+            width: 16px;
+            height: 16px;
         }
 
         .step-nav-center {
             text-align: center;
         }
 
-        .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border: none;
-            color: #fff;
+        .step-nav-indicator {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
 
-        .step-indicator {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+        .step-nav-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
+            border-radius: 8px;
+            color: var(--space-deep);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .step-nav-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .scenario-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 32px;
+                letter-spacing: -1px;
+            }
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .stat-value {
+                font-size: 28px;
+            }
+            .cards-grid,
+            .cards-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .step-nav-link {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
+
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html" class="nav-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Mission Control
+                    </a>
+                    <div class="step-badge">Step 07</div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container">
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 7</div>
-        </header>
-
+        <!-- Hero -->
         <section class="hero">
-            <h1>Unit Economics Stress Test</h1>
-            <p class="tagline">Validating financial model assumptions with real-world data and stress testing payback scenarios.</p>
-            <p class="subtitle">Research completed December 2025 | 25+ sources analyzed</p>
+            <div class="hero-badge animate-on-scroll">
+                <span>◆</span>
+                Business Model Validation
+            </div>
+            <h1 class="animate-on-scroll">
+                <span class="highlight">Unit Economics</span> Stress Test
+            </h1>
+            <p class="hero-subtitle animate-on-scroll">
+                Validating financial model assumptions with real-world data and stress testing payback scenarios.
+            </p>
+            <p class="hero-meta animate-on-scroll">Research completed December 2025 | 25+ sources analyzed</p>
         </section>
 
-        <div class="big-stats">
-            <div class="big-stat">
-                <div class="big-stat-number">$33K-$97K</div>
-                <div class="big-stat-label">Per-App Investment</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number warning">3-5x</div>
-                <div class="big-stat-label">Realistic Revenue Uplift</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">$125-$400</div>
-                <div class="big-stat-label">Monthly Ops/App</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number success">6-28mo</div>
-                <div class="big-stat-label">Payback (Viable Cases)</div>
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$33K-$97K</div>
+                    <div class="stat-label">Per-App Investment</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value warning">3-5x</div>
+                    <div class="stat-label">Realistic Revenue Uplift</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$125-$400</div>
+                    <div class="stat-label">Monthly Ops/App</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value success">6-28mo</div>
+                    <div class="stat-label">Payback (Viable Cases)</div>
+                </div>
             </div>
         </div>
 
-        <!-- Key Finding -->
-        <section class="section">
-            <h2 class="section-title">Key Finding: 10x Uplift is Aggressive</h2>
-            <p class="section-subtitle">Research shows realistic monetization improvements range from 2x-5x, not the 10x originally assumed.</p>
+        <div class="main">
+            <!-- Key Finding -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Key Finding: 10x Uplift is Aggressive</h2>
+                    <p>Research shows realistic monetization improvements range from 2x-5x, not the 10x originally assumed.</p>
+                </div>
+                <div class="cards-grid animate-on-scroll">
+                    <div class="card success">
+                        <div class="card-icon">Ad Mediation</div>
+                        <div class="card-title">Ad Optimization</div>
+                        <div class="card-value">70-121%</div>
+                        <div class="card-description">Superscale case study showed 70% day-1 uplift, 121% after 3 months with proper mediation setup.</div>
+                    </div>
+                    <div class="card success">
+                        <div class="card-icon">Paywall</div>
+                        <div class="card-title">Trial Optimization</div>
+                        <div class="card-value">150%</div>
+                        <div class="card-description">iDict app improved trial-to-paid conversion from 10% to 25% in 6 months with onboarding & A/B testing.</div>
+                    </div>
+                    <div class="card success">
+                        <div class="card-icon">Hybrid</div>
+                        <div class="card-title">Hybrid Model</div>
+                        <div class="card-value">28-121%</div>
+                        <div class="card-description">Combining ads + subscriptions delivers 28-121% revenue lift vs single-strategy approaches.</div>
+                    </div>
+                </div>
+            </section>
 
-            <div class="cards">
-                <div class="card">
-                    <div class="card-icon">Ad Mediation</div>
-                    <div class="card-title">Ad Optimization</div>
-                    <div class="card-value success">70-121%</div>
-                    <div class="card-description">Superscale case study showed 70% day-1 uplift, 121% after 3 months with proper mediation setup.</div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">Paywall</div>
-                    <div class="card-title">Trial Optimization</div>
-                    <div class="card-value success">150%</div>
-                    <div class="card-description">iDict app improved trial-to-paid conversion from 10% to 25% in 6 months with onboarding & A/B testing.</div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">Hybrid</div>
-                    <div class="card-title">Hybrid Model</div>
-                    <div class="card-value success">28-121%</div>
-                    <div class="card-description">Combining ads + subscriptions delivers 28-121% revenue lift vs single-strategy approaches.</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Development Costs -->
-        <section class="section">
-            <h2 class="section-title">Development Cost Breakdown</h2>
-            <p class="section-subtitle">Validated cost ranges based on 2024-2025 market rates for freelancers and agencies.</p>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Low (Offshore)</th>
-                            <th>Mid (Hybrid)</th>
-                            <th>High (US-led)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Native iOS Rewrite</td>
-                            <td class="highlight">$15,000</td>
-                            <td>$25,000</td>
-                            <td>$40,000</td>
-                        </tr>
-                        <tr>
-                            <td>Native Android Rewrite</td>
-                            <td class="highlight">$15,000</td>
-                            <td>$25,000</td>
-                            <td>$40,000</td>
-                        </tr>
-                        <tr>
-                            <td>Design Refresh</td>
-                            <td class="highlight">$3,000</td>
-                            <td>$8,000</td>
-                            <td>$15,000</td>
-                        </tr>
-                        <tr>
-                            <td>Legal Agreement</td>
-                            <td class="highlight">$500</td>
-                            <td>$700</td>
-                            <td>$1,000</td>
-                        </tr>
-                        <tr style="background: rgba(255,255,255,0.05);">
-                            <td><strong>Total Per App</strong></td>
-                            <td><strong class="highlight">$33,500</strong></td>
-                            <td><strong>$58,700</strong></td>
-                            <td><strong>$96,000</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="chart-container">
-                <h3 style="font-size: 18px; margin-bottom: 24px;">Developer Hourly Rates by Region</h3>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>United States</span>
-                        <span>$50-$150/hr</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill purple" style="width: 100%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Eastern Europe</span>
-                        <span>$40-$90/hr</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 60%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Latin America</span>
-                        <span>$30-$70/hr</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 47%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Southeast Asia</span>
-                        <span>$25-$55/hr</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill orange" style="width: 37%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>India/South Asia</span>
-                        <span>$20-$50/hr</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill orange" style="width: 33%;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="insight-box success">
-                <div class="insight-box-title">Best Value: Eastern Europe</div>
-                <div class="insight-box-content">
-                    Eastern European developers ($40-$90/hr) offer the best balance of quality and cost.
-                    Strong technical skills, good English proficiency, and reasonable timezone overlap with US.
-                </div>
-            </div>
-        </section>
-
-        <!-- Operational Costs -->
-        <section class="section">
-            <h2 class="section-title">Monthly Operational Costs</h2>
-            <p class="section-subtitle">Per-app ongoing costs are lower than originally estimated, improving margins.</p>
-
-            <div class="cards cards-2">
-                <div class="card success">
-                    <div class="card-title">Original Estimate</div>
-                    <div class="card-value">$50-$1,200/mo</div>
-                    <div class="card-description">Wide range with uncertainty about tooling and hosting costs.</div>
-                </div>
-                <div class="card success">
-                    <div class="card-title">Validated Range</div>
-                    <div class="card-value success">$125-$400/mo</div>
-                    <div class="card-description">Tighter range based on actual pricing research. Free tiers cover most tools.</div>
-                </div>
-            </div>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Service</th>
-                            <th>Tool</th>
-                            <th>Monthly Cost</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cloud Hosting</td>
-                            <td>Supabase Team / Firebase</td>
-                            <td class="highlight">$25-$100</td>
-                            <td>Covers 100K MAU</td>
-                        </tr>
-                        <tr>
-                            <td>Analytics</td>
-                            <td>Amplitude / Mixpanel</td>
-                            <td class="highlight">$0</td>
-                            <td>Free tier: 50K MTU</td>
-                        </tr>
-                        <tr>
-                            <td>Crash Reporting</td>
-                            <td>Firebase Crashlytics</td>
-                            <td class="highlight">$0</td>
-                            <td>Completely free</td>
-                        </tr>
-                        <tr>
-                            <td>A/B Testing</td>
-                            <td>Firebase Remote Config</td>
-                            <td class="highlight">$0</td>
-                            <td>Unlimited, free</td>
-                        </tr>
-                        <tr>
-                            <td>Ad Mediation</td>
-                            <td>AppLovin MAX / LevelPlay</td>
-                            <td class="highlight">$0</td>
-                            <td>No platform fees</td>
-                        </tr>
-                        <tr>
-                            <td>Maintenance Reserve</td>
-                            <td>Bug fixes, updates</td>
-                            <td>$100-$300</td>
-                            <td>Buffer for ongoing work</td>
-                        </tr>
-                        <tr style="background: rgba(255,255,255,0.05);">
-                            <td><strong>Total</strong></td>
-                            <td></td>
-                            <td><strong class="highlight">$125-$400</strong></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Stress Test Scenarios -->
-        <section class="section">
-            <h2 class="section-title">Stress Test Scenarios</h2>
-            <p class="section-subtitle">Three scenarios modeling pessimistic, base, and optimistic outcomes for app partnerships.</p>
-
-            <div class="scenario-grid">
-                <div class="scenario-card pessimistic">
-                    <div class="scenario-label">Pessimistic</div>
-                    <div class="scenario-title">Everything Goes Wrong</div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Development Cost</div>
-                        <div class="scenario-metric-value">$80,000</div>
-                    </div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Revenue Uplift</div>
-                        <div class="scenario-metric-value">2x</div>
-                    </div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Net Monthly</div>
-                        <div class="scenario-metric-value">$100/mo</div>
-                    </div>
-                    <div class="scenario-payback">800mo</div>
-                    <div class="scenario-payback-label">Payback Period</div>
-                    <div style="margin-top: 16px; font-size: 13px; color: #ef4444;">NOT VIABLE</div>
+            <!-- Development Costs -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Development Cost Breakdown</h2>
+                    <p>Validated cost ranges based on 2024-2025 market rates for freelancers and agencies.</p>
                 </div>
 
-                <div class="scenario-card base">
-                    <div class="scenario-label">Base Case</div>
-                    <div class="scenario-title">Realistic Execution</div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Development Cost</div>
-                        <div class="scenario-metric-value">$50,000</div>
-                    </div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Revenue Uplift</div>
-                        <div class="scenario-metric-value">4x</div>
-                    </div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Net Monthly</div>
-                        <div class="scenario-metric-value">$1,800/mo</div>
-                    </div>
-                    <div class="scenario-payback">28mo</div>
-                    <div class="scenario-payback-label">Payback Period</div>
-                    <div style="margin-top: 16px; font-size: 13px; color: #f59e0b;">2.3 Years</div>
+                <div class="table-wrapper animate-on-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Low (Offshore)</th>
+                                <th>Mid (Hybrid)</th>
+                                <th>High (US-led)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Native iOS Rewrite</td>
+                                <td class="highlight">$15,000</td>
+                                <td>$25,000</td>
+                                <td>$40,000</td>
+                            </tr>
+                            <tr>
+                                <td>Native Android Rewrite</td>
+                                <td class="highlight">$15,000</td>
+                                <td>$25,000</td>
+                                <td>$40,000</td>
+                            </tr>
+                            <tr>
+                                <td>Design Refresh</td>
+                                <td class="highlight">$3,000</td>
+                                <td>$8,000</td>
+                                <td>$15,000</td>
+                            </tr>
+                            <tr>
+                                <td>Legal Agreement</td>
+                                <td class="highlight">$500</td>
+                                <td>$700</td>
+                                <td>$1,000</td>
+                            </tr>
+                            <tr style="background: var(--space-mid);">
+                                <td><strong>Total Per App</strong></td>
+                                <td><strong class="highlight">$33,500</strong></td>
+                                <td><strong>$58,700</strong></td>
+                                <td><strong>$96,000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <div class="scenario-card optimistic">
-                    <div class="scenario-label">Optimistic</div>
-                    <div class="scenario-title">Strong Execution</div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Development Cost</div>
-                        <div class="scenario-metric-value">$35,000</div>
+                <div class="chart-container animate-on-scroll">
+                    <h3 class="chart-title">Developer Hourly Rates by Region</h3>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>United States</span>
+                            <span>$50-$150/hr</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill amber" style="width: 100%;"></div>
+                        </div>
                     </div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Revenue Uplift</div>
-                        <div class="scenario-metric-value">8x</div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Eastern Europe</span>
+                            <span>$40-$90/hr</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 60%;"></div>
+                        </div>
                     </div>
-                    <div class="scenario-metric">
-                        <div class="scenario-metric-label">Net Monthly</div>
-                        <div class="scenario-metric-value">$5,875/mo</div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Latin America</span>
+                            <span>$30-$70/hr</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 47%;"></div>
+                        </div>
                     </div>
-                    <div class="scenario-payback">6mo</div>
-                    <div class="scenario-payback-label">Payback Period</div>
-                    <div style="margin-top: 16px; font-size: 13px; color: #22c55e;">EXCELLENT</div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Southeast Asia</span>
+                            <span>$25-$55/hr</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill orange" style="width: 37%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>India/South Asia</span>
+                            <span>$20-$50/hr</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill orange" style="width: 33%;"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="insight-box">
-                <div class="insight-box-title">Scenario Assumptions</div>
-                <div class="insight-box-content">
-                    All scenarios assume a 100K MAU app currently earning $1,000/mo, 50/50 revenue split, and monthly operational costs of $200.
-                    The key variables are development cost (team quality) and revenue uplift (monetization execution).
+                <div class="insight-box success animate-on-scroll">
+                    <div class="insight-box-title">Best Value: Eastern Europe</div>
+                    <div class="insight-box-content">
+                        Eastern European developers ($40-$90/hr) offer the best balance of quality and cost.
+                        Strong technical skills, good English proficiency, and reasonable timezone overlap with US.
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Revenue Share -->
-        <section class="section">
-            <h2 class="section-title">Revenue Share Benchmarks</h2>
-            <p class="section-subtitle">Industry comparison shows 50/50 split is at the high end of what partners typically accept.</p>
+            <!-- Operational Costs -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Monthly Operational Costs</h2>
+                    <p>Per-app ongoing costs are lower than originally estimated, improving margins.</p>
+                </div>
 
-            <div class="chart-container">
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>App Stores (Apple/Google)</span>
-                        <span>Developer keeps 70%</span>
+                <div class="cards-grid cards-grid-2 animate-on-scroll">
+                    <div class="card">
+                        <div class="card-title">Original Estimate</div>
+                        <div class="card-value warning">$50-$1,200/mo</div>
+                        <div class="card-description">Wide range with uncertainty about tooling and hosting costs.</div>
                     </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 70%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>SaaS Affiliates</span>
-                        <span>Developer keeps 70-80%</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill green" style="width: 75%;"></div>
+                    <div class="card success">
+                        <div class="card-title">Validated Range</div>
+                        <div class="card-value">$125-$400/mo</div>
+                        <div class="card-description">Tighter range based on actual pricing research. Free tiers cover most tools.</div>
                     </div>
                 </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Moonshot Target (50/50)</span>
-                        <span>Developer keeps 50%</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill orange" style="width: 50%;"></div>
-                    </div>
-                </div>
-                <div class="chart-bar-wrapper">
-                    <div class="chart-bar-label">
-                        <span>Gaming Publishers</span>
-                        <span>Developer keeps 30-50%</span>
-                    </div>
-                    <div class="chart-bar">
-                        <div class="chart-bar-fill red" style="width: 40%;"></div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="insight-box warning">
-                <div class="insight-box-title">Revenue Share Consideration</div>
-                <div class="insight-box-content">
-                    50/50 split requires strong value justification. Self-publishing only costs developers 30% (app store cut).
-                    <strong>Consider piloting at 60/40 (developer keeps 60%)</strong> to reduce friction, then move to 50/50 after proving value.
+                <div class="table-wrapper animate-on-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Tool</th>
+                                <th>Monthly Cost</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cloud Hosting</td>
+                                <td>Supabase Team / Firebase</td>
+                                <td class="highlight">$25-$100</td>
+                                <td>Covers 100K MAU</td>
+                            </tr>
+                            <tr>
+                                <td>Analytics</td>
+                                <td>Amplitude / Mixpanel</td>
+                                <td class="highlight">$0</td>
+                                <td>Free tier: 50K MTU</td>
+                            </tr>
+                            <tr>
+                                <td>Crash Reporting</td>
+                                <td>Firebase Crashlytics</td>
+                                <td class="highlight">$0</td>
+                                <td>Completely free</td>
+                            </tr>
+                            <tr>
+                                <td>A/B Testing</td>
+                                <td>Firebase Remote Config</td>
+                                <td class="highlight">$0</td>
+                                <td>Unlimited, free</td>
+                            </tr>
+                            <tr>
+                                <td>Ad Mediation</td>
+                                <td>AppLovin MAX / LevelPlay</td>
+                                <td class="highlight">$0</td>
+                                <td>No platform fees</td>
+                            </tr>
+                            <tr>
+                                <td>Maintenance Reserve</td>
+                                <td>Bug fixes, updates</td>
+                                <td>$100-$300</td>
+                                <td>Buffer for ongoing work</td>
+                            </tr>
+                            <tr style="background: var(--space-mid);">
+                                <td><strong>Total</strong></td>
+                                <td></td>
+                                <td><strong class="highlight">$125-$400</strong></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Strategic Recommendations -->
-        <section class="section">
-            <h2 class="section-title">Strategic Recommendations</h2>
-            <p class="section-subtitle">Key adjustments to improve unit economics viability.</p>
+            <!-- Stress Test Scenarios -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Stress Test Scenarios</h2>
+                    <p>Three scenarios modeling pessimistic, base, and optimistic outcomes for app partnerships.</p>
+                </div>
 
-            <div class="cards cards-2">
-                <div class="card">
-                    <div class="card-title">1. Target Higher-Value Apps</div>
-                    <div class="card-description">
-                        <strong>100K+ MAU</strong> (not 15K-50K)<br>
-                        <strong>$1K-$5K/mo</strong> current revenue (more headroom)<br>
-                        <strong>iOS-primary</strong> (5.4x higher subscription ARPU)
+                <div class="scenario-grid">
+                    <div class="scenario-card pessimistic animate-on-scroll">
+                        <div class="scenario-label">Pessimistic</div>
+                        <div class="scenario-title">Everything Goes Wrong</div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Development Cost</div>
+                            <div class="scenario-metric-value">$80,000</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Revenue Uplift</div>
+                            <div class="scenario-metric-value">2x</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Net Monthly</div>
+                            <div class="scenario-metric-value">$100/mo</div>
+                        </div>
+                        <div class="scenario-payback">800mo</div>
+                        <div class="scenario-payback-label">Payback Period</div>
+                        <div class="scenario-verdict">NOT VIABLE</div>
                     </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">2. Control Development Costs</div>
-                    <div class="card-description">
-                        Use <strong>Eastern Europe developers</strong> ($40-$70/hr)<br>
-                        Fixed-price contracts with clear scope<br>
-                        Target simple-to-medium complexity apps
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">3. Validate Before Commitment</div>
-                    <div class="card-description">
-                        Request <strong>current analytics access</strong> before partnership<br>
-                        Estimate uplift potential with benchmarks<br>
-                        Only proceed if <strong>3x+ uplift</strong> appears achievable
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">4. Consider Bootstrap Model</div>
-                    <div class="card-description">
-                        Reduce fixed costs to <strong>$5K-$10K/mo</strong> initially<br>
-                        Use revenue to fund team expansion<br>
-                        Reach profitability with 3-5 apps instead of 10+
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Sensitivity Analysis -->
-        <section class="section">
-            <h2 class="section-title">Sensitivity Analysis</h2>
-            <p class="section-subtitle">Impact of key variable changes on payback period.</p>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Variable Change</th>
-                            <th>Impact on Payback</th>
-                            <th>Mitigation Strategy</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Development cost +50%</td>
-                            <td class="warning-text">Payback +50%</td>
-                            <td>Use offshore team, fixed-price contracts</td>
-                        </tr>
-                        <tr>
-                            <td>Revenue uplift only 2x</td>
-                            <td class="danger-text">Payback doubles</td>
-                            <td>Better app selection, monetization expertise</td>
-                        </tr>
-                        <tr>
-                            <td>70/30 split (dev keeps 70%)</td>
-                            <td class="warning-text">Moonshot revenue -40%</td>
-                            <td>Offset with development guarantee</td>
-                        </tr>
-                        <tr>
-                            <td>MAU declines 30% post-launch</td>
-                            <td class="danger-text">LTV drops 30%+</td>
-                            <td>Retention focus in rebuild</td>
-                        </tr>
-                        <tr>
-                            <td>App store fee increase to 20%</td>
-                            <td class="warning-text">Margin compression</td>
-                            <td>Diversify revenue streams (ads, direct)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Sources -->
-        <section class="sources">
-            <h2 class="sources-title">Sources</h2>
-            <div class="sources-grid">
-                <div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Development Costs</div>
-                        <ul class="sources-list">
-                            <li><a href="https://www.index.dev/blog/freelance-developer-rates-by-country" target="_blank">Index.dev - Freelance Developer Rates by Country</a></li>
-                            <li><a href="https://qubit-labs.com/average-hourly-rates-offshore-development-services-software-development-costs-guide/" target="_blank">Qubit Labs - Offshore Development Rates Guide</a></li>
-                            <li><a href="https://closeloop.com/blog/how-much-does-it-cost-to-build-a-mobile-app/" target="_blank">CloseLoop - Mobile App Development Cost 2025</a></li>
-                            <li><a href="https://appinventiv.com/guide/mobile-app-development-cost/" target="_blank">App Inventiv - App Development Cost Guide</a></li>
-                        </ul>
+                    <div class="scenario-card base animate-on-scroll">
+                        <div class="scenario-label">Base Case</div>
+                        <div class="scenario-title">Realistic Execution</div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Development Cost</div>
+                            <div class="scenario-metric-value">$50,000</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Revenue Uplift</div>
+                            <div class="scenario-metric-value">4x</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Net Monthly</div>
+                            <div class="scenario-metric-value">$1,800/mo</div>
+                        </div>
+                        <div class="scenario-payback">28mo</div>
+                        <div class="scenario-payback-label">Payback Period</div>
+                        <div class="scenario-verdict">2.3 Years</div>
                     </div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Monetization Benchmarks</div>
-                        <ul class="sources-list">
-                            <li><a href="https://www.appsflyer.com/company/newsroom/pr/app-monetization-report/" target="_blank">AppsFlyer - 2024 State of App Monetization</a></li>
-                            <li><a href="https://apphud.com/blog/idict-case-study" target="_blank">Apphud - iDict Case Study (2.5x Conversion)</a></li>
-                            <li><a href="https://superscale.com/resources/increase-ad-revenue-instantly-with-these-ad-mediation-changes/" target="_blank">Superscale - Ad Mediation Revenue Increase</a></li>
-                            <li><a href="https://www.monetizemore.com/blog/ecpm-insights/" target="_blank">MonetizeMore - eCPM Insights 2024-25</a></li>
-                        </ul>
+
+                    <div class="scenario-card optimistic animate-on-scroll">
+                        <div class="scenario-label">Optimistic</div>
+                        <div class="scenario-title">Strong Execution</div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Development Cost</div>
+                            <div class="scenario-metric-value">$35,000</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Revenue Uplift</div>
+                            <div class="scenario-metric-value">8x</div>
+                        </div>
+                        <div class="scenario-metric">
+                            <div class="scenario-metric-label">Net Monthly</div>
+                            <div class="scenario-metric-value">$5,875/mo</div>
+                        </div>
+                        <div class="scenario-payback">6mo</div>
+                        <div class="scenario-payback-label">Payback Period</div>
+                        <div class="scenario-verdict">EXCELLENT</div>
                     </div>
                 </div>
-                <div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Operational Costs</div>
-                        <ul class="sources-list">
-                            <li><a href="https://uibakery.io/blog/supabase-pricing" target="_blank">UI Bakery - Supabase Pricing 2025</a></li>
-                            <li><a href="https://supertokens.com/blog/firebase-pricing" target="_blank">SuperTokens - Firebase Pricing Guide</a></li>
-                            <li><a href="https://userpilot.com/costs/amplitude-pricing/" target="_blank">Userpilot - Amplitude Pricing Explained</a></li>
-                            <li><a href="https://aws.amazon.com/amplify/pricing/" target="_blank">AWS - Amplify Pricing</a></li>
-                        </ul>
-                    </div>
-                    <div class="sources-category">
-                        <div class="sources-category-title">Revenue Share & Legal</div>
-                        <ul class="sources-list">
-                            <li><a href="https://playfusion.web.id/indie-game-revenue-share/" target="_blank">PlayFusion - Indie Game Revenue Share Analysis</a></li>
-                            <li><a href="https://www.rewardful.com/articles/affiliate-commission-explained" target="_blank">Rewardful - Affiliate Commission Guide</a></li>
-                            <li><a href="https://www.contractscounsel.com/b/operating-agreement-cost" target="_blank">ContractsCounsel - Operating Agreement Costs</a></li>
-                            <li><a href="https://www.flowjam.com/blog/stripe-atlas-vs-clerky-which-is-better-for-your-startup" target="_blank">Flowjam - Stripe Atlas vs Clerky</a></li>
-                        </ul>
+
+                <div class="insight-box animate-on-scroll">
+                    <div class="insight-box-title">Scenario Assumptions</div>
+                    <div class="insight-box-content">
+                        All scenarios assume a 100K MAU app currently earning $1,000/mo, 50/50 revenue split, and monthly operational costs of $200.
+                        The key variables are development cost (team quality) and revenue uplift (monetization execution).
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <footer>
+            <!-- Revenue Share -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Revenue Share Benchmarks</h2>
+                    <p>Industry comparison shows 50/50 split is at the high end of what partners typically accept.</p>
+                </div>
+
+                <div class="chart-container animate-on-scroll">
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>App Stores (Apple/Google)</span>
+                            <span>Developer keeps 70%</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>SaaS Affiliates</span>
+                            <span>Developer keeps 70-80%</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill green" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Moonshot Target (50/50)</span>
+                            <span>Developer keeps 50%</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill orange" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-label">
+                            <span>Gaming Publishers</span>
+                            <span>Developer keeps 30-50%</span>
+                        </div>
+                        <div class="chart-bar">
+                            <div class="chart-bar-fill red" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box warning animate-on-scroll">
+                    <div class="insight-box-title">Revenue Share Consideration</div>
+                    <div class="insight-box-content">
+                        50/50 split requires strong value justification. Self-publishing only costs developers 30% (app store cut).
+                        <strong>Consider piloting at 60/40 (developer keeps 60%)</strong> to reduce friction, then move to 50/50 after proving value.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategic Recommendations -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Strategic Recommendations</h2>
+                    <p>Key adjustments to improve unit economics viability.</p>
+                </div>
+
+                <div class="cards-grid cards-grid-2 animate-on-scroll">
+                    <div class="card">
+                        <div class="card-title">1. Target Higher-Value Apps</div>
+                        <div class="card-description">
+                            <strong>100K+ MAU</strong> (not 15K-50K)<br>
+                            <strong>$1K-$5K/mo</strong> current revenue (more headroom)<br>
+                            <strong>iOS-primary</strong> (5.4x higher subscription ARPU)
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">2. Control Development Costs</div>
+                        <div class="card-description">
+                            Use <strong>Eastern Europe developers</strong> ($40-$70/hr)<br>
+                            Fixed-price contracts with clear scope<br>
+                            Target simple-to-medium complexity apps
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">3. Validate Before Commitment</div>
+                        <div class="card-description">
+                            Request <strong>current analytics access</strong> before partnership<br>
+                            Estimate uplift potential with benchmarks<br>
+                            Only proceed if <strong>3x+ uplift</strong> appears achievable
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">4. Consider Bootstrap Model</div>
+                        <div class="card-description">
+                            Reduce fixed costs to <strong>$5K-$10K/mo</strong> initially<br>
+                            Use revenue to fund team expansion<br>
+                            Reach profitability with 3-5 apps instead of 10+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sensitivity Analysis -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Sensitivity Analysis</h2>
+                    <p>Impact of key variable changes on payback period.</p>
+                </div>
+
+                <div class="table-wrapper animate-on-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Variable Change</th>
+                                <th>Impact on Payback</th>
+                                <th>Mitigation Strategy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Development cost +50%</td>
+                                <td class="warning-text">Payback +50%</td>
+                                <td>Use offshore team, fixed-price contracts</td>
+                            </tr>
+                            <tr>
+                                <td>Revenue uplift only 2x</td>
+                                <td class="danger-text">Payback doubles</td>
+                                <td>Better app selection, monetization expertise</td>
+                            </tr>
+                            <tr>
+                                <td>70/30 split (dev keeps 70%)</td>
+                                <td class="warning-text">Moonshot revenue -40%</td>
+                                <td>Offset with development guarantee</td>
+                            </tr>
+                            <tr>
+                                <td>MAU declines 30% post-launch</td>
+                                <td class="danger-text">LTV drops 30%+</td>
+                                <td>Retention focus in rebuild</td>
+                            </tr>
+                            <tr>
+                                <td>App store fee increase to 20%</td>
+                                <td class="warning-text">Margin compression</td>
+                                <td>Diversify revenue streams (ads, direct)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sources -->
+            <section class="sources-section">
+                <h2 class="sources-title animate-on-scroll">Sources</h2>
+                <div class="sources-grid animate-on-scroll">
+                    <div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Development Costs</div>
+                            <ul class="sources-list">
+                                <li><a href="https://www.index.dev/blog/freelance-developer-rates-by-country" target="_blank">Index.dev - Freelance Developer Rates by Country</a></li>
+                                <li><a href="https://qubit-labs.com/average-hourly-rates-offshore-development-services-software-development-costs-guide/" target="_blank">Qubit Labs - Offshore Development Rates Guide</a></li>
+                                <li><a href="https://closeloop.com/blog/how-much-does-it-cost-to-build-a-mobile-app/" target="_blank">CloseLoop - Mobile App Development Cost 2025</a></li>
+                                <li><a href="https://appinventiv.com/guide/mobile-app-development-cost/" target="_blank">App Inventiv - App Development Cost Guide</a></li>
+                            </ul>
+                        </div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Monetization Benchmarks</div>
+                            <ul class="sources-list">
+                                <li><a href="https://www.appsflyer.com/company/newsroom/pr/app-monetization-report/" target="_blank">AppsFlyer - 2024 State of App Monetization</a></li>
+                                <li><a href="https://apphud.com/blog/idict-case-study" target="_blank">Apphud - iDict Case Study (2.5x Conversion)</a></li>
+                                <li><a href="https://superscale.com/resources/increase-ad-revenue-instantly-with-these-ad-mediation-changes/" target="_blank">Superscale - Ad Mediation Revenue Increase</a></li>
+                                <li><a href="https://www.monetizemore.com/blog/ecpm-insights/" target="_blank">MonetizeMore - eCPM Insights 2024-25</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Operational Costs</div>
+                            <ul class="sources-list">
+                                <li><a href="https://uibakery.io/blog/supabase-pricing" target="_blank">UI Bakery - Supabase Pricing 2025</a></li>
+                                <li><a href="https://supertokens.com/blog/firebase-pricing" target="_blank">SuperTokens - Firebase Pricing Guide</a></li>
+                                <li><a href="https://userpilot.com/costs/amplitude-pricing/" target="_blank">Userpilot - Amplitude Pricing Explained</a></li>
+                                <li><a href="https://aws.amazon.com/amplify/pricing/" target="_blank">AWS - Amplify Pricing</a></li>
+                            </ul>
+                        </div>
+                        <div class="sources-category">
+                            <div class="sources-category-title">Revenue Share & Legal</div>
+                            <ul class="sources-list">
+                                <li><a href="https://playfusion.web.id/indie-game-revenue-share/" target="_blank">PlayFusion - Indie Game Revenue Share Analysis</a></li>
+                                <li><a href="https://www.rewardful.com/articles/affiliate-commission-explained" target="_blank">Rewardful - Affiliate Commission Guide</a></li>
+                                <li><a href="https://www.contractscounsel.com/b/operating-agreement-cost" target="_blank">ContractsCounsel - Operating Agreement Costs</a></li>
+                                <li><a href="https://www.flowjam.com/blog/stripe-atlas-vs-clerky-which-is-better-for-your-startup" target="_blank">Flowjam - Stripe Atlas vs Clerky</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Step Navigation -->
             <div class="step-nav">
-                <a href="../step-06-outreach-channels/step6-outreach-channels.html">
-                    <span>←</span>
-                    <span>Previous: Outreach Channels</span>
+                <a href="../step-06-outreach-channels/step6-outreach-channels.html" class="step-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous: Outreach Channels
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 7 of 14</div>
-                    <a href="../index.html">Back to Home</a>
+                    <div class="step-nav-indicator">Step 7 of 15</div>
+                    <a href="../index.html" class="step-nav-home">
+                        Back to Mission Control
+                    </a>
                 </div>
-                <a href="../step-08-technical-feasibility/step8-technical-feasibility.html">
-                    <span>Next: Technical Feasibility</span>
-                    <span>→</span>
+                <a href="../step-08-technical-feasibility/step8-technical-feasibility.html" class="step-nav-link">
+                    Next: Technical Feasibility
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Step 7: Unit Economics Stress Test | December 2025</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Moonshot Research | Step 7: Unit Economics Stress Test | December 2025</p>
         </footer>
     </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

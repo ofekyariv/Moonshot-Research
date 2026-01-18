@@ -3,292 +3,504 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 15 | Final Assessment & Go/No-Go</title>
+    <title>Step 15 | Final Assessment & Go/No-Go — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
-            min-height: 100vh;
-            line-height: 1.6;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
         }
 
         /* Navigation */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
+        .nav {
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
             padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
         }
 
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
         }
 
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link {
             font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* Hero */
+        .nav-link:hover {
+            color: var(--amber-glow);
+        }
+
+        .nav-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--success-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 140px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
             text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--success-green);
+            margin: 0 auto 32px;
+            width: fit-content;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero h1 {
-            font-size: 52px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(48px, 7vw, 80px);
             font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
+            background: linear-gradient(135deg, var(--success-green) 0%, #86efac 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
         }
 
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
             max-width: 700px;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
-        }
-
-        /* Big Stats */
-        .big-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .big-stat {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .big-stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-        }
-
-        .big-stat-number.purple {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .big-stat-label {
-            color: #a0aec0;
+        .hero-meta {
             font-size: 14px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        /* Section */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(52, 211, 153, 0.1);
+            border-bottom: 1px solid rgba(52, 211, 153, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--success-green);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
+        }
+
+        .stat-value.amber {
+            color: var(--amber-glow);
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Section Headers */
         .section {
-            padding: 80px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 100px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        .section:last-child {
+        .section:last-of-type {
             border-bottom: none;
         }
 
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 15px;
             max-width: 700px;
         }
 
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Verdict Box */
+        .verdict-box {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.1) 0%, rgba(52, 211, 153, 0.03) 100%);
+            border: 2px solid rgba(52, 211, 153, 0.3);
+            border-radius: 24px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 0 0 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verdict-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .verdict-box h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--success-green);
+            margin-bottom: 16px;
+            text-shadow: 0 0 60px rgba(52, 211, 153, 0.4);
+            position: relative;
+        }
+
+        .verdict-box p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            position: relative;
+        }
+
+        .verdict-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--success-green) 0%, #10b981 100%);
+            color: var(--space-deep);
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 40px rgba(52, 211, 153, 0.4);
+            position: relative;
+        }
+
         /* Cards */
-        .cards {
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
-        .cards-2 {
+        .cards-grid-2 {
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .cards-4 {
-            grid-template-columns: repeat(4, 1fr);
+        .card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card.success {
-            border-color: rgba(34, 197, 94, 0.3);
-            background: rgba(34, 197, 94, 0.05);
+            border-color: rgba(52, 211, 153, 0.2);
         }
 
-        .card.warning {
-            border-color: rgba(245, 158, 11, 0.3);
-            background: rgba(245, 158, 11, 0.05);
+        .card.success::before {
+            background: linear-gradient(90deg, transparent, var(--success-green), transparent);
         }
 
-        .card.danger {
-            border-color: rgba(239, 68, 68, 0.3);
-            background: rgba(239, 68, 68, 0.05);
+        .card.success:hover {
+            border-color: rgba(52, 211, 153, 0.4);
         }
 
         .card-title {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 12px;
         }
 
-        .card-value {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .card-value.success { color: #22c55e; }
-        .card-value.warning { color: #f59e0b; }
-        .card-value.danger { color: #ef4444; }
-
         .card-description {
-            color: #a0aec0;
-            font-size: 14px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
         }
-
-        .card-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .card-badge.validated { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .card-badge.refined { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-        .card-badge.pending { background: rgba(100, 116, 139, 0.2); color: #94a3b8; }
 
         /* Table */
         .table-wrapper {
             overflow-x: auto;
             margin: 24px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         table {
@@ -298,93 +510,35 @@
         }
 
         th, td {
-            padding: 16px;
+            padding: 16px 20px;
             text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         th {
-            background: rgba(255,255,255,0.05);
+            background: var(--space-mid);
             font-weight: 600;
-            color: #a0aec0;
+            color: var(--amber-glow);
             text-transform: uppercase;
             font-size: 12px;
             letter-spacing: 0.5px;
         }
 
         td {
-            color: #e2e8f0;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        tr:hover {
-            background: rgba(255,255,255,0.02);
+        td strong {
+            color: var(--text-primary);
         }
 
-        .highlight { color: #22c55e; font-weight: 600; }
-        .warning-text { color: #f59e0b; font-weight: 600; }
-        .danger-text { color: #ef4444; font-weight: 600; }
-
-        /* Verdict Box */
-        .verdict-box {
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05));
-            border: 2px solid rgba(34, 197, 94, 0.5);
-            border-radius: 24px;
-            padding: 48px;
-            text-align: center;
-            margin: 40px 0;
+        tr:hover td {
+            background: rgba(251, 191, 36, 0.03);
         }
 
-        .verdict-box h2 {
-            font-size: 48px;
-            font-weight: 800;
-            color: #22c55e;
-            margin-bottom: 16px;
-        }
-
-        .verdict-box p {
-            font-size: 20px;
-            color: #a0aec0;
-            max-width: 600px;
-            margin: 0 auto 24px;
-        }
-
-        .verdict-badge {
-            display: inline-block;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            padding: 16px 40px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        /* Insight Box */
-        .insight-box {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 24px 0;
-        }
-
-        .insight-box.success {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-
-        .insight-box.warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .insight-box-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .insight-box-content {
-            color: #a0aec0;
-            font-size: 15px;
+        tr:last-child td {
+            border-bottom: none;
         }
 
         /* Phase Grid */
@@ -396,18 +550,27 @@
         }
 
         .phase-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 24px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .phase-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
         }
 
         .phase-card h4 {
-            color: #a5b4fc;
+            font-family: 'Syne', sans-serif;
             font-size: 14px;
+            font-weight: 600;
+            color: var(--amber-glow);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .phase-card ul {
@@ -415,14 +578,29 @@
         }
 
         .phase-card li {
-            color: #e2e8f0;
+            color: var(--text-secondary);
             font-size: 14px;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .phase-card li::before {
+            content: '◆';
+            color: var(--amber-glow);
+            font-size: 8px;
+            margin-top: 5px;
+            flex-shrink: 0;
         }
 
         .phase-card li:last-child {
             border-bottom: none;
+        }
+
+        .phase-card li strong {
+            color: var(--cyan-soft);
         }
 
         /* Risk Grid */
@@ -433,32 +611,38 @@
         }
 
         .risk-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-4px);
         }
 
         .risk-card.high {
-            border-color: rgba(239, 68, 68, 0.3);
+            border-left: 3px solid #ef4444;
         }
 
         .risk-card.medium {
-            border-color: rgba(245, 158, 11, 0.3);
+            border-left: 3px solid var(--amber-glow);
         }
 
         .risk-card.low {
-            border-color: rgba(34, 197, 94, 0.3);
+            border-left: 3px solid var(--success-green);
         }
 
         .risk-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .risk-title {
+            font-family: 'Syne', sans-serif;
             font-weight: 600;
             font-size: 16px;
         }
@@ -466,30 +650,70 @@
         .risk-level {
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .risk-level.high { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-        .risk-level.medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
-        .risk-level.low { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .risk-level.high { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+        .risk-level.medium { background: rgba(245, 158, 11, 0.15); color: var(--amber-bright); }
+        .risk-level.low { background: rgba(52, 211, 153, 0.15); color: var(--success-green); }
 
         .risk-description {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            line-height: 1.6;
         }
 
         .risk-mitigation {
-            background: rgba(255,255,255,0.03);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
-            padding: 12px;
+            padding: 16px;
             font-size: 13px;
-            color: #e2e8f0;
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         .risk-mitigation strong {
-            color: #a5b4fc;
+            color: var(--cyan-soft);
+        }
+
+        /* Insight Box */
+        .insight-box {
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-left: 3px solid var(--amber-glow);
+            border-radius: 0 12px 12px 0;
+            padding: 24px 28px;
+            margin: 32px 0;
+        }
+
+        .insight-box.success {
+            background: rgba(52, 211, 153, 0.05);
+            border-color: rgba(52, 211, 153, 0.15);
+            border-left-color: var(--success-green);
+        }
+
+        .insight-box.warning {
+            background: rgba(251, 191, 36, 0.05);
+            border-color: rgba(251, 191, 36, 0.15);
+            border-left-color: var(--amber-glow);
+        }
+
+        .insight-box-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .insight-box-content {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
         }
 
         /* Next Steps */
@@ -501,54 +725,146 @@
         }
 
         .step-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
             text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .step-card::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid var(--amber-glow);
+            opacity: 0.3;
+        }
+
+        .step-card:last-child::after {
+            display: none;
         }
 
         .step-number {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
+            margin: 0 auto 20px;
+            font-family: 'Syne', sans-serif;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 20px;
+            color: var(--space-deep);
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
         }
 
         .step-title {
+            font-family: 'Syne', sans-serif;
             font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
 
         .step-desc {
-            color: #a0aec0;
+            color: var(--text-muted);
             font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Go/No-Go Cards */
+        .gng-card {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .gng-card.success {
+            border-color: rgba(52, 211, 153, 0.3);
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.05) 0%, var(--space-mid) 100%);
+        }
+
+        .gng-card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .gng-list {
+            list-style: none;
+        }
+
+        .gng-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .gng-list li:last-child {
+            border-bottom: none;
+        }
+
+        .gng-list .check {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .gng-list .cross {
+            color: var(--text-muted);
         }
 
         /* Sources */
         .sources {
-            background: rgba(255,255,255,0.03);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 32px;
-            margin-top: 40px;
+            padding: 36px;
+            margin-top: 48px;
         }
 
         .sources h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
+            font-weight: 600;
+            color: var(--amber-glow);
+            margin-bottom: 24px;
         }
 
         .sources-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 32px;
+        }
+
+        .sources h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--cyan-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
         }
 
         .sources ul {
@@ -556,49 +872,59 @@
         }
 
         .sources li {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 13px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .sources a {
-            color: #667eea;
+            color: var(--text-secondary);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .sources a:hover {
-            text-decoration: underline;
+            color: var(--amber-glow);
         }
 
-        /* Step Navigation */
+        /* Footer */
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 60px;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
         .step-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 40px;
+            margin-bottom: 40px;
         }
 
         .step-nav a {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 8px;
-            color: #a0aec0;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+            background: var(--space-light);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
         }
 
         .step-nav-center {
@@ -606,481 +932,628 @@
         }
 
         .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border: none;
-            color: #fff;
+            color: var(--space-deep);
+            font-weight: 600;
+        }
+
+        .step-nav-center a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
         }
 
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Footer */
-        footer {
-            padding: 40px 0;
+        .footer-bottom {
             text-align: center;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 14px;
         }
 
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .phase-grid {
+                grid-template-columns: 1fr;
+            }
+            .next-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .step-card::after {
+                display: none;
+            }
+        }
+
         @media (max-width: 768px) {
-            .big-stats { grid-template-columns: repeat(2, 1fr); }
-            .cards, .cards-4, .phase-grid, .next-steps { grid-template-columns: 1fr; }
-            .risk-grid, .sources-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 32px; }
+            .hero {
+                padding: 120px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+            .hero-subtitle {
+                font-size: 17px;
+            }
+            .stats-inner {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .stat {
+                padding: 20px;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            .cards-grid,
+            .cards-grid-2,
+            .risk-grid,
+            .next-steps {
+                grid-template-columns: 1fr;
+            }
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .step-nav a {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
-            </div>
-        </div>
-    </nav>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>></span>
-            <a href="../research/index.html">Phase 6: Synthesis</a>
-            <span>></span>
-            Step 15
-        </div>
-
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 15</div>
-        </header>
-
-        <section class="hero">
-            <h1>Final Assessment: GO</h1>
-            <p class="tagline">After 14 research steps and 7 validated hypotheses, Moonshot is ready to launch.</p>
-            <p class="subtitle">Research completed December 29, 2025 | 15 steps | 100+ sources analyzed</p>
-        </section>
-
-        <div class="big-stats" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="big-stat">
-                <div class="big-stat-number">7/7</div>
-                <div class="big-stat-label">Core Hypotheses Tested</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">347K</div>
-                <div class="big-stat-label">Target Apps in Market</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number purple">$150K</div>
-                <div class="big-stat-label">Capital to Proof-of-Concept</div>
-            </div>
-        </div>
-
-        <!-- Verdict Box -->
-        <section class="section" style="padding-top: 40px;">
-            <div class="verdict-box">
-                <h2>RECOMMENDATION: GO</h2>
-                <p>All 7 core hypotheses validated or refined. Clear white space. Bootstrap-viable. Risk is manageable with phased approach.</p>
-                <div class="verdict-badge">Proceed to First Partnership</div>
-            </div>
-
-            <div class="cards">
-                <div class="card success">
-                    <div class="card-title">Validated Market</div>
-                    <div class="card-description">
-                        347K+ target apps exist. 82.8% of apps earn &lt;$1K/mo. Non-gaming apps now exceed gaming in revenue. Clear demand signal.
-                    </div>
-                </div>
-                <div class="card success">
-                    <div class="card-title">No Direct Competition</div>
-                    <div class="card-description">
-                        White space confirmed: No competitor offers partnership + operational lift for non-gaming indie mobile apps. Closest threat (Tilting Point) is UA-only.
-                    </div>
-                </div>
-                <div class="card success">
-                    <div class="card-title">Economics Work</div>
-                    <div class="card-description">
-                        $150K covers 2-3 apps to proof-of-concept. 3-5x realistic uplift. $125-$400/mo ops cost. 6-month payback possible with right app selection.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Hypothesis Validation Summary -->
-        <section class="section">
-            <h2 class="section-title">Hypothesis Validation Summary</h2>
-            <p class="section-subtitle">All 7 core hypotheses have been validated or refined through primary and secondary research.</p>
-
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Hypothesis</th>
-                            <th>Key Evidence</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>H1:</strong> Under-monetized indie apps exist at scale</td>
-                            <td>347K apps in target range; 82.8% earn &lt;$1K/mo (Sensor Tower, data.ai)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>H2:</strong> Developers want partners, not acquirers</td>
-                            <td>Autonomy #1 priority; 67% prefer partnerships over acquisition (Step 5 research)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>H3:</strong> Revenue share is acceptable</td>
-                            <td>70/30 for pilots (dev keeps 70%), 50/50 after proven value. Industry norm is 60-80% to creator.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>H4:</strong> We can 10x monetization</td>
-                            <td>3-5x realistic; 10x requires multi-vector optimization over 6-12 months (14 case studies)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>H5:</strong> 8-week timeline is realistic</td>
-                            <td>Tiered: 6-8 weeks (Tier 1), 10-12 weeks (Tier 2), 14-16 weeks (Tier 3)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>H6:</strong> Non-gaming is underserved</td>
-                            <td>No direct competitors. Gaming has mature ecosystem; non-gaming is white space.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>H7:</strong> Indie devs are reachable</td>
-                            <td>Multiple channels: app stores (ASO data), GitHub, indie communities, direct outreach</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Key Findings by Phase -->
-        <section class="section">
-            <h2 class="section-title">Key Findings by Research Phase</h2>
-            <p class="section-subtitle">Critical insights from each phase of the 15-step research process.</p>
-
-            <div class="phase-grid">
-                <div class="phase-card">
-                    <h4>Phase 1: Market Validation</h4>
-                    <ul>
-                        <li><strong>347K apps</strong> in target range (15K-1M MAU)</li>
-                        <li><strong>82.8%</strong> of apps earn &lt;$1K/month</li>
-                        <li><strong>$64B</strong> non-gaming app market (2024)</li>
-                        <li>Non-gaming now <strong>exceeds gaming</strong> revenue</li>
-                        <li><strong>White space</strong> confirmed vs competitors</li>
-                    </ul>
-                </div>
-                <div class="phase-card">
-                    <h4>Phase 2: Acquisition Strategy</h4>
-                    <ul>
-                        <li><strong>4 sourcing channels</strong> identified</li>
-                        <li><strong>"Burned Out Solo Dev"</strong> is best-fit persona</li>
-                        <li><strong>67% prefer partnership</strong> over acquisition</li>
-                        <li><strong>70/30 revenue share</strong> for pilots</li>
-                        <li><strong>Autonomy is #1 priority</strong> for devs</li>
-                    </ul>
-                </div>
-                <div class="phase-card">
-                    <h4>Phase 3: Financials</h4>
-                    <ul>
-                        <li><strong>$35-50K</strong> per app development cost</li>
-                        <li><strong>$125-400/mo</strong> ongoing ops cost</li>
-                        <li><strong>6-month payback</strong> at 4x uplift</li>
-                        <li><strong>$150K sufficient</strong> for 2-3 apps</li>
-                        <li><strong>LTV:CAC 3:1</strong> target achievable</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="phase-grid">
-                <div class="phase-card">
-                    <h4>Phase 4: Operations</h4>
-                    <ul>
-                        <li><strong>8-point complexity</strong> scoring system</li>
-                        <li><strong>Tiered timelines:</strong> 8/12/16 weeks</li>
-                        <li><strong>3-5x realistic</strong> monetization lift</li>
-                        <li><strong>Delaware C-Corp</strong> recommended structure</li>
-                        <li><strong>RevenueCat + Apphud</strong> for subs</li>
-                    </ul>
-                </div>
-                <div class="phase-card">
-                    <h4>Phase 5: Go-to-Market</h4>
-                    <ul>
-                        <li><strong>Content + community</strong> outreach strategy</li>
-                        <li><strong>3 case studies</strong> before scaling</li>
-                        <li><strong>Pilot-first</strong> engagement model</li>
-                        <li><strong>Bootstrap $150K</strong> is sufficient</li>
-                        <li><strong>Earnest/Calm Fund</strong> for Phase 2</li>
-                    </ul>
-                </div>
-                <div class="phase-card">
-                    <h4>Pilot Partner Criteria</h4>
-                    <ul>
-                        <li><strong>100K+ MAU</strong> minimum threshold</li>
-                        <li><strong>Tier 1 complexity</strong> (score 1-3)</li>
-                        <li><strong>Solo dev or small team</strong> preferred</li>
-                        <li><strong>&lt;$1K/mo</strong> current revenue</li>
-                        <li><strong>Clear monetization path</strong> visible</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Risk Assessment -->
-        <section class="section">
-            <h2 class="section-title">Remaining Risks & Mitigations</h2>
-            <p class="section-subtitle">Key risks identified through research and corresponding mitigation strategies.</p>
-
-            <div class="risk-grid">
-                <div class="risk-card medium">
-                    <div class="risk-header">
-                        <span class="risk-title">Developer Acquisition</span>
-                        <span class="risk-level medium">MEDIUM</span>
-                    </div>
-                    <div class="risk-description">
-                        Convincing first developers to partner with an unproven entity. Cold outreach may have low conversion.
-                    </div>
-                    <div class="risk-mitigation">
-                        <strong>Mitigation:</strong> Offer 70/30 rev share (dev keeps 70%) for pilots. Build credibility through content marketing before outreach. Target "Burned Out Solo Dev" persona who has most pain.
-                    </div>
-                </div>
-
-                <div class="risk-card medium">
-                    <div class="risk-header">
-                        <span class="risk-title">Monetization Underperformance</span>
-                        <span class="risk-level medium">MEDIUM</span>
-                    </div>
-                    <div class="risk-description">
-                        First apps may not achieve 3-5x uplift, breaking unit economics.
-                    </div>
-                    <div class="risk-mitigation">
-                        <strong>Mitigation:</strong> Strict app selection criteria (100K+ MAU, clear monetization path). Conservative 3x projections, not 10x. Kill underperformers quickly (3-month checkpoint).
-                    </div>
-                </div>
-
-                <div class="risk-card low">
-                    <div class="risk-header">
-                        <span class="risk-title">Technical Complexity</span>
-                        <span class="risk-level low">LOW</span>
-                    </div>
-                    <div class="risk-description">
-                        Some apps may have hidden technical debt or complexity.
-                    </div>
-                    <div class="risk-mitigation">
-                        <strong>Mitigation:</strong> 8-point complexity scoring system. Technical due diligence before partnership. Start with Tier 1 (simple) apps only. Buffer 30% on timeline estimates.
-                    </div>
-                </div>
-
-                <div class="risk-card low">
-                    <div class="risk-header">
-                        <span class="risk-title">Competition Entry</span>
-                        <span class="risk-level low">LOW</span>
-                    </div>
-                    <div class="risk-description">
-                        Gaming publishers (Tilting Point, Kwalee) could expand to non-gaming.
-                    </div>
-                    <div class="risk-mitigation">
-                        <strong>Mitigation:</strong> First-mover advantage in non-gaming. Build relationships and case studies quickly. Gaming publishers historically avoid non-gaming due to different economics.
-                    </div>
-                </div>
-
-                <div class="risk-card medium">
-                    <div class="risk-header">
-                        <span class="risk-title">Developer Relationship</span>
-                        <span class="risk-level medium">MEDIUM</span>
-                    </div>
-                    <div class="risk-description">
-                        Developers may become difficult to work with or dispute revenue share.
-                    </div>
-                    <div class="risk-mitigation">
-                        <strong>Mitigation:</strong> Clear legal contracts (Standard LLC JV). Revenue transparency via RevenueCat dashboards. Regular check-ins and relationship management. Exit clauses for both parties.
-                    </div>
-                </div>
-
-                <div class="risk-card low">
-                    <div class="risk-header">
-                        <span class="risk-title">Capital Runway</span>
-                        <span class="risk-level low">LOW</span>
-                    </div>
-                    <div class="risk-description">
-                        $150K may not be sufficient if first partnerships take longer than expected.
-                    </div>
-                    <div class="risk-mitigation">
-                        <strong>Mitigation:</strong> Conservative projections show 2-3 apps feasible. Maintain $15K buffer. Lighter Capital RBF available at $15K MRR if needed. Can extend runway with consulting.
-                    </div>
-                </div>
-            </div>
-
-            <div class="insight-box warning">
-                <div class="insight-box-title">Biggest Risk: First Partnership Success</div>
-                <div class="insight-box-content">
-                    The first partnership is the highest-risk moment. Everything depends on finding the right first app and executing well. Mitigation: Be extremely selective on App #1 - prioritize "easy win" over scale. Target Tier 1 complexity with clear monetization path.
-                </div>
-            </div>
-        </section>
-
-        <!-- Next Steps -->
-        <section class="section">
-            <h2 class="section-title">Immediate Next Steps</h2>
-            <p class="section-subtitle">The path from research to first partnership.</p>
-
-            <div class="next-steps">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Finalize Legal</div>
-                    <div class="step-desc">Set up Delaware C-Corp. Draft standard partnership agreement template. Consult IP attorney.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Build Pipeline</div>
-                    <div class="step-desc">Create target list of 20-30 apps using qualification criteria. Research developers. Prepare outreach templates.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <div class="step-title">First Outreach</div>
-                    <div class="step-desc">Reach out to top 10 candidates. Aim for 3-5 discovery calls. Present value prop and 70/30 pilot terms.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Sign First Partner</div>
-                    <div class="step-desc">Due diligence on first app. Negotiate terms. Sign partnership agreement. Begin technical assessment.</div>
-                </div>
-            </div>
-
-            <div class="insight-box">
-                <div class="insight-box-title">Success Criteria for Phase 1</div>
-                <div class="insight-box-content">
-                    <strong>By Month 6:</strong> First app live with monetization improvements<br>
-                    <strong>By Month 12:</strong> 2-3 partnerships generating $5K+ MRR combined<br>
-                    <strong>By Month 18:</strong> First case study published, pipeline of inbound interest<br><br>
-                    <strong>Kill Criteria:</strong> If first app doesn't show 2x+ improvement within 3 months post-launch, evaluate whether to continue or pivot.
-                </div>
-            </div>
-        </section>
-
-        <!-- Go/No-Go Decision -->
-        <section class="section">
-            <h2 class="section-title">Go/No-Go Decision Framework</h2>
-            <p class="section-subtitle">Final assessment criteria and recommendation.</p>
-
-            <div class="cards cards-2">
-                <div class="card success">
-                    <div class="card-title">GO Criteria (All Met)</div>
-                    <div class="card-description">
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10003; Market exists (347K+ target apps)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10003; White space confirmed (no direct competitors)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10003; Unit economics viable (6-month payback)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10003; Developers want partnerships (67% prefer)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10003; Revenue share acceptable (70/30 for pilots)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10003; Monetization uplift proven (3-5x realistic)</li>
-                            <li style="padding: 8px 0;">&#10003; Capital sufficient ($150K for 2-3 apps)</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">NO-GO Criteria (None Triggered)</div>
-                    <div class="card-description">
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10007; No market (Market confirmed)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10007; Direct competitors (White space confirmed)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10007; Negative unit economics (Positive confirmed)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10007; Developers reject model (67% prefer)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10007; Revenue share rejected (70/30 accepted)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">&#10007; Can't improve monetization (Case studies prove)</li>
-                            <li style="padding: 8px 0;">&#10007; Insufficient capital ($150K available)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="verdict-box" style="margin-top: 40px;">
-                <h2>FINAL VERDICT: GO</h2>
-                <p>All GO criteria met. No NO-GO criteria triggered. Research phase complete. Proceed to execution.</p>
-                <div class="verdict-badge">Launch Moonshot</div>
-            </div>
-        </section>
-
-        <!-- Sources -->
-        <section class="section" style="border-bottom: none;">
-            <div class="sources">
-                <h3>Sources & Research References</h3>
-                <div class="sources-grid">
-                    <div>
-                        <h4 style="color: #a5b4fc; font-size: 13px; margin-bottom: 12px;">Market Research</h4>
-                        <ul>
-                            <li><a href="https://www.statista.com/statistics/269025/worldwide-mobile-app-revenue-forecast/" target="_blank">Statista: Mobile App Revenue Forecast</a></li>
-                            <li><a href="https://www.data.ai/en/go/state-of-mobile-2024" target="_blank">data.ai: State of Mobile 2024</a></li>
-                            <li><a href="https://sensortower.com/resources/reports" target="_blank">Sensor Tower: App Market Reports</a></li>
-                            <li><a href="https://www.businessofapps.com/data/app-revenues/" target="_blank">Business of Apps: Revenue Data</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="color: #a5b4fc; font-size: 13px; margin-bottom: 12px;">Developer Sentiment</h4>
-                        <ul>
-                            <li><a href="https://www.reddit.com/r/iOSProgramming/" target="_blank">Reddit: iOS Programming Community</a></li>
-                            <li><a href="https://www.indiehackers.com" target="_blank">Indie Hackers: Founder Stories</a></li>
-                            <li><a href="https://news.ycombinator.com" target="_blank">Hacker News: Developer Discussions</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="color: #a5b4fc; font-size: 13px; margin-bottom: 12px;">Unit Economics</h4>
-                        <ul>
-                            <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscriptions 2024</a></li>
-                            <li><a href="https://apphud.com/blog" target="_blank">Apphud: Monetization Case Studies</a></li>
-                            <li><a href="https://adapty.io/app-subscription-pricing-index/" target="_blank">Adapty: Subscription Pricing Index</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="sources-grid" style="margin-top: 24px;">
-                    <div>
-                        <h4 style="color: #a5b4fc; font-size: 13px; margin-bottom: 12px;">Competition Analysis</h4>
-                        <ul>
-                            <li><a href="https://www.tiltingpoint.com" target="_blank">Tilting Point: Gaming Publisher Model</a></li>
-                            <li><a href="https://www.kwalee.com" target="_blank">Kwalee: Publisher Analysis</a></li>
-                            <li><a href="https://sacra.com" target="_blank">Sacra: Investor Research</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="color: #a5b4fc; font-size: 13px; margin-bottom: 12px;">Funding & Structure</h4>
-                        <ul>
-                            <li><a href="https://earnestcapital.com" target="_blank">Earnest Capital: Shared Earnings</a></li>
-                            <li><a href="https://calmfund.com" target="_blank">Calm Company Fund</a></li>
-                            <li><a href="https://lightercapital.com" target="_blank">Lighter Capital: RBF</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 style="color: #a5b4fc; font-size: 13px; margin-bottom: 12px;">Previous Steps</h4>
-                        <ul>
-                            <li><a href="../index.html">Home (All 15 Steps)</a></li>
-                            <li><a href="./hypotheses.md">Hypotheses Tracking</a></li>
-                            <li><a href="../research-plan.md">Research Plan</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <!-- Step Navigation -->
-            <div class="step-nav">
-                <a href="../research/step-14-funding-strategy/step14-funding-strategy.html">
-                    <span>&larr;</span>
-                    <span>Previous: Funding Strategy</span>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
                 </a>
-                <div class="step-nav-center">
-                    <div class="step-indicator">Step 15 of 15 - COMPLETE</div>
-                    <a href="../index.html">Back to Home</a>
-                </div>
-                <div style="visibility: hidden;">
-                    <span>Placeholder</span>
+                <div class="nav-links">
+                    <a href="../index.html" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Research
+                    </a>
+                    <div class="step-badge">
+                        <span>●</span>
+                        Step 15 — Final
+                    </div>
                 </div>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Final Assessment | December 29, 2025</p>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span>◆</span>
+                Research Complete — All Hypotheses Validated
+            </div>
+            <h1>Final Assessment: GO</h1>
+            <p class="hero-subtitle">
+                After 14 research steps and 7 validated hypotheses, Moonshot is ready to launch.
+            </p>
+            <p class="hero-meta">Research completed December 29, 2025 | 15 steps | 100+ sources analyzed</p>
+        </section>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">7/7</div>
+                    <div class="stat-label">Core Hypotheses Tested</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">347K</div>
+                    <div class="stat-label">Target Apps in Market</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value amber">$150K</div>
+                    <div class="stat-label">Capital to Proof-of-Concept</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main">
+            <!-- Verdict Section -->
+            <section class="section">
+                <div class="verdict-box animate-on-scroll">
+                    <h2>RECOMMENDATION: GO</h2>
+                    <p>All 7 core hypotheses validated or refined. Clear white space. Bootstrap-viable. Risk is manageable with phased approach.</p>
+                    <div class="verdict-badge">Proceed to First Partnership</div>
+                </div>
+
+                <div class="cards-grid animate-on-scroll">
+                    <div class="card success">
+                        <div class="card-title">Validated Market</div>
+                        <div class="card-description">
+                            347K+ target apps exist. 82.8% of apps earn &lt;$1K/mo. Non-gaming apps now exceed gaming in revenue. Clear demand signal.
+                        </div>
+                    </div>
+                    <div class="card success">
+                        <div class="card-title">No Direct Competition</div>
+                        <div class="card-description">
+                            White space confirmed: No competitor offers partnership + operational lift for non-gaming indie mobile apps. Closest threat (Tilting Point) is UA-only.
+                        </div>
+                    </div>
+                    <div class="card success">
+                        <div class="card-title">Economics Work</div>
+                        <div class="card-description">
+                            $150K covers 2-3 apps to proof-of-concept. 3-5x realistic uplift. $125-$400/mo ops cost. 6-month payback possible with right app selection.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hypothesis Validation Summary -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Hypothesis Validation Summary</h2>
+                        <p>All 7 core hypotheses have been validated or refined through primary and secondary research.</p>
+                    </div>
+                    <div class="section-tag">7 of 7</div>
+                </div>
+
+                <div class="table-wrapper animate-on-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hypothesis</th>
+                                <th>Key Evidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>H1:</strong> Under-monetized indie apps exist at scale</td>
+                                <td>347K apps in target range; 82.8% earn &lt;$1K/mo (Sensor Tower, data.ai)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>H2:</strong> Developers want partners, not acquirers</td>
+                                <td>Autonomy #1 priority; 67% prefer partnerships over acquisition (Step 5 research)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>H3:</strong> Revenue share is acceptable</td>
+                                <td>70/30 for pilots (dev keeps 70%), 50/50 after proven value. Industry norm is 60-80% to creator.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>H4:</strong> We can 10x monetization</td>
+                                <td>3-5x realistic; 10x requires multi-vector optimization over 6-12 months (14 case studies)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>H5:</strong> 8-week timeline is realistic</td>
+                                <td>Tiered: 6-8 weeks (Tier 1), 10-12 weeks (Tier 2), 14-16 weeks (Tier 3)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>H6:</strong> Non-gaming is underserved</td>
+                                <td>No direct competitors. Gaming has mature ecosystem; non-gaming is white space.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>H7:</strong> Indie devs are reachable</td>
+                                <td>Multiple channels: app stores (ASO data), GitHub, indie communities, direct outreach</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Key Findings by Phase -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Key Findings by Research Phase</h2>
+                        <p>Critical insights from each phase of the 15-step research process.</p>
+                    </div>
+                    <div class="section-tag">5 Phases</div>
+                </div>
+
+                <div class="phase-grid">
+                    <div class="phase-card animate-on-scroll">
+                        <h4>Phase 1: Market Validation</h4>
+                        <ul>
+                            <li><strong>347K apps</strong> in target range (15K-1M MAU)</li>
+                            <li><strong>82.8%</strong> of apps earn &lt;$1K/month</li>
+                            <li><strong>$64B</strong> non-gaming app market (2024)</li>
+                            <li>Non-gaming now <strong>exceeds gaming</strong> revenue</li>
+                            <li><strong>White space</strong> confirmed vs competitors</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card animate-on-scroll">
+                        <h4>Phase 2: Acquisition Strategy</h4>
+                        <ul>
+                            <li><strong>4 sourcing channels</strong> identified</li>
+                            <li><strong>"Burned Out Solo Dev"</strong> is best-fit persona</li>
+                            <li><strong>67% prefer partnership</strong> over acquisition</li>
+                            <li><strong>70/30 revenue share</strong> for pilots</li>
+                            <li><strong>Autonomy is #1 priority</strong> for devs</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card animate-on-scroll">
+                        <h4>Phase 3: Financials</h4>
+                        <ul>
+                            <li><strong>$35-50K</strong> per app development cost</li>
+                            <li><strong>$125-400/mo</strong> ongoing ops cost</li>
+                            <li><strong>6-month payback</strong> at 4x uplift</li>
+                            <li><strong>$150K sufficient</strong> for 2-3 apps</li>
+                            <li><strong>LTV:CAC 3:1</strong> target achievable</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="phase-grid">
+                    <div class="phase-card animate-on-scroll">
+                        <h4>Phase 4: Operations</h4>
+                        <ul>
+                            <li><strong>8-point complexity</strong> scoring system</li>
+                            <li><strong>Tiered timelines:</strong> 8/12/16 weeks</li>
+                            <li><strong>3-5x realistic</strong> monetization lift</li>
+                            <li><strong>Delaware C-Corp</strong> recommended structure</li>
+                            <li><strong>RevenueCat + Apphud</strong> for subs</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card animate-on-scroll">
+                        <h4>Phase 5: Go-to-Market</h4>
+                        <ul>
+                            <li><strong>Content + community</strong> outreach strategy</li>
+                            <li><strong>3 case studies</strong> before scaling</li>
+                            <li><strong>Pilot-first</strong> engagement model</li>
+                            <li><strong>Bootstrap $150K</strong> is sufficient</li>
+                            <li><strong>Earnest/Calm Fund</strong> for Phase 2</li>
+                        </ul>
+                    </div>
+                    <div class="phase-card animate-on-scroll">
+                        <h4>Pilot Partner Criteria</h4>
+                        <ul>
+                            <li><strong>100K+ MAU</strong> minimum threshold</li>
+                            <li><strong>Tier 1 complexity</strong> (score 1-3)</li>
+                            <li><strong>Solo dev or small team</strong> preferred</li>
+                            <li><strong>&lt;$1K/mo</strong> current revenue</li>
+                            <li><strong>Clear monetization path</strong> visible</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Risk Assessment -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Remaining Risks & Mitigations</h2>
+                        <p>Key risks identified through research and corresponding mitigation strategies.</p>
+                    </div>
+                    <div class="section-tag">6 Risks</div>
+                </div>
+
+                <div class="risk-grid">
+                    <div class="risk-card medium animate-on-scroll">
+                        <div class="risk-header">
+                            <span class="risk-title">Developer Acquisition</span>
+                            <span class="risk-level medium">Medium</span>
+                        </div>
+                        <div class="risk-description">
+                            Convincing first developers to partner with an unproven entity. Cold outreach may have low conversion.
+                        </div>
+                        <div class="risk-mitigation">
+                            <strong>Mitigation:</strong> Offer 70/30 rev share (dev keeps 70%) for pilots. Build credibility through content marketing before outreach. Target "Burned Out Solo Dev" persona who has most pain.
+                        </div>
+                    </div>
+
+                    <div class="risk-card medium animate-on-scroll">
+                        <div class="risk-header">
+                            <span class="risk-title">Monetization Underperformance</span>
+                            <span class="risk-level medium">Medium</span>
+                        </div>
+                        <div class="risk-description">
+                            First apps may not achieve 3-5x uplift, breaking unit economics.
+                        </div>
+                        <div class="risk-mitigation">
+                            <strong>Mitigation:</strong> Strict app selection criteria (100K+ MAU, clear monetization path). Conservative 3x projections, not 10x. Kill underperformers quickly (3-month checkpoint).
+                        </div>
+                    </div>
+
+                    <div class="risk-card low animate-on-scroll">
+                        <div class="risk-header">
+                            <span class="risk-title">Technical Complexity</span>
+                            <span class="risk-level low">Low</span>
+                        </div>
+                        <div class="risk-description">
+                            Some apps may have hidden technical debt or complexity.
+                        </div>
+                        <div class="risk-mitigation">
+                            <strong>Mitigation:</strong> 8-point complexity scoring system. Technical due diligence before partnership. Start with Tier 1 (simple) apps only. Buffer 30% on timeline estimates.
+                        </div>
+                    </div>
+
+                    <div class="risk-card low animate-on-scroll">
+                        <div class="risk-header">
+                            <span class="risk-title">Competition Entry</span>
+                            <span class="risk-level low">Low</span>
+                        </div>
+                        <div class="risk-description">
+                            Gaming publishers (Tilting Point, Kwalee) could expand to non-gaming.
+                        </div>
+                        <div class="risk-mitigation">
+                            <strong>Mitigation:</strong> First-mover advantage in non-gaming. Build relationships and case studies quickly. Gaming publishers historically avoid non-gaming due to different economics.
+                        </div>
+                    </div>
+
+                    <div class="risk-card medium animate-on-scroll">
+                        <div class="risk-header">
+                            <span class="risk-title">Developer Relationship</span>
+                            <span class="risk-level medium">Medium</span>
+                        </div>
+                        <div class="risk-description">
+                            Developers may become difficult to work with or dispute revenue share.
+                        </div>
+                        <div class="risk-mitigation">
+                            <strong>Mitigation:</strong> Clear legal contracts (Standard LLC JV). Revenue transparency via RevenueCat dashboards. Regular check-ins and relationship management. Exit clauses for both parties.
+                        </div>
+                    </div>
+
+                    <div class="risk-card low animate-on-scroll">
+                        <div class="risk-header">
+                            <span class="risk-title">Capital Runway</span>
+                            <span class="risk-level low">Low</span>
+                        </div>
+                        <div class="risk-description">
+                            $150K may not be sufficient if first partnerships take longer than expected.
+                        </div>
+                        <div class="risk-mitigation">
+                            <strong>Mitigation:</strong> Conservative projections show 2-3 apps feasible. Maintain $15K buffer. Lighter Capital RBF available at $15K MRR if needed. Can extend runway with consulting.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box warning animate-on-scroll">
+                    <div class="insight-box-title">Biggest Risk: First Partnership Success</div>
+                    <div class="insight-box-content">
+                        The first partnership is the highest-risk moment. Everything depends on finding the right first app and executing well. <strong>Mitigation:</strong> Be extremely selective on App #1 — prioritize "easy win" over scale. Target Tier 1 complexity with clear monetization path.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Next Steps -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Immediate Next Steps</h2>
+                        <p>The path from research to first partnership.</p>
+                    </div>
+                    <div class="section-tag">4 Steps</div>
+                </div>
+
+                <div class="next-steps">
+                    <div class="step-card animate-on-scroll">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Finalize Legal</div>
+                        <div class="step-desc">Set up Delaware C-Corp. Draft standard partnership agreement template. Consult IP attorney.</div>
+                    </div>
+                    <div class="step-card animate-on-scroll">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Build Pipeline</div>
+                        <div class="step-desc">Create target list of 20-30 apps using qualification criteria. Research developers. Prepare outreach templates.</div>
+                    </div>
+                    <div class="step-card animate-on-scroll">
+                        <div class="step-number">3</div>
+                        <div class="step-title">First Outreach</div>
+                        <div class="step-desc">Reach out to top 10 candidates. Aim for 3-5 discovery calls. Present value prop and 70/30 pilot terms.</div>
+                    </div>
+                    <div class="step-card animate-on-scroll">
+                        <div class="step-number">4</div>
+                        <div class="step-title">Sign First Partner</div>
+                        <div class="step-desc">Due diligence on first app. Negotiate terms. Sign partnership agreement. Begin technical assessment.</div>
+                    </div>
+                </div>
+
+                <div class="insight-box success animate-on-scroll">
+                    <div class="insight-box-title">Success Criteria for Phase 1</div>
+                    <div class="insight-box-content">
+                        <strong>By Month 6:</strong> First app live with monetization improvements<br>
+                        <strong>By Month 12:</strong> 2-3 partnerships generating $5K+ MRR combined<br>
+                        <strong>By Month 18:</strong> First case study published, pipeline of inbound interest<br><br>
+                        <strong>Kill Criteria:</strong> If first app doesn't show 2x+ improvement within 3 months post-launch, evaluate whether to continue or pivot.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Go/No-Go Decision -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Go/No-Go Decision Framework</h2>
+                        <p>Final assessment criteria and recommendation.</p>
+                    </div>
+                    <div class="section-tag">Decision</div>
+                </div>
+
+                <div class="cards-grid cards-grid-2">
+                    <div class="gng-card success animate-on-scroll">
+                        <div class="gng-card-title">GO Criteria (All Met)</div>
+                        <ul class="gng-list">
+                            <li><span class="check">✓</span> Market exists (347K+ target apps)</li>
+                            <li><span class="check">✓</span> White space confirmed (no direct competitors)</li>
+                            <li><span class="check">✓</span> Unit economics viable (6-month payback)</li>
+                            <li><span class="check">✓</span> Developers want partnerships (67% prefer)</li>
+                            <li><span class="check">✓</span> Revenue share acceptable (70/30 for pilots)</li>
+                            <li><span class="check">✓</span> Monetization uplift proven (3-5x realistic)</li>
+                            <li><span class="check">✓</span> Capital sufficient ($150K for 2-3 apps)</li>
+                        </ul>
+                    </div>
+                    <div class="gng-card animate-on-scroll">
+                        <div class="gng-card-title">NO-GO Criteria (None Triggered)</div>
+                        <ul class="gng-list">
+                            <li><span class="cross">✗</span> No market (Market confirmed)</li>
+                            <li><span class="cross">✗</span> Direct competitors (White space confirmed)</li>
+                            <li><span class="cross">✗</span> Negative unit economics (Positive confirmed)</li>
+                            <li><span class="cross">✗</span> Developers reject model (67% prefer)</li>
+                            <li><span class="cross">✗</span> Revenue share rejected (70/30 accepted)</li>
+                            <li><span class="cross">✗</span> Can't improve monetization (Case studies prove)</li>
+                            <li><span class="cross">✗</span> Insufficient capital ($150K available)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="verdict-box animate-on-scroll" style="margin-top: 48px;">
+                    <h2>FINAL VERDICT: GO</h2>
+                    <p>All GO criteria met. No NO-GO criteria triggered. Research phase complete. Proceed to execution.</p>
+                    <div class="verdict-badge">Launch Moonshot</div>
+                </div>
+            </section>
+
+            <!-- Sources -->
+            <section class="section" style="padding-bottom: 40px;">
+                <div class="sources animate-on-scroll">
+                    <h3>Sources & Research References</h3>
+                    <div class="sources-grid">
+                        <div>
+                            <h4>Market Research</h4>
+                            <ul>
+                                <li><a href="https://www.statista.com/statistics/269025/worldwide-mobile-app-revenue-forecast/" target="_blank">Statista: Mobile App Revenue Forecast</a></li>
+                                <li><a href="https://www.data.ai/en/go/state-of-mobile-2024" target="_blank">data.ai: State of Mobile 2024</a></li>
+                                <li><a href="https://sensortower.com/resources/reports" target="_blank">Sensor Tower: App Market Reports</a></li>
+                                <li><a href="https://www.businessofapps.com/data/app-revenues/" target="_blank">Business of Apps: Revenue Data</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Developer Sentiment</h4>
+                            <ul>
+                                <li><a href="https://www.reddit.com/r/iOSProgramming/" target="_blank">Reddit: iOS Programming Community</a></li>
+                                <li><a href="https://www.indiehackers.com" target="_blank">Indie Hackers: Founder Stories</a></li>
+                                <li><a href="https://news.ycombinator.com" target="_blank">Hacker News: Developer Discussions</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Unit Economics</h4>
+                            <ul>
+                                <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscriptions 2024</a></li>
+                                <li><a href="https://apphud.com/blog" target="_blank">Apphud: Monetization Case Studies</a></li>
+                                <li><a href="https://adapty.io/app-subscription-pricing-index/" target="_blank">Adapty: Subscription Pricing Index</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="sources-grid" style="margin-top: 24px;">
+                        <div>
+                            <h4>Competition Analysis</h4>
+                            <ul>
+                                <li><a href="https://www.tiltingpoint.com" target="_blank">Tilting Point: Gaming Publisher Model</a></li>
+                                <li><a href="https://www.kwalee.com" target="_blank">Kwalee: Publisher Analysis</a></li>
+                                <li><a href="https://sacra.com" target="_blank">Sacra: Investor Research</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Funding & Structure</h4>
+                            <ul>
+                                <li><a href="https://earnestcapital.com" target="_blank">Earnest Capital: Shared Earnings</a></li>
+                                <li><a href="https://calmfund.com" target="_blank">Calm Company Fund</a></li>
+                                <li><a href="https://lightercapital.com" target="_blank">Lighter Capital: RBF</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Previous Steps</h4>
+                            <ul>
+                                <li><a href="../index.html">Home (All 15 Steps)</a></li>
+                                <li><a href="./docs/hypotheses.md">Hypotheses Tracking</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="step-nav">
+                    <a href="../step-14-funding-strategy/step14-funding-strategy.html">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Previous: Funding Strategy
+                    </a>
+                    <div class="step-nav-center">
+                        <div class="step-indicator">Step 15 of 15 — Complete</div>
+                        <a href="../index.html">Back to Research Dashboard</a>
+                    </div>
+                    <div style="width: 220px;"></div>
+                </div>
+                <div class="footer-bottom">
+                    <p>Moonshot Research | Final Assessment | December 29, 2025</p>
+                </div>
+            </div>
         </footer>
     </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

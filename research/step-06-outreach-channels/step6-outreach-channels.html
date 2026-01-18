@@ -3,239 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 6 | Outreach Channel Research</title>
+    <title>Step 6 | Outreach Channel Research — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
         }
 
-        /* Hero */
+        .nav-links a:hover {
+            color: var(--amber-glow);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Hero Section */
         .hero {
-            padding: 80px 0 60px;
-            text-align: center;
+            padding: 140px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--amber-glow);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero h1 {
-            font-size: 52px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 72px);
             font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
             margin-bottom: 24px;
-            background: linear-gradient(90deg, #667eea 0%, #a5b4fc 100%);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
-            max-width: 700px;
-            margin: 0 auto 20px;
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
+        .hero-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        /* Big Stats */
-        .big-stats {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 40px;
         }
 
-        .big-stat {
+        .stat {
             text-align: center;
-            padding: 20px;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .big-stat-number {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
-        .big-stat-label {
-            color: #a0aec0;
+        .stat-label {
             font-size: 14px;
-            margin-top: 8px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Section */
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Section Headers */
         .section {
             padding: 80px 0;
         }
 
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        /* Cards */
-        .cards {
+        .section-header {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #a5b4fc;
-        }
-
-        .card p {
-            color: #a0aec0;
+        .section-header p {
+            color: var(--text-muted);
             font-size: 15px;
         }
 
-        .card .highlight {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .source-link {
-            display: block;
-            margin-top: 12px;
-            color: #667eea;
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
             font-size: 12px;
-            text-decoration: none;
-        }
-
-        .source-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Data Table */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 24px;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .data-table th {
-            color: #a5b4fc;
             font-weight: 600;
-            font-size: 14px;
+            color: var(--amber-glow);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
+        /* Data Table */
+        .table-wrapper {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
         .data-table td {
-            color: #e2e8f0;
+            padding: 18px 24px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .data-table th {
+            color: var(--amber-glow);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .data-table td {
+            color: var(--text-secondary);
             font-size: 15px;
         }
 
         .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
+            background: rgba(251, 191, 36, 0.03);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
         }
 
         .data-table .value {
-            font-weight: 700;
-            color: #fff;
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
-        /* Tier Badge */
+        .data-table .free {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .data-table .paid {
+            color: var(--amber-bright);
+            font-weight: 600;
+        }
+
+        /* Tier Badges */
         .tier-badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .tier-1 {
-            background: rgba(34, 197, 94, 0.2);
-            color: #86efac;
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--success-green);
+            border: 1px solid rgba(52, 211, 153, 0.3);
         }
 
         .tier-2 {
-            background: rgba(59, 130, 246, 0.2);
-            color: #93c5fd;
+            background: rgba(103, 232, 249, 0.15);
+            color: var(--cyan-soft);
+            border: 1px solid rgba(103, 232, 249, 0.3);
         }
 
         .tier-3 {
-            background: rgba(156, 163, 175, 0.2);
-            color: #d1d5db;
+            background: rgba(148, 163, 184, 0.15);
+            color: var(--text-secondary);
+            border: 1px solid rgba(148, 163, 184, 0.3);
         }
 
         /* Channel Cards */
@@ -246,82 +442,164 @@
         }
 
         .channel-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 28px;
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .channel-card h3 {
-            font-size: 20px;
-            margin-bottom: 16px;
+        .channel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .channel-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .channel-card:hover::before {
+            opacity: 1;
+        }
+
+        .channel-card-header {
             display: flex;
             align-items: center;
             gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .channel-card .stats {
+        .channel-rank {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .channel-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .channel-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
             margin-bottom: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
         }
 
-        .channel-card .stat {
+        .channel-stat {
             text-align: center;
         }
 
-        .channel-card .stat-value {
-            font-size: 24px;
+        .channel-stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
             font-weight: 700;
-            color: #fff;
+            color: var(--text-primary);
         }
 
-        .channel-card .stat-label {
-            font-size: 12px;
-            color: #64748b;
+        .channel-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .channel-card .description {
-            color: #a0aec0;
+        .channel-description {
+            color: var(--text-secondary);
             font-size: 14px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .channel-best-for {
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--amber-pale);
             margin-bottom: 16px;
         }
 
-        .channel-card .best-for {
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 13px;
-            color: #a5b4fc;
-        }
-
-        /* Outreach Rating */
-        .outreach-friendly {
+        .rating-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .rating-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            min-width: 120px;
         }
 
         .rating-bar {
             flex: 1;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
             overflow: hidden;
         }
 
         .rating-fill {
             height: 100%;
-            border-radius: 4px;
+            border-radius: 3px;
+            transition: width 0.6s ease;
         }
 
-        .rating-high { background: linear-gradient(90deg, #22c55e, #16a34a); }
-        .rating-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .rating-low { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .rating-high {
+            background: linear-gradient(90deg, var(--success-green), #10b981);
+        }
 
-        /* Newsletter/Podcast Section */
+        .rating-medium {
+            background: linear-gradient(90deg, var(--amber-glow), #d97706);
+        }
+
+        .rating-low {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--amber-glow);
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: gap 0.3s ease;
+        }
+
+        .source-link:hover {
+            gap: 10px;
+        }
+
+        .source-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Media Grid (Newsletters & Podcasts) */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -329,246 +607,259 @@
         }
 
         .media-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .media-card .name {
+        .media-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .media-name {
+            font-family: 'Syne', sans-serif;
             font-weight: 600;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .media-card .metric {
-            font-size: 24px;
-            font-weight: 700;
-            color: #a5b4fc;
-            margin-bottom: 4px;
-        }
-
-        .media-card .type {
-            font-size: 12px;
-            color: #64748b;
+            color: var(--text-primary);
             margin-bottom: 12px;
+            font-size: 16px;
         }
 
-        .media-card .cost {
+        .media-metric {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 4px;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+
+        .media-type {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .media-cost {
             font-size: 14px;
-            color: #86efac;
             font-weight: 600;
         }
 
-        /* Outreach Sequence */
-        .sequence {
-            display: flex;
+        .media-cost.free {
+            color: var(--success-green);
+        }
+
+        .media-cost.paid {
+            color: var(--amber-bright);
+        }
+
+        .media-cost.pitch {
+            color: var(--cyan-soft);
+        }
+
+        /* Key Insight Box */
+        .key-insight {
+            background: linear-gradient(135deg, rgba(52, 211, 153, 0.08) 0%, rgba(34, 211, 238, 0.05) 100%);
+            border: 2px solid rgba(52, 211, 153, 0.2);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .key-insight-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--success-green);
+            color: var(--space-deep);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-family: 'Syne', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+        }
+
+        .key-insight h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .key-insight p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .key-insight strong {
+            color: var(--cyan-soft);
+        }
+
+        /* Process Steps (Outreach Sequence) */
+        .sequence-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
         }
 
         .sequence-step {
-            flex: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 24px;
+            padding: 28px;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .sequence-step:hover {
+            border-color: rgba(251, 191, 36, 0.2);
         }
 
         .sequence-step::after {
             content: '';
             position: absolute;
-            right: -24px;
+            right: -16px;
             top: 50%;
             transform: translateY(-50%);
-            width: 24px;
+            width: 8px;
             height: 2px;
-            background: rgba(102, 126, 234, 0.5);
+            background: var(--amber-glow);
+            opacity: 0.5;
         }
 
         .sequence-step:last-child::after {
             display: none;
         }
 
-        .sequence-step .week {
-            font-size: 12px;
-            color: #667eea;
+        .phase-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
             font-weight: 600;
+            color: var(--amber-glow);
             text-transform: uppercase;
-            margin-bottom: 8px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
         }
 
         .sequence-step h4 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            margin-bottom: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
 
         .sequence-step ul {
             list-style: none;
-            font-size: 14px;
-            color: #a0aec0;
         }
 
         .sequence-step li {
-            padding: 4px 0;
-            padding-left: 16px;
+            padding: 6px 0;
+            padding-left: 20px;
             position: relative;
+            font-size: 14px;
+            color: var(--text-secondary);
         }
 
         .sequence-step li::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 12px;
+            top: 14px;
             width: 6px;
             height: 6px;
-            background: #667eea;
+            background: var(--amber-glow);
             border-radius: 50%;
         }
 
-        /* Sources */
-        .sources {
-            background: rgba(255,255,255,0.03);
+        /* Target Cards */
+        .target-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .target-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 32px;
-            margin-top: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .sources h3 {
+        .target-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .target-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+        }
+
+        .target-label {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
 
-        .sources ul {
-            list-style: none;
+        .target-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Sources Section */
+        .sources-section {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 60px;
+        }
+
+        .sources-section h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--amber-glow);
+        }
+
+        .sources-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-        .sources li {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .sources a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .sources a:hover {
-            text-decoration: underline;
-        }
-
-        /* Key Insight */
-        .key-insight {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 16px;
-            padding: 32px;
-            margin: 40px 0;
-            text-align: center;
-        }
-
-        .key-insight h3 {
-            font-size: 24px;
-            margin-bottom: 12px;
-            color: #a5b4fc;
-        }
-
-        .key-insight p {
-            font-size: 18px;
-            color: #e2e8f0;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: #475569;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .big-stats { grid-template-columns: repeat(2, 1fr); }
-            .cards, .channel-grid, .media-grid, .sources ul { grid-template-columns: 1fr; }
-            .sequence { flex-direction: column; }
-            .sequence-step::after { display: none; }
-        }
-
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
+        .sources-section a {
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
+            transition: color 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
+        .sources-section a:hover {
+            color: var(--amber-glow);
         }
 
         /* Step Navigation */
@@ -576,604 +867,829 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 40px;
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 60px;
         }
 
-        .step-nav a {
+        .step-nav-link {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #a0aec0;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+        .step-nav-link:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .step-nav-link svg {
+            width: 16px;
+            height: 16px;
         }
 
         .step-nav-center {
             text-align: center;
         }
 
-        .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border: none;
-            color: #fff;
-        }
-
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .step-nav-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
+            color: var(--space-deep);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .step-nav-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner,
+            .sequence-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .media-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .sequence-step::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+            .stats-inner,
+            .channel-grid,
+            .target-grid,
+            .sequence-grid,
+            .media-grid,
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .key-insight {
+                padding: 32px 24px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
+
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">&#128640;</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">Home</a>
+                    <span class="step-badge">Step 06</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span>&#9670;</span>
+                Go-to-Market Research
+            </div>
+            <h1>
+                <span class="highlight">Outreach Channel</span><br>
+                Research
+            </h1>
+            <p class="hero-subtitle">
+                Where to find indie developers with 15K-1M user apps and how to reach them effectively.
+            </p>
+            <p class="hero-meta">Research Date: December 28, 2025 | 15+ channels analyzed</p>
+        </section>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">500K+</div>
+                    <div class="stat-label">Developers on Reddit</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">1.6M</div>
+                    <div class="stat-label">Indie Hackers Monthly Visits</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">15-25%</div>
+                    <div class="stat-label">Expected Response Rate</div>
+                </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$0</div>
+                    <div class="stat-label">Cost for Top Channels</div>
+                </div>
             </div>
         </div>
-    </nav>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>›</span>
-            <a href="../index.html">Phase 2: Customer Discovery</a>
-            <span>›</span>
-            Step 6
-        </div>
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 6</div>
-        </header>
-    </div>
-
-    <section class="hero">
-        <div class="container">
-            <h1>Outreach Channel Research</h1>
-            <p class="tagline">Where to find indie developers with 15K-1M user apps and how to reach them effectively.</p>
-            <p class="subtitle">Research Date: December 28, 2025 | 15+ channels analyzed</p>
-        </div>
-    </section>
-
-    <section class="big-stats">
-        <div class="container" style="display: contents;">
-            <div class="big-stat">
-                <div class="big-stat-number">500K+</div>
-                <div class="big-stat-label">Developers on Reddit</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">1.6M</div>
-                <div class="big-stat-label">Indie Hackers Monthly Visits</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">15-25%</div>
-                <div class="big-stat-label">Expected Response Rate</div>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">$0</div>
-                <div class="big-stat-label">Cost for Top Channels</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Channel Rankings</h2>
-            <p class="section-subtitle">15+ channels ranked by reach, engagement quality, cost, and relevance to target developers.</p>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Channel</th>
-                        <th>Reach</th>
-                        <th>Cost</th>
-                        <th>Response Rate</th>
-                        <th>Tier</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="value">1</td>
-                        <td class="value">r/SideProject</td>
-                        <td>250K+ members</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>20-30%</td>
-                        <td><span class="tier-badge tier-1">Tier 1</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">2</td>
-                        <td class="value">Twitter/X (#buildinpublic)</td>
-                        <td>10-50K relevant</td>
-                        <td style="color: #86efac;">Free-$8/mo</td>
-                        <td>10-30%</td>
-                        <td><span class="tier-badge tier-1">Tier 1</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">3</td>
-                        <td class="value">Indie Hackers</td>
-                        <td>1.6M visits/mo</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>15-30%</td>
-                        <td><span class="tier-badge tier-1">Tier 1</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">4</td>
-                        <td class="value">r/androiddev</td>
-                        <td>500K+ members</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>15-25%</td>
-                        <td><span class="tier-badge tier-1">Tier 1</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">5</td>
-                        <td class="value">r/iOSProgramming</td>
-                        <td>140K+ members</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>15-25%</td>
-                        <td><span class="tier-badge tier-1">Tier 1</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">6</td>
-                        <td class="value">Discord (Flutter, RN)</td>
-                        <td>50K+ members</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>20-35%</td>
-                        <td><span class="tier-badge tier-2">Tier 2</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">7</td>
-                        <td class="value">iOS Dev Weekly</td>
-                        <td>46.4K subscribers</td>
-                        <td style="color: #fcd34d;">$1,800/issue</td>
-                        <td>N/A</td>
-                        <td><span class="tier-badge tier-2">Tier 2</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">8</td>
-                        <td class="value">r/FlutterDev</td>
-                        <td>100K+ members</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>15-20%</td>
-                        <td><span class="tier-badge tier-2">Tier 2</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">9</td>
-                        <td class="value">Product Hunt</td>
-                        <td>5-10K launches</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>10-20%</td>
-                        <td><span class="tier-badge tier-2">Tier 2</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">10</td>
-                        <td class="value">LinkedIn Groups</td>
-                        <td>144K+ members</td>
-                        <td style="color: #fcd34d;">$79-135/mo</td>
-                        <td>10-25%</td>
-                        <td><span class="tier-badge tier-2">Tier 2</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">11</td>
-                        <td class="value">Hacker News</td>
-                        <td>2-5K relevant</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>10-20%</td>
-                        <td><span class="tier-badge tier-3">Tier 3</span></td>
-                    </tr>
-                    <tr>
-                        <td class="value">12</td>
-                        <td class="value">Bluesky</td>
-                        <td>5-15K developers</td>
-                        <td style="color: #86efac;">Free</td>
-                        <td>15-25%</td>
-                        <td><span class="tier-badge tier-3">Tier 3</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Top Channels Deep Dive</h2>
-            <p class="section-subtitle">Detailed analysis of the highest-priority outreach channels.</p>
-
-            <div class="channel-grid">
-                <div class="channel-card">
-                    <h3>
-                        <span style="font-size: 24px;">1.</span>
-                        r/SideProject
-                        <span class="tier-badge tier-1">Best ROI</span>
-                    </h3>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">250K+</div>
-                            <div class="stat-label">Members</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">20-30%</div>
-                            <div class="stat-label">Response Rate</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">Free</div>
-                            <div class="stat-label">Cost</div>
-                        </div>
+        <div class="main">
+            <!-- Channel Rankings -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Channel Rankings</h2>
+                        <p>15+ channels ranked by reach, engagement quality, cost, and relevance to target developers.</p>
                     </div>
-                    <p class="description">Community built for sharing side projects. Developers actively post about their apps with user metrics. Self-promotion is encouraged, not frowned upon.</p>
-                    <div class="best-for">Best for: Finding under-monetized apps with traction</div>
-                    <div class="outreach-friendly">
-                        <span style="font-size: 12px; color: #64748b;">Cold DM friendly:</span>
-                        <div class="rating-bar"><div class="rating-fill rating-high" style="width: 90%;"></div></div>
-                    </div>
-                    <a class="source-link" href="https://reddit.com/r/SideProject" target="_blank">reddit.com/r/SideProject</a>
+                    <div class="section-tag">Priority List</div>
                 </div>
 
-                <div class="channel-card">
-                    <h3>
-                        <span style="font-size: 24px;">2.</span>
-                        Twitter/X
-                        <span class="tier-badge tier-1">Broadest Reach</span>
-                    </h3>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">10-50K</div>
-                            <div class="stat-label">Target Devs</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">10-30%</div>
-                            <div class="stat-label">Response Rate</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">$0-8/mo</div>
-                            <div class="stat-label">Cost</div>
-                        </div>
+                <div class="table-wrapper animate-on-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Channel</th>
+                                <th>Reach</th>
+                                <th>Cost</th>
+                                <th>Response Rate</th>
+                                <th>Tier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="value">1</td>
+                                <td class="value">r/SideProject</td>
+                                <td>250K+ members</td>
+                                <td class="free">Free</td>
+                                <td>20-30%</td>
+                                <td><span class="tier-badge tier-1">Tier 1</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">2</td>
+                                <td class="value">Twitter/X (#buildinpublic)</td>
+                                <td>10-50K relevant</td>
+                                <td class="free">Free-$8/mo</td>
+                                <td>10-30%</td>
+                                <td><span class="tier-badge tier-1">Tier 1</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">3</td>
+                                <td class="value">Indie Hackers</td>
+                                <td>1.6M visits/mo</td>
+                                <td class="free">Free</td>
+                                <td>15-30%</td>
+                                <td><span class="tier-badge tier-1">Tier 1</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">4</td>
+                                <td class="value">r/androiddev</td>
+                                <td>500K+ members</td>
+                                <td class="free">Free</td>
+                                <td>15-25%</td>
+                                <td><span class="tier-badge tier-1">Tier 1</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">5</td>
+                                <td class="value">r/iOSProgramming</td>
+                                <td>140K+ members</td>
+                                <td class="free">Free</td>
+                                <td>15-25%</td>
+                                <td><span class="tier-badge tier-1">Tier 1</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">6</td>
+                                <td class="value">Discord (Flutter, RN)</td>
+                                <td>50K+ members</td>
+                                <td class="free">Free</td>
+                                <td>20-35%</td>
+                                <td><span class="tier-badge tier-2">Tier 2</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">7</td>
+                                <td class="value">iOS Dev Weekly</td>
+                                <td>46.4K subscribers</td>
+                                <td class="paid">$1,800/issue</td>
+                                <td>N/A</td>
+                                <td><span class="tier-badge tier-2">Tier 2</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">8</td>
+                                <td class="value">r/FlutterDev</td>
+                                <td>100K+ members</td>
+                                <td class="free">Free</td>
+                                <td>15-20%</td>
+                                <td><span class="tier-badge tier-2">Tier 2</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">9</td>
+                                <td class="value">Product Hunt</td>
+                                <td>5-10K launches</td>
+                                <td class="free">Free</td>
+                                <td>10-20%</td>
+                                <td><span class="tier-badge tier-2">Tier 2</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">10</td>
+                                <td class="value">LinkedIn Groups</td>
+                                <td>144K+ members</td>
+                                <td class="paid">$79-135/mo</td>
+                                <td>10-25%</td>
+                                <td><span class="tier-badge tier-2">Tier 2</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">11</td>
+                                <td class="value">Hacker News</td>
+                                <td>2-5K relevant</td>
+                                <td class="free">Free</td>
+                                <td>10-20%</td>
+                                <td><span class="tier-badge tier-3">Tier 3</span></td>
+                            </tr>
+                            <tr>
+                                <td class="value">12</td>
+                                <td class="value">Bluesky</td>
+                                <td>5-15K developers</td>
+                                <td class="free">Free</td>
+                                <td>15-25%</td>
+                                <td><span class="tier-badge tier-3">Tier 3</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Top Channels Deep Dive -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Top Channels Deep Dive</h2>
+                        <p>Detailed analysis of the highest-priority outreach channels.</p>
                     </div>
-                    <p class="description">#buildinpublic movement means devs share revenue and metrics publicly. Easy to find developers discussing monetization challenges.</p>
-                    <div class="best-for">Key hashtags: #buildinpublic, #indiedev, #indiehacker</div>
-                    <div class="outreach-friendly">
-                        <span style="font-size: 12px; color: #64748b;">Cold DM friendly:</span>
-                        <div class="rating-bar"><div class="rating-fill rating-high" style="width: 75%;"></div></div>
-                    </div>
-                    <a class="source-link" href="https://twitter.com" target="_blank">twitter.com</a>
+                    <div class="section-tag">Tier 1</div>
                 </div>
 
-                <div class="channel-card">
-                    <h3>
-                        <span style="font-size: 24px;">3.</span>
-                        Indie Hackers
-                        <span class="tier-badge tier-1">Best Data</span>
-                    </h3>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">1.6M</div>
-                            <div class="stat-label">Monthly Visits</div>
+                <div class="channel-grid">
+                    <div class="channel-card animate-on-scroll">
+                        <div class="channel-card-header">
+                            <span class="channel-rank">1</span>
+                            <h3>r/SideProject</h3>
+                            <span class="tier-badge tier-1">Best ROI</span>
                         </div>
-                        <div class="stat">
-                            <div class="stat-value">15-30%</div>
-                            <div class="stat-label">Response Rate</div>
+                        <div class="channel-stats">
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">250K+</div>
+                                <div class="channel-stat-label">Members</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">20-30%</div>
+                                <div class="channel-stat-label">Response Rate</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value" style="color: var(--success-green);">Free</div>
+                                <div class="channel-stat-label">Cost</div>
+                            </div>
                         </div>
-                        <div class="stat">
-                            <div class="stat-value">Free</div>
-                            <div class="stat-label">Cost</div>
+                        <p class="channel-description">Community built for sharing side projects. Developers actively post about their apps with user metrics. Self-promotion is encouraged, not frowned upon.</p>
+                        <div class="channel-best-for">Best for: Finding under-monetized apps with traction</div>
+                        <div class="rating-row">
+                            <span class="rating-label">Cold DM friendly:</span>
+                            <div class="rating-bar"><div class="rating-fill rating-high" style="width: 90%;"></div></div>
                         </div>
+                        <a class="source-link" href="https://reddit.com/r/SideProject" target="_blank">
+                            reddit.com/r/SideProject
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
-                    <p class="description">Developers share exact revenue numbers publicly. Culture open to partnerships and creative business models. Product directory with metrics.</p>
-                    <div class="best-for">Best for: Finding devs who share revenue (&lt;$1K/mo)</div>
-                    <div class="outreach-friendly">
-                        <span style="font-size: 12px; color: #64748b;">Cold DM friendly:</span>
-                        <div class="rating-bar"><div class="rating-fill rating-high" style="width: 80%;"></div></div>
+
+                    <div class="channel-card animate-on-scroll">
+                        <div class="channel-card-header">
+                            <span class="channel-rank">2</span>
+                            <h3>Twitter/X</h3>
+                            <span class="tier-badge tier-1">Broadest Reach</span>
+                        </div>
+                        <div class="channel-stats">
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">10-50K</div>
+                                <div class="channel-stat-label">Target Devs</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">10-30%</div>
+                                <div class="channel-stat-label">Response Rate</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value" style="color: var(--success-green);">$0-8/mo</div>
+                                <div class="channel-stat-label">Cost</div>
+                            </div>
+                        </div>
+                        <p class="channel-description">#buildinpublic movement means devs share revenue and metrics publicly. Easy to find developers discussing monetization challenges.</p>
+                        <div class="channel-best-for">Key hashtags: #buildinpublic, #indiedev, #indiehacker</div>
+                        <div class="rating-row">
+                            <span class="rating-label">Cold DM friendly:</span>
+                            <div class="rating-bar"><div class="rating-fill rating-high" style="width: 75%;"></div></div>
+                        </div>
+                        <a class="source-link" href="https://twitter.com" target="_blank">
+                            twitter.com
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
-                    <a class="source-link" href="https://www.indiehackers.com" target="_blank">indiehackers.com</a>
+
+                    <div class="channel-card animate-on-scroll">
+                        <div class="channel-card-header">
+                            <span class="channel-rank">3</span>
+                            <h3>Indie Hackers</h3>
+                            <span class="tier-badge tier-1">Best Data</span>
+                        </div>
+                        <div class="channel-stats">
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">1.6M</div>
+                                <div class="channel-stat-label">Monthly Visits</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">15-30%</div>
+                                <div class="channel-stat-label">Response Rate</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value" style="color: var(--success-green);">Free</div>
+                                <div class="channel-stat-label">Cost</div>
+                            </div>
+                        </div>
+                        <p class="channel-description">Developers share exact revenue numbers publicly. Culture open to partnerships and creative business models. Product directory with metrics.</p>
+                        <div class="channel-best-for">Best for: Finding devs who share revenue (&lt;$1K/mo)</div>
+                        <div class="rating-row">
+                            <span class="rating-label">Cold DM friendly:</span>
+                            <div class="rating-bar"><div class="rating-fill rating-high" style="width: 80%;"></div></div>
+                        </div>
+                        <a class="source-link" href="https://www.indiehackers.com" target="_blank">
+                            indiehackers.com
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="channel-card animate-on-scroll">
+                        <div class="channel-card-header">
+                            <span class="channel-rank">4</span>
+                            <h3>r/androiddev</h3>
+                            <span class="tier-badge tier-1">Largest</span>
+                        </div>
+                        <div class="channel-stats">
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">500K+</div>
+                                <div class="channel-stat-label">Members</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value">15-25%</div>
+                                <div class="channel-stat-label">Response Rate</div>
+                            </div>
+                            <div class="channel-stat">
+                                <div class="channel-stat-value" style="color: var(--success-green);">Free</div>
+                                <div class="channel-stat-label">Cost</div>
+                            </div>
+                        </div>
+                        <p class="channel-description">Largest Android dev community. Weekly App Showcase threads on Saturdays. Requires credibility building before outreach.</p>
+                        <div class="channel-best-for">Best for: Android indie developers</div>
+                        <div class="rating-row">
+                            <span class="rating-label">Cold DM friendly:</span>
+                            <div class="rating-bar"><div class="rating-fill rating-medium" style="width: 40%;"></div></div>
+                        </div>
+                        <a class="source-link" href="https://reddit.com/r/androiddev" target="_blank">
+                            reddit.com/r/androiddev
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Newsletters & Podcasts -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Newsletters & Podcasts</h2>
+                        <p>Paid channels for broader awareness campaigns.</p>
+                    </div>
+                    <div class="section-tag">Paid Options</div>
                 </div>
 
-                <div class="channel-card">
-                    <h3>
-                        <span style="font-size: 24px;">4.</span>
-                        r/androiddev
-                        <span class="tier-badge tier-1">Largest</span>
-                    </h3>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">500K+</div>
-                            <div class="stat-label">Members</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">15-25%</div>
-                            <div class="stat-label">Response Rate</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">Free</div>
-                            <div class="stat-label">Cost</div>
-                        </div>
+                <div class="media-grid">
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">iOS Dev Weekly</div>
+                        <div class="media-metric">46.4K</div>
+                        <div class="media-type">Subscribers</div>
+                        <div class="media-cost paid">$1,800/issue</div>
+                        <a class="source-link" href="https://iosdevweekly.com/" target="_blank" style="margin-top: 12px;">
+                            iosdevweekly.com
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
-                    <p class="description">Largest Android dev community. Weekly App Showcase threads on Saturdays. Requires credibility building before outreach.</p>
-                    <div class="best-for">Best for: Android indie developers</div>
-                    <div class="outreach-friendly">
-                        <span style="font-size: 12px; color: #64748b;">Cold DM friendly:</span>
-                        <div class="rating-bar"><div class="rating-fill rating-medium" style="width: 40%;"></div></div>
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">SwiftLee Weekly</div>
+                        <div class="media-metric">27K</div>
+                        <div class="media-type">Subscribers</div>
+                        <div class="media-cost paid">TBD</div>
+                        <a class="source-link" href="https://www.avanderlee.com/swiftlee-weekly-subscribe/" target="_blank" style="margin-top: 12px;">
+                            avanderlee.com
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
-                    <a class="source-link" href="https://reddit.com/r/androiddev" target="_blank">reddit.com/r/androiddev</a>
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">Kotlin Weekly</div>
+                        <div class="media-metric">22.9K</div>
+                        <div class="media-type">Subscribers</div>
+                        <div class="media-cost paid">Available</div>
+                        <a class="source-link" href="https://kotlinweekly.net/" target="_blank" style="margin-top: 12px;">
+                            kotlinweekly.net
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">Indie Watch</div>
+                        <div class="media-metric">NEW</div>
+                        <div class="media-type">Indie iOS Focus</div>
+                        <div class="media-cost free">Perfect Match</div>
+                        <a class="source-link" href="https://indie.watch/" target="_blank" style="margin-top: 12px;">
+                            indie.watch
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
+
+                <h3 style="margin-top: 48px; margin-bottom: 24px; font-family: 'Syne', sans-serif; font-size: 24px;" class="animate-on-scroll">Podcasts with Guest Potential</h3>
+
+                <div class="media-grid">
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">App Masters</div>
+                        <div class="media-metric">982</div>
+                        <div class="media-type">Episodes</div>
+                        <div class="media-cost pitch">Guest Pitch</div>
+                        <a class="source-link" href="https://podcasts.apple.com/us/podcast/app-marketing-by-app-masters/id643216602" target="_blank" style="margin-top: 12px;">
+                            Apple Podcasts
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">Under the Radar</div>
+                        <div class="media-metric">Indie iOS</div>
+                        <div class="media-type">Weekly</div>
+                        <div class="media-cost pitch">Guest Pitch</div>
+                        <a class="source-link" href="https://www.relay.fm/radar" target="_blank" style="margin-top: 12px;">
+                            relay.fm/radar
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">Business of Apps</div>
+                        <div class="media-metric">Industry</div>
+                        <div class="media-type">Mobile Focus</div>
+                        <div class="media-cost pitch">Guest Pitch</div>
+                        <a class="source-link" href="https://www.businessofapps.com/podcasts/" target="_blank" style="margin-top: 12px;">
+                            businessofapps.com
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="media-card animate-on-scroll">
+                        <div class="media-name">Indie Dev Diary</div>
+                        <div class="media-metric">Indie</div>
+                        <div class="media-type">App Journey</div>
+                        <div class="media-cost pitch">Guest Pitch</div>
+                        <a class="source-link" href="https://podcasters.spotify.com/pod/show/adamlyttleapps" target="_blank" style="margin-top: 12px;">
+                            Spotify
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Insight -->
+            <div class="key-insight animate-on-scroll">
+                <div class="key-insight-badge">
+                    <span>&#9679;</span>
+                    Key Finding
+                </div>
+                <h3>Zero-Cost Developer Reach</h3>
+                <p>The top 5 outreach channels are all <strong>free</strong> and combined reach over <strong>1 million developers</strong>. With expected response rates of 15-25%, you can generate qualified leads without any advertising spend.</p>
             </div>
-        </div>
-    </section>
 
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Newsletters & Podcasts</h2>
-            <p class="section-subtitle">Paid channels for broader awareness campaigns.</p>
+            <!-- Outreach Sequence -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Recommended Outreach Sequence</h2>
+                        <p>A phased approach to building presence and generating leads.</p>
+                    </div>
+                    <div class="section-tag">Playbook</div>
+                </div>
 
-            <div class="media-grid">
-                <div class="media-card">
-                    <div class="name">iOS Dev Weekly</div>
-                    <div class="metric">46.4K</div>
-                    <div class="type">Subscribers</div>
-                    <div class="cost">$1,800/issue</div>
-                    <a class="source-link" href="https://iosdevweekly.com/" target="_blank">iosdevweekly.com</a>
+                <div class="sequence-grid">
+                    <div class="sequence-step animate-on-scroll">
+                        <div class="phase-badge">Phase 1</div>
+                        <h4>Passive Discovery</h4>
+                        <ul>
+                            <li>Join all relevant subreddits</li>
+                            <li>Create Indie Hackers account</li>
+                            <li>Set up search alerts</li>
+                            <li>Identify 20-30 target apps</li>
+                        </ul>
+                    </div>
+                    <div class="sequence-step animate-on-scroll">
+                        <div class="phase-badge">Phase 2</div>
+                        <h4>Engagement Building</h4>
+                        <ul>
+                            <li>Comment on r/SideProject posts</li>
+                            <li>Participate in discussions</li>
+                            <li>Build credibility</li>
+                            <li>Follow target devs on Twitter</li>
+                        </ul>
+                    </div>
+                    <div class="sequence-step animate-on-scroll">
+                        <div class="phase-badge">Phase 3</div>
+                        <h4>Direct Outreach</h4>
+                        <ul>
+                            <li>r/SideProject: comment then DM</li>
+                            <li>Indie Hackers: value-first DMs</li>
+                            <li>Twitter DMs after engagement</li>
+                            <li>35-55 outreach/week</li>
+                        </ul>
+                    </div>
+                    <div class="sequence-step animate-on-scroll">
+                        <div class="phase-badge">Phase 4</div>
+                        <h4>Community Contribution</h4>
+                        <ul>
+                            <li>Share learnings publicly</li>
+                            <li>Post on Hacker News</li>
+                            <li>Write content on Dev.to</li>
+                            <li>Build reputation</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="media-card">
-                    <div class="name">SwiftLee Weekly</div>
-                    <div class="metric">27K</div>
-                    <div class="type">Subscribers</div>
-                    <div class="cost">TBD</div>
-                    <a class="source-link" href="https://www.avanderlee.com/swiftlee-weekly-subscribe/" target="_blank">avanderlee.com</a>
-                </div>
-                <div class="media-card">
-                    <div class="name">Kotlin Weekly</div>
-                    <div class="metric">22.9K</div>
-                    <div class="type">Subscribers</div>
-                    <div class="cost">Available</div>
-                    <a class="source-link" href="https://kotlinweekly.net/" target="_blank">kotlinweekly.net</a>
-                </div>
-                <div class="media-card">
-                    <div class="name">Indie Watch</div>
-                    <div class="metric">NEW</div>
-                    <div class="type">Indie iOS Focus</div>
-                    <div class="cost">Perfect Match</div>
-                    <a class="source-link" href="https://indie.watch/" target="_blank">indie.watch</a>
-                </div>
-            </div>
+            </section>
 
-            <h3 style="margin-top: 48px; margin-bottom: 24px; color: #a5b4fc;">Podcasts with Guest Potential</h3>
+            <!-- Weekly Targets -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Weekly Outreach Targets</h2>
+                        <p>Realistic targets for consistent lead generation.</p>
+                    </div>
+                    <div class="section-tag">Metrics</div>
+                </div>
 
-            <div class="media-grid">
-                <div class="media-card">
-                    <div class="name">App Masters</div>
-                    <div class="metric">982</div>
-                    <div class="type">Episodes</div>
-                    <div class="cost" style="color: #fcd34d;">Guest Pitch</div>
-                    <a class="source-link" href="https://podcasts.apple.com/us/podcast/app-marketing-by-app-masters/id643216602" target="_blank">Apple Podcasts</a>
+                <div class="target-grid">
+                    <div class="target-card animate-on-scroll">
+                        <div class="target-value">35-55</div>
+                        <div class="target-label">Outreach Attempts/Week</div>
+                        <p class="target-description">20-30 Twitter DMs, 10-15 Reddit DMs, 5-10 Discord DMs</p>
+                    </div>
+                    <div class="target-card animate-on-scroll">
+                        <div class="target-value">8-15</div>
+                        <div class="target-label">Expected Responses/Week</div>
+                        <p class="target-description">15-25% response rate with personalized outreach</p>
+                    </div>
+                    <div class="target-card animate-on-scroll">
+                        <div class="target-value">3-7</div>
+                        <div class="target-label">Qualified Conversations/Week</div>
+                        <p class="target-description">Developers genuinely interested in partnership model</p>
+                    </div>
                 </div>
-                <div class="media-card">
-                    <div class="name">Under the Radar</div>
-                    <div class="metric">Indie iOS</div>
-                    <div class="type">Weekly</div>
-                    <div class="cost" style="color: #fcd34d;">Guest Pitch</div>
-                    <a class="source-link" href="https://www.relay.fm/radar" target="_blank">relay.fm/radar</a>
-                </div>
-                <div class="media-card">
-                    <div class="name">Business of Apps</div>
-                    <div class="metric">Industry</div>
-                    <div class="type">Mobile Focus</div>
-                    <div class="cost" style="color: #fcd34d;">Guest Pitch</div>
-                    <a class="source-link" href="https://www.businessofapps.com/podcasts/" target="_blank">businessofapps.com</a>
-                </div>
-                <div class="media-card">
-                    <div class="name">Indie Dev Diary</div>
-                    <div class="metric">Indie</div>
-                    <div class="type">App Journey</div>
-                    <div class="cost" style="color: #fcd34d;">Guest Pitch</div>
-                    <a class="source-link" href="https://podcasters.spotify.com/pod/show/adamlyttleapps" target="_blank">Spotify</a>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <div class="container">
-        <div class="key-insight">
-            <h3>Key Finding</h3>
-            <p>The top 5 outreach channels are all <strong>free</strong> and combined reach over <strong>1 million developers</strong>. With expected response rates of 15-25%, you can generate qualified leads without any advertising spend.</p>
-        </div>
-    </div>
-
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Recommended Outreach Sequence</h2>
-            <p class="section-subtitle">A phased approach to building presence and generating leads.</p>
-
-            <div class="sequence">
-                <div class="sequence-step">
-                    <div class="week">Phase 1</div>
-                    <h4>Passive Discovery</h4>
-                    <ul>
-                        <li>Join all relevant subreddits</li>
-                        <li>Create Indie Hackers account</li>
-                        <li>Set up search alerts</li>
-                        <li>Identify 20-30 target apps</li>
-                    </ul>
+            <!-- Cold Outreach Friendliness -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Cold Outreach Friendliness</h2>
+                        <p>Where you can DM directly vs where you need to build credibility first.</p>
+                    </div>
+                    <div class="section-tag">Strategy</div>
                 </div>
-                <div class="sequence-step">
-                    <div class="week">Phase 2</div>
-                    <h4>Engagement Building</h4>
-                    <ul>
-                        <li>Comment on r/SideProject posts</li>
-                        <li>Participate in discussions</li>
-                        <li>Build credibility</li>
-                        <li>Follow target devs on Twitter</li>
-                    </ul>
-                </div>
-                <div class="sequence-step">
-                    <div class="week">Phase 3</div>
-                    <h4>Direct Outreach</h4>
-                    <ul>
-                        <li>r/SideProject: comment then DM</li>
-                        <li>Indie Hackers: value-first DMs</li>
-                        <li>Twitter DMs after engagement</li>
-                        <li>35-55 outreach/week</li>
-                    </ul>
-                </div>
-                <div class="sequence-step">
-                    <div class="week">Phase 4</div>
-                    <h4>Community Contribution</h4>
-                    <ul>
-                        <li>Share learnings publicly</li>
-                        <li>Post on Hacker News</li>
-                        <li>Write content on Dev.to</li>
-                        <li>Build reputation</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Weekly Outreach Targets</h2>
-            <p class="section-subtitle">Realistic targets for consistent lead generation.</p>
-
-            <div class="cards">
-                <div class="card" style="text-align: center;">
-                    <div class="highlight">35-55</div>
-                    <h3>Outreach Attempts/Week</h3>
-                    <p>20-30 Twitter DMs, 10-15 Reddit DMs, 5-10 Discord DMs</p>
+                <div class="table-wrapper animate-on-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Channel</th>
+                                <th>Cold Outreach</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="value">r/SideProject</td>
+                                <td class="free">Very Friendly</td>
+                                <td>Built for sharing, comment then DM works great</td>
+                            </tr>
+                            <tr>
+                                <td class="value">Indie Hackers</td>
+                                <td class="free">Friendly</td>
+                                <td>Partnership culture expected, value-first approach</td>
+                            </tr>
+                            <tr>
+                                <td class="value">Twitter/X</td>
+                                <td class="free">Friendly</td>
+                                <td>Engage first (like/reply), then DM</td>
+                            </tr>
+                            <tr>
+                                <td class="value">Product Hunt</td>
+                                <td class="paid">Moderate</td>
+                                <td>Profile messaging acceptable after engagement</td>
+                            </tr>
+                            <tr>
+                                <td class="value">r/AppBusiness</td>
+                                <td class="paid">Moderate</td>
+                                <td>Business-focused, but be careful with pitches</td>
+                            </tr>
+                            <tr>
+                                <td class="value">Hacker News</td>
+                                <td style="color: #f87171;">Low</td>
+                                <td>Sophisticated audience, easy to backfire</td>
+                            </tr>
+                            <tr>
+                                <td class="value">r/androiddev</td>
+                                <td style="color: #f87171;">Low</td>
+                                <td>Build credibility first, no cold DMs</td>
+                            </tr>
+                            <tr>
+                                <td class="value">r/iOSProgramming</td>
+                                <td style="color: #f87171;">Low</td>
+                                <td>Technical focus, contribute before outreach</td>
+                            </tr>
+                            <tr>
+                                <td class="value">Discord/Slack</td>
+                                <td style="color: #f87171;">Very Low</td>
+                                <td>Community building required first</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div class="highlight">8-15</div>
-                    <h3>Expected Responses/Week</h3>
-                    <p>15-25% response rate with personalized outreach</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <div class="highlight">3-7</div>
-                    <h3>Qualified Conversations/Week</h3>
-                    <p>Developers genuinely interested in partnership model</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Cold Outreach Friendliness</h2>
-            <p class="section-subtitle">Where you can DM directly vs where you need to build credibility first.</p>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Channel</th>
-                        <th>Cold Outreach</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="value">r/SideProject</td>
-                        <td style="color: #86efac;">Very Friendly</td>
-                        <td>Built for sharing, comment then DM works great</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Indie Hackers</td>
-                        <td style="color: #86efac;">Friendly</td>
-                        <td>Partnership culture expected, value-first approach</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Twitter/X</td>
-                        <td style="color: #86efac;">Friendly</td>
-                        <td>Engage first (like/reply), then DM</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Product Hunt</td>
-                        <td style="color: #fcd34d;">Moderate</td>
-                        <td>Profile messaging acceptable after engagement</td>
-                    </tr>
-                    <tr>
-                        <td class="value">r/AppBusiness</td>
-                        <td style="color: #fcd34d;">Moderate</td>
-                        <td>Business-focused, but be careful with pitches</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Hacker News</td>
-                        <td style="color: #fca5a5;">Low</td>
-                        <td>Sophisticated audience, easy to backfire</td>
-                    </tr>
-                    <tr>
-                        <td class="value">r/androiddev</td>
-                        <td style="color: #fca5a5;">Low</td>
-                        <td>Build credibility first, no cold DMs</td>
-                    </tr>
-                    <tr>
-                        <td class="value">r/iOSProgramming</td>
-                        <td style="color: #fca5a5;">Low</td>
-                        <td>Technical focus, contribute before outreach</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Discord/Slack</td>
-                        <td style="color: #fca5a5;">Very Low</td>
-                        <td>Community building required first</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <div class="sources">
+            <!-- Sources -->
+            <div class="sources-section animate-on-scroll">
                 <h3>Sources & References</h3>
-                <ul>
-                    <li><a href="https://gummysearch.com/" target="_blank">GummySearch - Subreddit Analysis</a></li>
-                    <li><a href="https://www.indiehackers.com/" target="_blank">Indie Hackers</a></li>
-                    <li><a href="https://iosdevweekly.com/" target="_blank">iOS Dev Weekly</a></li>
-                    <li><a href="https://kotlinweekly.net/" target="_blank">Kotlin Weekly</a></li>
-                    <li><a href="https://www.carbonads.net/more-info" target="_blank">Carbon Ads Media Kit</a></li>
-                    <li><a href="https://github.com/ljosberinn/awesome-dev-discord" target="_blank">Awesome Dev Discord (GitHub)</a></li>
-                    <li><a href="https://github.com/jackbridger/developer-newsletters" target="_blank">Developer Newsletters List (GitHub)</a></li>
-                    <li><a href="https://www.revenuecat.com/blog/" target="_blank">RevenueCat Blog</a></li>
-                    <li><a href="https://indie.watch/" target="_blank">Indie Watch Newsletter</a></li>
-                    <li><a href="https://indiedevmonday.com/" target="_blank">Indie Dev Monday</a></li>
-                    <li><a href="https://disboard.org/servers/tag/indie-dev" target="_blank">Disboard - Indie Dev Servers</a></li>
-                    <li><a href="https://www.sellmyapp.com/how-to-create-an-app/list1.php" target="_blank">SellMyApp - LinkedIn Groups</a></li>
-                </ul>
+                <div class="sources-grid">
+                    <a href="https://gummysearch.com/" target="_blank">GummySearch - Subreddit Analysis</a>
+                    <a href="https://www.indiehackers.com/" target="_blank">Indie Hackers</a>
+                    <a href="https://iosdevweekly.com/" target="_blank">iOS Dev Weekly</a>
+                    <a href="https://kotlinweekly.net/" target="_blank">Kotlin Weekly</a>
+                    <a href="https://www.carbonads.net/more-info" target="_blank">Carbon Ads Media Kit</a>
+                    <a href="https://github.com/ljosberinn/awesome-dev-discord" target="_blank">Awesome Dev Discord (GitHub)</a>
+                    <a href="https://github.com/jackbridger/developer-newsletters" target="_blank">Developer Newsletters List (GitHub)</a>
+                    <a href="https://www.revenuecat.com/blog/" target="_blank">RevenueCat Blog</a>
+                    <a href="https://indie.watch/" target="_blank">Indie Watch Newsletter</a>
+                    <a href="https://indiedevmonday.com/" target="_blank">Indie Dev Monday</a>
+                    <a href="https://disboard.org/servers/tag/indie-dev" target="_blank">Disboard - Indie Dev Servers</a>
+                    <a href="https://www.sellmyapp.com/how-to-create-an-app/list1.php" target="_blank">SellMyApp - LinkedIn Groups</a>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <footer>
-        <div class="container">
             <!-- Step Navigation -->
             <div class="step-nav">
-                <a href="../step-05-partnership-sentiment/step5-partnership-sentiment.html">
-                    <span>←</span>
-                    <span>Previous: Partnership Sentiment</span>
+                <a href="../step-05-partnership-sentiment/step5-partnership-sentiment.html" class="step-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous: Partnership Sentiment
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 6 of 14</div>
-                    <a href="../index.html">Back to Home</a>
+                    <div class="step-indicator">Step 6 of 15</div>
+                    <a href="../index.html" class="step-nav-home">
+                        Back to Mission Control
+                    </a>
                 </div>
-                <a href="../step-07-unit-economics/step7-unit-economics.html">
-                    <span>Next: Unit Economics</span>
-                    <span>→</span>
+                <a href="../step-07-unit-economics/step7-unit-economics.html" class="step-nav-link">
+                    Next: Unit Economics
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Step 6: Outreach Channel Research | December 2025</p>
         </div>
-    </footer>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Moonshot Research | Step 6: Outreach Channel Research | December 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

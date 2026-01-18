@@ -3,263 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 9 | Monetization Validation</title>
+    <title>Step 9 | Monetization Validation — Moonshot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Header */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* Hero */
-        .hero {
-            padding: 80px 0 60px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 52px;
             font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(90deg, #22c55e 0%, #86efac 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
-            max-width: 700px;
-            margin: 0 auto 20px;
-        }
-
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
-        }
-
-        /* Big Stats */
-        .big-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .big-stat {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .big-stat-number {
-            font-size: 56px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-        }
-
-        .big-stat-label {
-            color: #a0aec0;
-            font-size: 14px;
-            margin-top: 8px;
-        }
-
-        /* Section */
-        .section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .cards-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .card h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #a5b4fc;
-        }
-
-        .card p {
-            color: #a0aec0;
-            font-size: 15px;
-        }
-
-        .card .highlight {
-            font-size: 32px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .card .highlight.green {
-            color: #22c55e;
-        }
-
-        .source-link {
-            display: block;
-            margin-top: 12px;
-            color: #667eea;
-            font-size: 12px;
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .source-link:hover {
-            text-decoration: underline;
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
         }
 
-        /* Data Table */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 24px;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
 
-        .data-table th,
-        .data-table td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .data-table th {
-            color: #a5b4fc;
-            font-weight: 600;
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .data-table td {
-            color: #e2e8f0;
-            font-size: 15px;
+        /* Hero Section */
+        .hero {
+            padding: 140px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--success-green);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
-        .data-table .value {
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--success-green) 0%, var(--cyan-soft) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-meta {
+            font-size: 14px;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--space-mid);
+            border-top: 1px solid rgba(251, 191, 36, 0.1);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+            padding: 48px 40px;
+        }
+
+        .stats-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 42px;
             font-weight: 700;
-            color: #fff;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
         }
 
-        /* Case Study Cards */
-        .case-study {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .stat-source {
+            font-size: 11px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-source:hover {
+            opacity: 1;
+        }
+
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Section Headers */
+        .section {
+            padding: 80px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 40px;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-top: 8px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Strategy Matrix */
+        .strategy-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .strategy-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 28px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .case-study .multiplier {
-            font-size: 42px;
-            font-weight: 800;
-            color: #22c55e;
-            margin-bottom: 8px;
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .case-study h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #86efac;
+        .strategy-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-4px);
         }
 
-        .case-study .category {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 12px;
+        .strategy-card:hover::before {
+            opacity: 1;
         }
 
-        .case-study p {
-            color: #a0aec0;
+        .strategy-card h4 {
+            font-family: 'Syne', sans-serif;
+            color: var(--amber-glow);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .strategy-card ul {
+            list-style: none;
+        }
+
+        .strategy-card li {
+            color: var(--text-secondary);
             font-size: 14px;
+            margin-bottom: 10px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .strategy-card li::before {
+            content: "";
+            color: var(--success-green);
+            position: absolute;
+            left: 0;
+        }
+
+        .strategy-card li strong {
+            color: var(--text-primary);
+        }
+
+        .strategy-card .note {
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         /* ARPU Chart */
+        .arpu-section {
+            margin-top: 48px;
+        }
+
+        .arpu-section h3 {
+            font-family: 'Syne', sans-serif;
+            color: var(--cyan-soft);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
         .arpu-chart {
             display: flex;
             align-items: flex-end;
-            gap: 40px;
-            height: 300px;
+            gap: 32px;
+            height: 280px;
             padding: 20px 0;
             margin-bottom: 24px;
         }
@@ -277,14 +473,16 @@
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding-top: 12px;
+            padding-top: 14px;
+            font-family: 'Syne', sans-serif;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
+            color: var(--space-deep);
         }
 
         .arpu-bar-label {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 0 0 8px 8px;
             padding: 16px;
             text-align: center;
@@ -293,228 +491,452 @@
 
         .arpu-bar-label .title {
             font-weight: 600;
-            color: #fff;
+            color: var(--text-primary);
+            font-size: 14px;
         }
 
         .arpu-bar-label .desc {
-            font-size: 13px;
-            color: #64748b;
+            font-size: 12px;
+            color: var(--text-muted);
             margin-top: 4px;
         }
 
-        /* Implications */
-        .implications {
+        .chart-note {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .chart-note strong {
+            color: var(--success-green);
+        }
+
+        .chart-note a {
+            color: var(--amber-glow);
+            text-decoration: none;
+            margin-left: 8px;
+        }
+
+        .chart-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* Case Studies */
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .case-card {
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .case-card:hover {
+            border-color: rgba(52, 211, 153, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(52, 211, 153, 0.1);
+        }
+
+        .case-multiplier {
+            font-family: 'Syne', sans-serif;
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--success-green);
+            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(52, 211, 153, 0.3);
+        }
+
+        .case-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--cyan-soft);
+            margin-bottom: 6px;
+        }
+
+        .case-category {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .case-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .case-timeline {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .case-timeline strong {
+            color: var(--text-secondary);
+        }
+
+        .case-source {
+            display: block;
+            margin-top: 12px;
+            color: var(--amber-glow);
+            font-size: 12px;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .case-source:hover {
+            opacity: 0.8;
+        }
+
+        /* Case Summary */
+        .case-summary {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .case-summary h3 {
+            font-family: 'Syne', sans-serif;
+            color: var(--cyan-soft);
+            font-size: 22px;
+            margin-bottom: 24px;
+        }
+
+        .case-summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        .case-summary-stat .value {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--success-green);
+        }
+
+        .case-summary-stat .label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* Data Table */
+        .data-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 24px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .data-table th {
+            color: var(--amber-glow);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .data-table td {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .data-table .network-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Insights Grid */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .insight-card h4 {
+            font-family: 'Syne', sans-serif;
+            color: var(--cyan-soft);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .insight-card ol,
+        .insight-card ul {
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding-left: 20px;
+        }
+
+        .insight-card li {
+            margin-bottom: 8px;
+        }
+
+        .insight-card li strong {
+            color: var(--text-primary);
+        }
+
+        /* Benchmark Cards */
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .benchmark-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .benchmark-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .benchmark-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--amber-glow);
+            margin-bottom: 8px;
+        }
+
+        .benchmark-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .benchmark-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .benchmark-source {
+            display: block;
+            margin-top: 12px;
+            color: var(--amber-glow);
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .benchmark-source:hover {
+            text-decoration: underline;
+        }
+
+        /* Playbook */
+        .playbook-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
         }
 
-        .implication {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+        .playbook-card {
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
             border-radius: 16px;
             padding: 28px;
+            transition: all 0.3s ease;
         }
 
-        .implication h3 {
+        .playbook-card:hover {
+            border-color: rgba(52, 211, 153, 0.4);
+        }
+
+        .playbook-card h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
+            font-weight: 600;
+            color: var(--cyan-soft);
             margin-bottom: 12px;
-            color: #86efac;
         }
 
-        .implication p {
-            color: #a0aec0;
+        .playbook-card p {
+            color: var(--text-secondary);
             font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Math Box */
+        .math-box {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+        }
+
+        .math-box h3 {
+            font-family: 'Syne', sans-serif;
+            color: var(--cyan-soft);
+            font-size: 20px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .math-equation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .math-factor {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .math-factor .value {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--amber-glow);
+        }
+
+        .math-factor .label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .math-operator {
+            font-size: 24px;
+            color: var(--text-muted);
+        }
+
+        .math-result {
+            text-align: center;
+            padding: 20px;
+            background: rgba(52, 211, 153, 0.15);
+            border-radius: 12px;
+        }
+
+        .math-result .value {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--success-green);
+        }
+
+        .math-result .label {
+            color: var(--cyan-soft);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .math-note {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 24px;
+        }
+
+        /* Verdict */
+        .verdict {
+            text-align: center;
+            padding: 80px 40px;
+            background: linear-gradient(180deg, transparent 0%, rgba(52, 211, 153, 0.08) 100%);
+        }
+
+        .verdict h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--success-green);
+            margin-bottom: 20px;
+        }
+
+        .verdict p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        .verdict .condition {
+            color: var(--text-muted);
+            font-size: 14px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         /* Sources */
-        .sources {
-            background: rgba(255,255,255,0.03);
+        .sources-box {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 32px;
             margin-top: 40px;
         }
 
-        .sources h3 {
+        .sources-box h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
+            color: var(--cyan-soft);
+            margin-bottom: 20px;
         }
 
-        .sources ul {
+        .sources-list {
             list-style: none;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-        .sources li {
-            color: #64748b;
+        .sources-list li {
+            color: var(--text-muted);
             font-size: 14px;
         }
 
-        .sources a {
-            color: #667eea;
+        .sources-list a {
+            color: var(--amber-glow);
             text-decoration: none;
         }
 
-        .sources a:hover {
+        .sources-list a:hover {
             text-decoration: underline;
-        }
-
-        /* Verdict */
-        .verdict {
-            text-align: center;
-            padding: 80px 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(34, 197, 94, 0.1) 100%);
-        }
-
-        .verdict h2 {
-            font-size: 40px;
-            margin-bottom: 16px;
-            color: #22c55e;
-        }
-
-        .verdict p {
-            color: #a0aec0;
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto 24px;
-        }
-
-        .verdict .confidence {
-            display: inline-block;
-            background: linear-gradient(90deg, #22c55e, #16a34a);
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        /* Footer */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: #475569;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-        }
-
-        /* Strategy Matrix */
-        .strategy-matrix {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-top: 24px;
-        }
-
-        .strategy-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 24px;
-        }
-
-        .strategy-card h4 {
-            color: #a5b4fc;
-            font-size: 16px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .strategy-card ul {
-            list-style: none;
-        }
-
-        .strategy-card li {
-            color: #a0aec0;
-            font-size: 14px;
-            margin-bottom: 8px;
-            padding-left: 16px;
-            position: relative;
-        }
-
-        .strategy-card li:before {
-            content: "\2022";
-            color: #22c55e;
-            position: absolute;
-            left: 0;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .big-stats { grid-template-columns: repeat(2, 1fr); }
-            .cards, .implications, .sources ul, .strategy-matrix { grid-template-columns: 1fr; }
-        }
-
-        /* Navigation Bar */
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a0aec0;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links a.active {
-            color: #a5b4fc;
-        }
-
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            margin: 0 8px;
         }
 
         /* Step Navigation */
@@ -522,540 +944,668 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
             margin-top: 40px;
         }
 
         .step-nav a {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            gap: 10px;
+            padding: 14px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            color: #a0aec0;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+            background: var(--space-light);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
         }
 
         .step-nav-center {
             text-align: center;
         }
 
-        .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border: none;
-            color: #fff;
+        .step-nav-center .step-indicator {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
 
-        .step-indicator {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+        .step-nav-center a {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
+            border: none;
+            color: var(--space-deep);
+        }
+
+        .step-nav-center a:hover {
+            background: linear-gradient(135deg, var(--amber-bright) 0%, var(--amber-glow) 100%);
+            color: var(--space-deep);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Link Button */
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            padding: 12px 20px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 8px;
+            color: var(--amber-glow);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: rgba(251, 191, 36, 0.15);
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .strategy-matrix,
+            .case-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 24px 60px;
+            }
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+            .stats-inner,
+            .strategy-matrix,
+            .case-grid,
+            .benchmark-grid,
+            .playbook-grid,
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+            .stat-value {
+                font-size: 32px;
+            }
+            .main {
+                padding: 0 24px;
+            }
+            .section-header {
+                grid-template-columns: 1fr;
+            }
+            .nav-inner {
+                padding: 0 24px;
+            }
+            .case-summary-stats {
+                flex-direction: column;
+                gap: 24px;
+            }
+            .math-equation {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .sources-list {
+                grid-template-columns: 1fr;
+            }
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
-            </div>
-        </div>
-    </nav>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>›</span>
-            <a href="../index.html">Phase 4: Operations</a>
-            <span>›</span>
-            Step 9
-        </div>
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 9</div>
-        </header>
-    </div>
-
-    <section class="hero">
-        <div class="container">
-            <h1>10x Monetization is Achievable</h1>
-            <p class="tagline">Case studies show 5-10x revenue improvements are realistic for under-monetized indie apps through multi-vector optimization.</p>
-            <p class="subtitle">Research Date: December 28, 2025 | Sources: 14 Case Studies, 40+ Industry Reports</p>
-        </div>
-    </section>
-
-    <section class="big-stats">
-        <div class="container" style="display: contents;">
-            <div class="big-stat">
-                <div class="big-stat-number">10x</div>
-                <div class="big-stat-label">Highest documented improvement (Uplens)</div>
-                <a class="source-link" href="https://apphud.com/blog/uplens-increased-app-revenue-using-apphud" target="_blank">Apphud Case Study</a>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">5.4x</div>
-                <div class="big-stat-label">Average improvement across case studies</div>
-                <a class="source-link" href="#case-studies" style="color: #a5b4fc;">See case studies below</a>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">$0.50</div>
-                <div class="big-stat-label">Typical ad-only ARPU (before)</div>
-                <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat 2024</a>
-            </div>
-            <div class="big-stat">
-                <div class="big-stat-number">$5-10</div>
-                <div class="big-stat-label">Subscription ARPU (after)</div>
-                <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat 2024</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- More sections to be added -->
-
-    <!-- ARPU Benchmarks by Category -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">ARPU Benchmarks by Category</h2>
-            <p class="section-subtitle">Monthly revenue per user varies dramatically by monetization strategy. The gap represents Moonshot's opportunity.</p>
-
-            <div class="strategy-matrix">
-                <div class="strategy-card">
-                    <h4>Utilities</h4>
-                    <ul>
-                        <li><strong>Ad-only:</strong> $0.10-$0.50/mo</li>
-                        <li><strong>Freemium:</strong> $0.50-$2.00/mo</li>
-                        <li><strong>Subscription:</strong> $3-$8/mo</li>
-                        <li><strong>Gap:</strong> 6-16x potential</li>
-                    </ul>
-                    <p style="margin-top: 12px; font-size: 12px; color: #64748b;">Examples: CamScanner, PDF scanners, VPN apps</p>
-                </div>
-                <div class="strategy-card">
-                    <h4>Education</h4>
-                    <ul>
-                        <li><strong>Ad-only:</strong> $0.50-$2.00/mo</li>
-                        <li><strong>Freemium:</strong> $2-$8/mo</li>
-                        <li><strong>Subscription:</strong> $10-$25/mo</li>
-                        <li><strong>Gap:</strong> 5-20x potential</li>
-                    </ul>
-                    <p style="margin-top: 12px; font-size: 12px; color: #64748b;">Examples: Duolingo ($6.10 ARPU), Babbel, Photomath</p>
-                </div>
-                <div class="strategy-card">
-                    <h4>Lifestyle/Wellness</h4>
-                    <ul>
-                        <li><strong>Ad-only:</strong> $0.25-$1.50/mo</li>
-                        <li><strong>Freemium:</strong> $3-$12/mo</li>
-                        <li><strong>Subscription:</strong> $8-$20/mo</li>
-                        <li><strong>Gap:</strong> 5-32x potential</li>
-                    </ul>
-                    <p style="margin-top: 12px; font-size: 12px; color: #64748b;">Examples: Calm ($6.25 ARPU), Headspace, MyFitnessPal</p>
-                </div>
-                <div class="strategy-card">
-                    <h4>Productivity</h4>
-                    <ul>
-                        <li><strong>Ad-only:</strong> $1-$5/mo</li>
-                        <li><strong>Freemium:</strong> $5-$15/mo</li>
-                        <li><strong>Subscription:</strong> $20-$30/mo</li>
-                        <li><strong>Gap:</strong> 4-20x potential</li>
-                    </ul>
-                    <p style="margin-top: 12px; font-size: 12px; color: #64748b;">Examples: Notion, Todoist, Superhuman ($30/mo)</p>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html">Home</a>
+                    <div class="step-badge">Step 09</div>
                 </div>
             </div>
+        </nav>
 
-            <!-- Visual ARPU Chart -->
-            <h3 style="color: #a5b4fc; margin: 48px 0 24px; font-size: 20px;">Revenue per 1,000 Users (Monthly)</h3>
-            <div class="arpu-chart">
-                <div class="arpu-bar">
-                    <div class="arpu-bar-fill" style="background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); height: 30px;">$50-90</div>
-                    <div class="arpu-bar-label">
-                        <div class="title">Ad-Only</div>
-                        <div class="desc">Poor monetization</div>
-                    </div>
-                </div>
-                <div class="arpu-bar">
-                    <div class="arpu-bar-fill" style="background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); height: 80px;">$130</div>
-                    <div class="arpu-bar-label">
-                        <div class="title">Freemium</div>
-                        <div class="desc">2.6% conversion</div>
-                    </div>
-                </div>
-                <div class="arpu-bar">
-                    <div class="arpu-bar-fill" style="background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%); height: 200px;">$500-1K</div>
-                    <div class="arpu-bar-label">
-                        <div class="title">Subscription</div>
-                        <div class="desc">5% conversion @ $10/mo</div>
-                    </div>
-                </div>
-                <div class="arpu-bar">
-                    <div class="arpu-bar-fill" style="background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); height: 250px;">$600-1.2K</div>
-                    <div class="arpu-bar-label">
-                        <div class="title">Hybrid</div>
-                        <div class="desc">Ads + 5% subscription</div>
-                    </div>
-                </div>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge animate-on-scroll">
+                <span>✓</span>
+                Hypothesis Validated
             </div>
-            <p style="text-align: center; color: #64748b; font-size: 14px;">
-                <strong>10x gap exists</strong> between ad-only ($50-90) and optimized hybrid ($600-1,200) per 1,000 MAU
-                <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank" style="display: inline; margin-left: 8px;">Source: RevenueCat 2024</a>
+            <h1 class="animate-on-scroll">
+                <span class="highlight">10x Monetization</span><br>
+                is Achievable
+            </h1>
+            <p class="hero-subtitle animate-on-scroll">
+                Case studies show 5-10x revenue improvements are realistic for under-monetized indie apps through multi-vector optimization.
             </p>
-        </div>
-    </section>
+            <p class="hero-meta animate-on-scroll">Research Date: December 28, 2025 | Sources: 14 Case Studies, 40+ Industry Reports</p>
+        </section>
 
-    <!-- Case Studies Section -->
-    <section class="section" id="case-studies" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Proof: Real Revenue Improvements</h2>
-            <p class="section-subtitle">Documented case studies of non-gaming apps that significantly improved monetization.</p>
-
-            <div class="cards cards-4" style="grid-template-columns: repeat(4, 1fr);">
-                <div class="case-study">
-                    <div class="multiplier">10x</div>
-                    <h3>Uplens</h3>
-                    <div class="category">Photo & Video Editor</div>
-                    <p>Comprehensive optimization: seasonal paywalls (3% CVR), win-back campaigns (+2% MRR), billing recovery (10% recovered)</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 9 months</p>
-                    <a class="source-link" href="https://apphud.com/blog/uplens-increased-app-revenue-using-apphud" target="_blank">Apphud</a>
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stats-inner">
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">10x</div>
+                    <div class="stat-label">Highest documented improvement (Uplens)</div>
+                    <a class="stat-source" href="https://apphud.com/blog/uplens-increased-app-revenue-using-apphud" target="_blank">Apphud Case Study</a>
                 </div>
-                <div class="case-study">
-                    <div class="multiplier">5x</div>
-                    <h3>PlantMe</h3>
-                    <div class="category">Plant Identification</div>
-                    <p>Subscription analytics optimization with cohort-based ARPU/ARPPU monitoring and ROI calculation</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 6 months</p>
-                    <a class="source-link" href="https://apphud.com/blog/infrastructure-case-study" target="_blank">Apphud</a>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">5.4x</div>
+                    <div class="stat-label">Average improvement across case studies</div>
+                    <a class="stat-source" href="#case-studies">See case studies below</a>
                 </div>
-                <div class="case-study">
-                    <div class="multiplier">3x</div>
-                    <h3>Toss (Fintech)</h3>
-                    <div class="category">Payment App</div>
-                    <p>Added native + interstitial ads to payment services. First quarterly profit since founding.</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 1 year</p>
-                    <a class="source-link" href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle</a>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$0.50</div>
+                    <div class="stat-label">Typical ad-only ARPU (before)</div>
+                    <a class="stat-source" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat 2024</a>
                 </div>
-                <div class="case-study">
-                    <div class="multiplier">3.1x</div>
-                    <h3>Keiki World</h3>
-                    <div class="category">Education (Children)</div>
-                    <p>210% downloads, 157% purchases through ASO, localization, and Apple Search Ads optimization</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 12 months</p>
-                    <a class="source-link" href="https://techcrunch.com/2023/08/11/how-we-scaled-our-app-store-performance-by-approximately-200-in-1-year/" target="_blank">TechCrunch</a>
-                </div>
-            </div>
-
-            <div class="cards cards-4" style="grid-template-columns: repeat(4, 1fr); margin-top: 24px;">
-                <div class="case-study">
-                    <div class="multiplier">2.1x</div>
-                    <h3>Breezometer</h3>
-                    <div class="category">Air Quality Utility</div>
-                    <p>111% YoY growth. iOS CPM: $4.80→$5.51. Switched monetization partners.</p>
-                    <a class="source-link" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
-                </div>
-                <div class="case-study">
-                    <div class="multiplier">2x</div>
-                    <h3>RynVPN</h3>
-                    <div class="category">VPN Utility</div>
-                    <p>95.73% increase in 4 months through MonetizeMore integration</p>
-                    <a class="source-link" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
-                </div>
-                <div class="case-study">
-                    <div class="multiplier">2x</div>
-                    <h3>Duolingo</h3>
-                    <div class="category">Language Learning</div>
-                    <p>70% via mediation + 20% via bidding. Rewarded video engagement +2.5%, revenue +50%</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 5 years</p>
-                    <a class="source-link" href="https://admob.google.com/home/resources/duolingo-partners-with-admob-to-optimize-mediation-strategy-and-increase-ads-revenue-by-seventy-percent/" target="_blank">Google AdMob</a>
-                </div>
-                <div class="case-study">
-                    <div class="multiplier">1.7x</div>
-                    <h3>Mobiscore</h3>
-                    <div class="category">Live Sports</div>
-                    <p>71% increase immediately upon switching monetization partners</p>
-                    <a class="source-link" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
-                </div>
-            </div>
-
-            <div class="cards cards-4" style="grid-template-columns: repeat(2, 1fr); margin-top: 24px;">
-                <div class="case-study">
-                    <div class="multiplier">50x</div>
-                    <h3>Calm</h3>
-                    <div class="category">Wellness / Meditation</div>
-                    <p>Revenue growth from $2M to $100M+ through celebrity content (LeBron, Harry Styles sleep stories) and subscription-first model</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 3-4 years</p>
-                    <a class="source-link" href="https://www.businessofapps.com/data/calm-statistics/" target="_blank">Business of Apps</a>
-                </div>
-                <div class="case-study">
-                    <div class="multiplier">5.7x</div>
-                    <h3>NutriPaw</h3>
-                    <div class="category">Pet Wellness</div>
-                    <p>Conversion optimization via default subscription positioning (annual pre-selected over monthly)</p>
-                    <p style="margin-top: 8px; font-size: 12px;"><strong>Timeline:</strong> 3 months</p>
-                    <a class="source-link" href="https://adapty.io/blog/default-subscription-option/" target="_blank">Adapty</a>
-                </div>
-            </div>
-
-            <!-- Summary Stats -->
-            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 16px; padding: 32px; margin-top: 40px; text-align: center;">
-                <h3 style="color: #86efac; font-size: 24px; margin-bottom: 16px;">Case Study Summary</h3>
-                <div style="display: flex; justify-content: center; gap: 60px;">
-                    <div>
-                        <div style="font-size: 36px; font-weight: 800; color: #22c55e;">16</div>
-                        <div style="color: #a0aec0; font-size: 14px;">Documented Cases</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 36px; font-weight: 800; color: #22c55e;">3-5x</div>
-                        <div style="color: #a0aec0; font-size: 14px;">Typical Improvement</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 36px; font-weight: 800; color: #22c55e;">50x</div>
-                        <div style="color: #a0aec0; font-size: 14px;">Maximum Achieved</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 36px; font-weight: 800; color: #22c55e;">6-12mo</div>
-                        <div style="color: #a0aec0; font-size: 14px;">Typical Timeline</div>
-                    </div>
+                <div class="stat animate-on-scroll">
+                    <div class="stat-value">$5-10</div>
+                    <div class="stat-label">Subscription ARPU (after)</div>
+                    <a class="stat-source" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat 2024</a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Ad Network Comparison -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Ad Network Comparison</h2>
-            <p class="section-subtitle">eCPM benchmarks by format for non-gaming apps. US rates shown.</p>
-            <a href="ad-mediation-research.html" style="display: inline-block; margin-bottom: 24px; padding: 12px 20px; background: rgba(102, 126, 234, 0.2); border: 1px solid rgba(102, 126, 234, 0.4); border-radius: 8px; color: #a5b4fc; text-decoration: none; font-size: 14px; font-weight: 500;">View detailed Ad Mediation Research →</a>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Network</th>
-                        <th>Rewarded Video</th>
-                        <th>Interstitial</th>
-                        <th>Banner</th>
-                        <th>Best For</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="value">AdMob (Google)</td>
-                        <td>$12.91-$13.81</td>
-                        <td>$9.58-$11.06</td>
-                        <td>$0.27-$1.90</td>
-                        <td>All categories, best baseline</td>
-                    </tr>
-                    <tr>
-                        <td class="value">AppLovin MAX</td>
-                        <td>$12-$18</td>
-                        <td>$9-$14</td>
-                        <td>$2-$4</td>
-                        <td>Mediation, bidding optimization</td>
-                    </tr>
-                    <tr>
-                        <td class="value">ironSource</td>
-                        <td>$10-$16</td>
-                        <td>$8-$13</td>
-                        <td>$2-$5</td>
-                        <td>Apps with gamified elements</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Unity Ads</td>
-                        <td>$8-$12</td>
-                        <td>$5-$9</td>
-                        <td>N/A</td>
-                        <td>Gaming only (skip for non-gaming)</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Meta Audience</td>
-                        <td>$5-$8</td>
-                        <td>$5-$8</td>
-                        <td>$2-$4</td>
-                        <td>Use cautiously (quality issues)</td>
-                    </tr>
-                    <tr>
-                        <td class="value">Mintegral</td>
-                        <td>$6-$10</td>
-                        <td>$4-$8</td>
-                        <td>$1-$3</td>
-                        <td>Emerging markets (Asia, LATAM)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div style="display: flex; gap: 24px; margin-top: 40px;">
-                <div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
-                    <h4 style="color: #a5b4fc; margin-bottom: 16px;">Recommended Stack</h4>
-                    <ol style="color: #a0aec0; font-size: 14px; padding-left: 20px;">
-                        <li style="margin-bottom: 8px;"><strong>Primary:</strong> AdMob (Firebase integration)</li>
-                        <li style="margin-bottom: 8px;"><strong>Mediation:</strong> AppLovin MAX or ironSource LevelPlay</li>
-                        <li style="margin-bottom: 8px;"><strong>Bidding partners:</strong> AdMob, AppLovin, ironSource</li>
-                        <li><strong>Expected lift:</strong> 20-35% vs AdMob alone</li>
-                    </ol>
+        <div class="main">
+            <!-- ARPU Benchmarks -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>ARPU Benchmarks by Category</h2>
+                        <p>Monthly revenue per user varies dramatically by monetization strategy. The gap represents Moonshot's opportunity.</p>
+                    </div>
+                    <div class="section-tag">Opportunity</div>
                 </div>
-                <div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;">
-                    <h4 style="color: #a5b4fc; margin-bottom: 16px;">Key Insights</h4>
-                    <ul style="color: #a0aec0; font-size: 14px; list-style: none;">
-                        <li style="margin-bottom: 8px;">Rewarded video = highest eCPM + best UX</li>
-                        <li style="margin-bottom: 8px;">Bidding beats waterfall by 10-30%</li>
-                        <li style="margin-bottom: 8px;">iOS generates 15-30% higher eCPMs</li>
-                        <li>US rates are 3-5x global average</li>
+
+                <div class="strategy-matrix">
+                    <div class="strategy-card animate-on-scroll">
+                        <h4>Utilities</h4>
+                        <ul>
+                            <li><strong>Ad-only:</strong> $0.10-$0.50/mo</li>
+                            <li><strong>Freemium:</strong> $0.50-$2.00/mo</li>
+                            <li><strong>Subscription:</strong> $3-$8/mo</li>
+                            <li><strong>Gap:</strong> 6-16x potential</li>
+                        </ul>
+                        <p class="note">Examples: CamScanner, PDF scanners, VPN apps</p>
+                    </div>
+                    <div class="strategy-card animate-on-scroll">
+                        <h4>Education</h4>
+                        <ul>
+                            <li><strong>Ad-only:</strong> $0.50-$2.00/mo</li>
+                            <li><strong>Freemium:</strong> $2-$8/mo</li>
+                            <li><strong>Subscription:</strong> $10-$25/mo</li>
+                            <li><strong>Gap:</strong> 5-20x potential</li>
+                        </ul>
+                        <p class="note">Examples: Duolingo ($6.10 ARPU), Babbel, Photomath</p>
+                    </div>
+                    <div class="strategy-card animate-on-scroll">
+                        <h4>Lifestyle/Wellness</h4>
+                        <ul>
+                            <li><strong>Ad-only:</strong> $0.25-$1.50/mo</li>
+                            <li><strong>Freemium:</strong> $3-$12/mo</li>
+                            <li><strong>Subscription:</strong> $8-$20/mo</li>
+                            <li><strong>Gap:</strong> 5-32x potential</li>
+                        </ul>
+                        <p class="note">Examples: Calm ($6.25 ARPU), Headspace, MyFitnessPal</p>
+                    </div>
+                    <div class="strategy-card animate-on-scroll">
+                        <h4>Productivity</h4>
+                        <ul>
+                            <li><strong>Ad-only:</strong> $1-$5/mo</li>
+                            <li><strong>Freemium:</strong> $5-$15/mo</li>
+                            <li><strong>Subscription:</strong> $20-$30/mo</li>
+                            <li><strong>Gap:</strong> 4-20x potential</li>
+                        </ul>
+                        <p class="note">Examples: Notion, Todoist, Superhuman ($30/mo)</p>
+                    </div>
+                </div>
+
+                <!-- ARPU Chart -->
+                <div class="arpu-section animate-on-scroll">
+                    <h3>Revenue per 1,000 Users (Monthly)</h3>
+                    <div class="arpu-chart">
+                        <div class="arpu-bar">
+                            <div class="arpu-bar-fill" style="background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); height: 35px;">$50-90</div>
+                            <div class="arpu-bar-label">
+                                <div class="title">Ad-Only</div>
+                                <div class="desc">Poor monetization</div>
+                            </div>
+                        </div>
+                        <div class="arpu-bar">
+                            <div class="arpu-bar-fill" style="background: linear-gradient(180deg, var(--amber-glow) 0%, #d97706 100%); height: 80px;">$130</div>
+                            <div class="arpu-bar-label">
+                                <div class="title">Freemium</div>
+                                <div class="desc">2.6% conversion</div>
+                            </div>
+                        </div>
+                        <div class="arpu-bar">
+                            <div class="arpu-bar-fill" style="background: linear-gradient(180deg, var(--success-green) 0%, #10b981 100%); height: 180px;">$500-1K</div>
+                            <div class="arpu-bar-label">
+                                <div class="title">Subscription</div>
+                                <div class="desc">5% conversion @ $10/mo</div>
+                            </div>
+                        </div>
+                        <div class="arpu-bar">
+                            <div class="arpu-bar-fill" style="background: linear-gradient(180deg, var(--cyan-soft) 0%, var(--cyan-deep) 100%); height: 220px;">$600-1.2K</div>
+                            <div class="arpu-bar-label">
+                                <div class="title">Hybrid</div>
+                                <div class="desc">Ads + 5% subscription</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="chart-note">
+                        <strong>10x gap exists</strong> between ad-only ($50-90) and optimized hybrid ($600-1,200) per 1,000 MAU
+                        <a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">Source: RevenueCat 2024</a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Case Studies -->
+            <section class="section" id="case-studies">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Proof: Real Revenue Improvements</h2>
+                        <p>Documented case studies of non-gaming apps that significantly improved monetization.</p>
+                    </div>
+                    <div class="section-tag">Evidence</div>
+                </div>
+
+                <div class="case-grid">
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">10x</div>
+                        <h3>Uplens</h3>
+                        <div class="case-category">Photo & Video Editor</div>
+                        <p>Comprehensive optimization: seasonal paywalls (3% CVR), win-back campaigns (+2% MRR), billing recovery (10% recovered)</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 9 months</div>
+                        <a class="case-source" href="https://apphud.com/blog/uplens-increased-app-revenue-using-apphud" target="_blank">Apphud</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">5x</div>
+                        <h3>PlantMe</h3>
+                        <div class="case-category">Plant Identification</div>
+                        <p>Subscription analytics optimization with cohort-based ARPU/ARPPU monitoring and ROI calculation</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 6 months</div>
+                        <a class="case-source" href="https://apphud.com/blog/infrastructure-case-study" target="_blank">Apphud</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">3x</div>
+                        <h3>Toss (Fintech)</h3>
+                        <div class="case-category">Payment App</div>
+                        <p>Added native + interstitial ads to payment services. First quarterly profit since founding.</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 1 year</div>
+                        <a class="case-source" href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">3.1x</div>
+                        <h3>Keiki World</h3>
+                        <div class="case-category">Education (Children)</div>
+                        <p>210% downloads, 157% purchases through ASO, localization, and Apple Search Ads optimization</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 12 months</div>
+                        <a class="case-source" href="https://techcrunch.com/2023/08/11/how-we-scaled-our-app-store-performance-by-approximately-200-in-1-year/" target="_blank">TechCrunch</a>
+                    </div>
+                </div>
+
+                <div class="case-grid" style="margin-top: 20px;">
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">2.1x</div>
+                        <h3>Breezometer</h3>
+                        <div class="case-category">Air Quality Utility</div>
+                        <p>111% YoY growth. iOS CPM: $4.80→$5.51. Switched monetization partners.</p>
+                        <a class="case-source" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">2x</div>
+                        <h3>RynVPN</h3>
+                        <div class="case-category">VPN Utility</div>
+                        <p>95.73% increase in 4 months through MonetizeMore integration</p>
+                        <a class="case-source" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">2x</div>
+                        <h3>Duolingo</h3>
+                        <div class="case-category">Language Learning</div>
+                        <p>70% via mediation + 20% via bidding. Rewarded video engagement +2.5%, revenue +50%</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 5 years</div>
+                        <a class="case-source" href="https://admob.google.com/home/resources/duolingo-partners-with-admob-to-optimize-mediation-strategy-and-increase-ads-revenue-by-seventy-percent/" target="_blank">Google AdMob</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">1.7x</div>
+                        <h3>Mobiscore</h3>
+                        <div class="case-category">Live Sports</div>
+                        <p>71% increase immediately upon switching monetization partners</p>
+                        <a class="case-source" href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore</a>
+                    </div>
+                </div>
+
+                <div class="case-grid" style="margin-top: 20px; grid-template-columns: repeat(2, 1fr);">
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">50x</div>
+                        <h3>Calm</h3>
+                        <div class="case-category">Wellness / Meditation</div>
+                        <p>Revenue growth from $2M to $100M+ through celebrity content (LeBron, Harry Styles sleep stories) and subscription-first model</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 3-4 years</div>
+                        <a class="case-source" href="https://www.businessofapps.com/data/calm-statistics/" target="_blank">Business of Apps</a>
+                    </div>
+                    <div class="case-card animate-on-scroll">
+                        <div class="case-multiplier">5.7x</div>
+                        <h3>NutriPaw</h3>
+                        <div class="case-category">Pet Wellness</div>
+                        <p>Conversion optimization via default subscription positioning (annual pre-selected over monthly)</p>
+                        <div class="case-timeline"><strong>Timeline:</strong> 3 months</div>
+                        <a class="case-source" href="https://adapty.io/blog/default-subscription-option/" target="_blank">Adapty</a>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="case-summary animate-on-scroll">
+                    <h3>Case Study Summary</h3>
+                    <div class="case-summary-stats">
+                        <div class="case-summary-stat">
+                            <div class="value">16</div>
+                            <div class="label">Documented Cases</div>
+                        </div>
+                        <div class="case-summary-stat">
+                            <div class="value">3-5x</div>
+                            <div class="label">Typical Improvement</div>
+                        </div>
+                        <div class="case-summary-stat">
+                            <div class="value">50x</div>
+                            <div class="label">Maximum Achieved</div>
+                        </div>
+                        <div class="case-summary-stat">
+                            <div class="value">6-12mo</div>
+                            <div class="label">Typical Timeline</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ad Network Comparison -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Ad Network Comparison</h2>
+                        <p>eCPM benchmarks by format for non-gaming apps. US rates shown.</p>
+                    </div>
+                    <div class="section-tag">Benchmarks</div>
+                </div>
+
+                <a href="ad-mediation-research.html" class="link-btn animate-on-scroll">
+                    View detailed Ad Mediation Research →
+                </a>
+
+                <div class="data-table-wrapper animate-on-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Network</th>
+                                <th>Rewarded Video</th>
+                                <th>Interstitial</th>
+                                <th>Banner</th>
+                                <th>Best For</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="network-name">AdMob (Google)</td>
+                                <td>$12.91-$13.81</td>
+                                <td>$9.58-$11.06</td>
+                                <td>$0.27-$1.90</td>
+                                <td>All categories, best baseline</td>
+                            </tr>
+                            <tr>
+                                <td class="network-name">AppLovin MAX</td>
+                                <td>$12-$18</td>
+                                <td>$9-$14</td>
+                                <td>$2-$4</td>
+                                <td>Mediation, bidding optimization</td>
+                            </tr>
+                            <tr>
+                                <td class="network-name">ironSource</td>
+                                <td>$10-$16</td>
+                                <td>$8-$13</td>
+                                <td>$2-$5</td>
+                                <td>Apps with gamified elements</td>
+                            </tr>
+                            <tr>
+                                <td class="network-name">Unity Ads</td>
+                                <td>$8-$12</td>
+                                <td>$5-$9</td>
+                                <td>N/A</td>
+                                <td>Gaming only (skip for non-gaming)</td>
+                            </tr>
+                            <tr>
+                                <td class="network-name">Meta Audience</td>
+                                <td>$5-$8</td>
+                                <td>$5-$8</td>
+                                <td>$2-$4</td>
+                                <td>Use cautiously (quality issues)</td>
+                            </tr>
+                            <tr>
+                                <td class="network-name">Mintegral</td>
+                                <td>$6-$10</td>
+                                <td>$4-$8</td>
+                                <td>$1-$3</td>
+                                <td>Emerging markets (Asia, LATAM)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insights-grid">
+                    <div class="insight-card animate-on-scroll">
+                        <h4>Recommended Stack</h4>
+                        <ol>
+                            <li><strong>Primary:</strong> AdMob (Firebase integration)</li>
+                            <li><strong>Mediation:</strong> AppLovin MAX or ironSource LevelPlay</li>
+                            <li><strong>Bidding partners:</strong> AdMob, AppLovin, ironSource</li>
+                            <li><strong>Expected lift:</strong> 20-35% vs AdMob alone</li>
+                        </ol>
+                    </div>
+                    <div class="insight-card animate-on-scroll">
+                        <h4>Key Insights</h4>
+                        <ul>
+                            <li>Rewarded video = highest eCPM + best UX</li>
+                            <li>Bidding beats waterfall by 10-30%</li>
+                            <li>iOS generates 15-30% higher eCPMs</li>
+                            <li>US rates are 3-5x global average</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Subscription Benchmarks -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Subscription Conversion Benchmarks</h2>
+                        <p>Key metrics for implementing subscription monetization.</p>
+                    </div>
+                    <div class="section-tag">Metrics</div>
+                </div>
+
+                <div class="benchmark-grid">
+                    <div class="benchmark-card animate-on-scroll">
+                        <div class="benchmark-value">79%</div>
+                        <h3>7-Day Trial Conversion</h3>
+                        <p>Short trials (7 days or less) convert best. Opt-out trials (card required) convert at 48-51%.</p>
+                        <a class="benchmark-source" href="https://www.businessofapps.com/data/app-subscription-trial-benchmarks/" target="_blank">Business of Apps</a>
+                    </div>
+                    <div class="benchmark-card animate-on-scroll">
+                        <div class="benchmark-value">$9.99</div>
+                        <h3>Optimal Monthly Price</h3>
+                        <p>Industry standard. Average monthly price up 14% in 2024 to $8.01. Annual at $29.99 common.</p>
+                        <a class="benchmark-source" href="https://adapty.io/app-subscription-pricing-index/" target="_blank">Adapty Pricing Index</a>
+                    </div>
+                    <div class="benchmark-card animate-on-scroll">
+                        <div class="benchmark-value">4.1%</div>
+                        <h3>Monthly Churn</h3>
+                        <p>Median monthly churn. &lt;5% is manageable, &gt;7% needs immediate action. Annual subs have 15-20% churn.</p>
+                        <a class="benchmark-source" href="https://www.chargebee.com/blog/churn-benchmarks-churn-rate-retention-strategies/" target="_blank">Chargebee</a>
+                    </div>
+                </div>
+
+                <div class="benchmark-grid" style="margin-top: 20px;">
+                    <div class="benchmark-card animate-on-scroll">
+                        <div class="benchmark-value">24.8%</div>
+                        <h3>Education Trial-to-Paid</h3>
+                        <p>Highest converting category. EdTech apps have strong trial-to-paid rates due to clear value prop.</p>
+                        <a class="benchmark-source" href="https://firstpagesage.com/seo-blog/saas-free-trial-conversion-rate-benchmarks/" target="_blank">FirstPageSage</a>
+                    </div>
+                    <div class="benchmark-card animate-on-scroll">
+                        <div class="benchmark-value">9.4%</div>
+                        <h3>Health Download-to-Paid</h3>
+                        <p>Health & Fitness apps convert well from download to paid. Above-average due to habit formation.</p>
+                        <a class="benchmark-source" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat</a>
+                    </div>
+                    <div class="benchmark-card animate-on-scroll">
+                        <div class="benchmark-value">3:1</div>
+                        <h3>LTV:CAC Target</h3>
+                        <p>Standard target ratio. Subscription customers generate 3x higher revenue than non-subscribers.</p>
+                        <a class="benchmark-source" href="https://adapty.io/blog/customer-lifetime-value-ltv/" target="_blank">Adapty</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Strategy Recommendations -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <div>
+                        <h2>Moonshot's 10x Playbook</h2>
+                        <p>The path to 10x monetization through multi-vector optimization.</p>
+                    </div>
+                    <div class="section-tag">Playbook</div>
+                </div>
+
+                <div class="playbook-grid">
+                    <div class="playbook-card animate-on-scroll">
+                        <h3>1. Model Shift (3-8x impact)</h3>
+                        <p>Move from ad-only to hybrid (ads + subscription). This single change drives the largest improvement. Implement freemium with premium tier.</p>
+                    </div>
+                    <div class="playbook-card animate-on-scroll">
+                        <h3>2. Conversion Optimization (1.5-3x)</h3>
+                        <p>Optimize onboarding, trial flows, and paywalls. Use 7-day opt-out trials. A/B test paywall timing (day 3-7). Target 5%+ free-to-paid conversion.</p>
+                    </div>
+                    <div class="playbook-card animate-on-scroll">
+                        <h3>3. Pricing Strategy (1.3-2x)</h3>
+                        <p>Implement $9.99/month with $29.99/year (40% discount). Add tiered pricing. Use localized pricing for emerging markets.</p>
+                    </div>
+                    <div class="playbook-card animate-on-scroll">
+                        <h3>4. Ad Optimization (2-3x)</h3>
+                        <p>Implement mediation (AdMob + AppLovin MAX). Add rewarded video for free users. Optimize placement timing. Target 85%+ fill rate.</p>
+                    </div>
+                </div>
+
+                <!-- The Math -->
+                <div class="math-box animate-on-scroll">
+                    <h3>The Math: How 10x Compounds</h3>
+                    <div class="math-equation">
+                        <div class="math-factor">
+                            <div class="value">4x</div>
+                            <div class="label">Model Shift</div>
+                        </div>
+                        <div class="math-operator">×</div>
+                        <div class="math-factor">
+                            <div class="value">1.5x</div>
+                            <div class="label">Conversion</div>
+                        </div>
+                        <div class="math-operator">×</div>
+                        <div class="math-factor">
+                            <div class="value">1.5x</div>
+                            <div class="label">Pricing</div>
+                        </div>
+                        <div class="math-operator">=</div>
+                        <div class="math-result">
+                            <div class="value">9x</div>
+                            <div class="label">Total Improvement</div>
+                        </div>
+                    </div>
+                    <p class="math-note">Conservative scenario. Aggressive optimization can reach 12-15x.</p>
+                </div>
+            </section>
+
+            <!-- Sources -->
+            <section class="section" style="border-top: none; padding-top: 0;">
+                <div class="sources-box animate-on-scroll">
+                    <h3>Sources & References</h3>
+                    <ul class="sources-list">
+                        <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
+                        <li><a href="https://apphud.com/blog/uplens-increased-app-revenue-using-apphud" target="_blank">Apphud: Uplens 10x Case Study</a></li>
+                        <li><a href="https://www.businessofapps.com/data/app-subscription-trial-benchmarks/" target="_blank">Business of Apps: Subscription Trial Benchmarks</a></li>
+                        <li><a href="https://adapty.io/app-subscription-pricing-index/" target="_blank">Adapty: App Subscription Pricing Index</a></li>
+                        <li><a href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore: 4x Revenue Case Studies</a></li>
+                        <li><a href="https://admob.google.com/home/resources/duolingo-partners-with-admob-to-optimize-mediation-strategy-and-increase-ads-revenue-by-seventy-percent/" target="_blank">Google AdMob: Duolingo Case Study</a></li>
+                        <li><a href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle: App Monetization Case Studies</a></li>
+                        <li><a href="https://firstpagesage.com/seo-blog/saas-free-trial-conversion-rate-benchmarks/" target="_blank">FirstPageSage: Trial Conversion Benchmarks</a></li>
+                        <li><a href="https://www.chargebee.com/blog/churn-benchmarks-churn-rate-retention-strategies/" target="_blank">Chargebee: Churn Benchmarks</a></li>
+                        <li><a href="https://www.blog.udonis.co/mobile-marketing/mobile-apps/ecpms" target="_blank">Udonis: eCPM Benchmarks</a></li>
+                        <li><a href="https://techcrunch.com/2023/08/11/how-we-scaled-our-app-store-performance-by-approximately-200-in-1-year/" target="_blank">TechCrunch: Keiki World ASO Case Study</a></li>
+                        <li><a href="https://adapty.io/blog/customer-lifetime-value-ltv/" target="_blank">Adapty: Customer Lifetime Value Guide</a></li>
                     </ul>
                 </div>
-            </div>
+            </section>
         </div>
-    </section>
 
-    <!-- Subscription Benchmarks -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Subscription Conversion Benchmarks</h2>
-            <p class="section-subtitle">Key metrics for implementing subscription monetization.</p>
-
-            <div class="cards">
-                <div class="card">
-                    <div class="highlight">79%</div>
-                    <h3>7-Day Trial Conversion</h3>
-                    <p>Short trials (7 days or less) convert best. Opt-out trials (card required) convert at 48-51%.</p>
-                    <a class="source-link" href="https://www.businessofapps.com/data/app-subscription-trial-benchmarks/" target="_blank">Business of Apps</a>
-                </div>
-                <div class="card">
-                    <div class="highlight">$9.99</div>
-                    <h3>Optimal Monthly Price</h3>
-                    <p>Industry standard. Average monthly price up 14% in 2024 to $8.01. Annual at $29.99 common.</p>
-                    <a class="source-link" href="https://adapty.io/app-subscription-pricing-index/" target="_blank">Adapty Pricing Index</a>
-                </div>
-                <div class="card">
-                    <div class="highlight">4.1%</div>
-                    <h3>Monthly Churn</h3>
-                    <p>Median monthly churn. &lt;5% is manageable, &gt;7% needs immediate action. Annual subs have 15-20% churn.</p>
-                    <a class="source-link" href="https://www.chargebee.com/blog/churn-benchmarks-churn-rate-retention-strategies/" target="_blank">Chargebee</a>
-                </div>
+        <!-- Verdict -->
+        <section class="verdict">
+            <div class="container">
+                <h2 class="animate-on-scroll">Hypothesis Validated</h2>
+                <p class="animate-on-scroll">Evidence from 14 case studies and 40+ industry sources confirms that 5-10x monetization improvements are achievable for under-monetized indie apps through multi-vector optimization.</p>
+                <p class="condition animate-on-scroll">Condition: Requires 6-12 month timeline, professional tools (RevenueCat, Apphud), and multi-vector approach (model + conversion + pricing + ads).</p>
             </div>
+        </section>
 
-            <div class="cards" style="margin-top: 24px;">
-                <div class="card">
-                    <div class="highlight">24.8%</div>
-                    <h3>Education Trial-to-Paid</h3>
-                    <p>Highest converting category. EdTech apps have strong trial-to-paid rates due to clear value prop.</p>
-                    <a class="source-link" href="https://firstpagesage.com/seo-blog/saas-free-trial-conversion-rate-benchmarks/" target="_blank">FirstPageSage</a>
-                </div>
-                <div class="card">
-                    <div class="highlight">9.4%</div>
-                    <h3>Health Download-to-Paid</h3>
-                    <p>Health & Fitness apps convert well from download to paid. Above-average due to habit formation.</p>
-                    <a class="source-link" href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat</a>
-                </div>
-                <div class="card">
-                    <div class="highlight">3:1</div>
-                    <h3>LTV:CAC Target</h3>
-                    <p>Standard target ratio. Subscription customers generate 3x higher revenue than non-subscribers.</p>
-                    <a class="source-link" href="https://adapty.io/blog/customer-lifetime-value-ltv/" target="_blank">Adapty</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Strategy Recommendations -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Moonshot's 10x Playbook</h2>
-            <p class="section-subtitle">The path to 10x monetization through multi-vector optimization.</p>
-
-            <div class="implications">
-                <div class="implication">
-                    <h3>1. Model Shift (3-8x impact)</h3>
-                    <p>Move from ad-only to hybrid (ads + subscription). This single change drives the largest improvement. Implement freemium with premium tier.</p>
-                </div>
-                <div class="implication">
-                    <h3>2. Conversion Optimization (1.5-3x)</h3>
-                    <p>Optimize onboarding, trial flows, and paywalls. Use 7-day opt-out trials. A/B test paywall timing (day 3-7). Target 5%+ free-to-paid conversion.</p>
-                </div>
-                <div class="implication">
-                    <h3>3. Pricing Strategy (1.3-2x)</h3>
-                    <p>Implement $9.99/month with $29.99/year (40% discount). Add tiered pricing. Use localized pricing for emerging markets.</p>
-                </div>
-                <div class="implication">
-                    <h3>4. Ad Optimization (2-3x)</h3>
-                    <p>Implement mediation (AdMob + AppLovin MAX). Add rewarded video for free users. Optimize placement timing. Target 85%+ fill rate.</p>
-                </div>
-            </div>
-
-            <!-- The Math -->
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 32px; margin-top: 40px;">
-                <h3 style="color: #a5b4fc; font-size: 20px; margin-bottom: 24px;">The Math: How 10x Compounds</h3>
-                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                    <div style="text-align: center; padding: 20px;">
-                        <div style="font-size: 28px; font-weight: 800; color: #f59e0b;">4x</div>
-                        <div style="color: #a0aec0; font-size: 13px;">Model Shift</div>
-                    </div>
-                    <div style="font-size: 24px; color: #64748b;">×</div>
-                    <div style="text-align: center; padding: 20px;">
-                        <div style="font-size: 28px; font-weight: 800; color: #f59e0b;">1.5x</div>
-                        <div style="color: #a0aec0; font-size: 13px;">Conversion</div>
-                    </div>
-                    <div style="font-size: 24px; color: #64748b;">×</div>
-                    <div style="text-align: center; padding: 20px;">
-                        <div style="font-size: 28px; font-weight: 800; color: #f59e0b;">1.5x</div>
-                        <div style="color: #a0aec0; font-size: 13px;">Pricing</div>
-                    </div>
-                    <div style="font-size: 24px; color: #64748b;">=</div>
-                    <div style="text-align: center; padding: 20px; background: rgba(34, 197, 94, 0.2); border-radius: 12px;">
-                        <div style="font-size: 36px; font-weight: 800; color: #22c55e;">9x</div>
-                        <div style="color: #86efac; font-size: 13px;">Total Improvement</div>
-                    </div>
-                </div>
-                <p style="text-align: center; color: #64748b; font-size: 14px; margin-top: 16px;">Conservative scenario. Aggressive optimization can reach 12-15x.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Verdict -->
-    <section class="verdict">
-        <div class="container">
-            <h2>Hypothesis Tested</h2>
-            <p>Evidence from 14 case studies and 40+ industry sources confirms that 5-10x monetization improvements are achievable for under-monetized indie apps through multi-vector optimization.</p>
-            <p style="margin-top: 24px; font-size: 14px; color: #64748b;">
-                Condition: Requires 6-12 month timeline, professional tools (RevenueCat, Apphud), and multi-vector approach (model + conversion + pricing + ads).
-            </p>
-        </div>
-    </section>
-
-    <!-- Sources -->
-    <section class="section">
-        <div class="container">
-            <div class="sources">
-                <h3>Sources & References</h3>
-                <ul>
-                    <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
-                    <li><a href="https://apphud.com/blog/uplens-increased-app-revenue-using-apphud" target="_blank">Apphud: Uplens 10x Case Study</a></li>
-                    <li><a href="https://www.businessofapps.com/data/app-subscription-trial-benchmarks/" target="_blank">Business of Apps: Subscription Trial Benchmarks</a></li>
-                    <li><a href="https://adapty.io/app-subscription-pricing-index/" target="_blank">Adapty: App Subscription Pricing Index</a></li>
-                    <li><a href="https://www.monetizemore.com/blog/by-switching-app-monetization-partners-these-apps-grew-their-ad-revenue-by-4x/" target="_blank">MonetizeMore: 4x Revenue Case Studies</a></li>
-                    <li><a href="https://admob.google.com/home/resources/duolingo-partners-with-admob-to-optimize-mediation-strategy-and-increase-ads-revenue-by-seventy-percent/" target="_blank">Google AdMob: Duolingo Case Study</a></li>
-                    <li><a href="https://www.thinkwithgoogle.com/intl/en-apac/marketing-strategies/app-and-mobile/app-monetisation-growth-case-studies/" target="_blank">ThinkWithGoogle: App Monetization Case Studies</a></li>
-                    <li><a href="https://firstpagesage.com/seo-blog/saas-free-trial-conversion-rate-benchmarks/" target="_blank">FirstPageSage: Trial Conversion Benchmarks</a></li>
-                    <li><a href="https://www.chargebee.com/blog/churn-benchmarks-churn-rate-retention-strategies/" target="_blank">Chargebee: Churn Benchmarks</a></li>
-                    <li><a href="https://www.blog.udonis.co/mobile-marketing/mobile-apps/ecpms" target="_blank">Udonis: eCPM Benchmarks</a></li>
-                    <li><a href="https://techcrunch.com/2023/08/11/how-we-scaled-our-app-store-performance-by-approximately-200-in-1-year/" target="_blank">TechCrunch: Keiki World ASO Case Study</a></li>
-                    <li><a href="https://adapty.io/blog/customer-lifetime-value-ltv/" target="_blank">Adapty: Customer Lifetime Value Guide</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
+        <div class="main">
             <!-- Step Navigation -->
             <div class="step-nav">
                 <a href="../step-08-technical-feasibility/step8-technical-feasibility.html">
@@ -1063,16 +1613,53 @@
                     <span>Previous: Technical Feasibility</span>
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 9 of 14</div>
-                    <a href="../index.html">Back to Home</a>
+                    <div class="step-indicator">Step 9 of 15</div>
+                    <a href="../index.html">Back to Mission Control</a>
                 </div>
                 <a href="../step-10-legal-structure/step10-legal-structure.html">
                     <span>Next: Legal Structure</span>
                     <span>→</span>
                 </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | H4 Validation Report | December 2025</p>
         </div>
-    </footer>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Moonshot Research | Step 9: Monetization Validation | December 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>

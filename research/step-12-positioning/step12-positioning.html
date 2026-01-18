@@ -3,306 +3,774 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Step 12 | Positioning</title>
+    <title>Step 12: Positioning — Moonshot Research</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --space-deep: #050810;
+            --space-navy: #0a0e17;
+            --space-mid: #121829;
+            --space-light: #1a2236;
+            --amber-glow: #f59e0b;
+            --amber-bright: #fbbf24;
+            --amber-pale: #fef3c7;
+            --cyan-soft: #67e8f9;
+            --cyan-deep: #22d3ee;
+            --success-green: #34d399;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --grid-color: rgba(251, 191, 36, 0.03);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            background: var(--space-deep);
+            color: var(--text-primary);
             min-height: 100vh;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        /* Star Field Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(251, 191, 36, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(103, 232, 249, 0.02) 0%, transparent 50%),
+                radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 90% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.2) 0%, transparent 100%),
+                radial-gradient(2px 2px at 25% 15%, rgba(251, 191, 36, 0.6) 0%, transparent 100%),
+                radial-gradient(2px 2px at 75% 85%, rgba(103, 232, 249, 0.5) 0%, transparent 100%);
+        }
+
+        /* Scan Lines Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 20%, transparent 70%);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: linear-gradient(to bottom, var(--space-deep) 0%, transparent 100%);
+            transition: background 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(5, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
+            font-family: 'Syne', sans-serif;
             font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .badge {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .hero {
-            padding: 80px 0 60px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 52px;
             font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(90deg, #667eea 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero .tagline {
-            font-size: 22px;
-            color: #a0aec0;
-            max-width: 700px;
-            margin: 0 auto 20px;
-        }
-
-        .hero .subtitle {
-            font-size: 16px;
-            color: #64748b;
-        }
-
-        .section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .section-subtitle {
-            color: #a0aec0;
-            font-size: 18px;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        .top-nav {
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .top-nav .container {
+            letter-spacing: -0.5px;
+            color: var(--amber-glow);
+            text-decoration: none;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
         }
 
         .nav-links {
             display: flex;
-            gap: 24px;
             align-items: center;
+            gap: 24px;
         }
 
-        .nav-links a {
-            color: #a0aec0;
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: color 0.2s;
+            transition: color 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: #fff;
+        .nav-back:hover {
+            color: var(--amber-glow);
         }
 
-        .nav-links a.active {
-            color: #a5b4fc;
+        .nav-back svg {
+            width: 16px;
+            height: 16px;
         }
 
-        .nav-brand {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+        .step-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero-breadcrumb a {
+            color: var(--amber-glow);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .hero-breadcrumb a:hover {
+            color: var(--amber-bright);
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber-bright) 50%, var(--cyan-soft) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-decoration: none;
         }
 
-        .breadcrumb {
-            padding: 16px 0;
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 16px;
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero-meta {
             font-size: 14px;
-            color: #64748b;
+            color: var(--text-muted);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .breadcrumb a:hover {
-            text-decoration: underline;
+        /* Main Container */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
         }
 
-        .breadcrumb span {
-            margin: 0 8px;
+        /* Section Headers */
+        .section {
+            padding: 80px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 28px;
-            transition: transform 0.2s, border-color 0.2s;
+        .section-header {
+            margin-bottom: 48px;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .card h3 {
-            font-size: 18px;
+        .section-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
             margin-bottom: 12px;
-            color: #a5b4fc;
         }
 
-        .card p {
-            color: #a0aec0;
-            font-size: 15px;
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 600px;
         }
 
-        .cards {
+        /* Primary Value Prop Card */
+        .primary-value-prop {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(103, 232, 249, 0.05) 100%);
+            border: 2px solid rgba(251, 191, 36, 0.2);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-value-prop::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--amber-glow), var(--cyan-soft));
+        }
+
+        .primary-value-prop .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .primary-value-prop h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .primary-value-prop .description {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            max-width: 700px;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .tag-green {
+            background: rgba(52, 211, 153, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: var(--success-green);
+        }
+
+        .tag-amber {
+            background: rgba(251, 191, 36, 0.15);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: var(--amber-glow);
+        }
+
+        .tag-cyan {
+            background: rgba(103, 232, 249, 0.15);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            color: var(--cyan-soft);
+        }
+
+        /* Value Prop Cards Grid */
+        .value-cards-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
         }
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 24px;
+        .value-card {
+            background: linear-gradient(135deg, var(--space-mid) 0%, var(--space-navy) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .data-table th,
-        .data-table td {
-            padding: 16px 20px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .data-table th {
-            color: #a5b4fc;
+        .value-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .value-card:hover::before {
+            opacity: 1;
+        }
+
+        .value-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
             font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--amber-glow);
+            margin-bottom: 12px;
         }
 
-        .data-table td {
-            color: #e2e8f0;
-            font-size: 15px;
-        }
-
-        .data-table tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+        .value-card .quote {
+            font-size: 17px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
             font-weight: 500;
         }
 
-        .tag-primary { background: rgba(102, 126, 234, 0.2); color: #a5b4fc; }
-        .tag-green { background: rgba(34, 197, 94, 0.2); color: #86efac; }
-        .tag-yellow { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
-        .tag-red { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-        .tag-purple { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
+        .value-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
 
-        .persona-box {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 24px;
+        /* Persona Messaging Cards */
+        .persona-card {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .persona-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+        }
+
+        .persona-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .persona-emoji {
+            font-size: 36px;
+        }
+
+        .persona-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .persona-card.best-fit {
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .persona-card.best-fit .persona-title {
+            color: var(--success-green);
+        }
+
+        .persona-card.good-fit {
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .persona-card.good-fit .persona-title {
+            color: var(--amber-glow);
+        }
+
+        .persona-card.selective-fit {
+            border-color: rgba(103, 232, 249, 0.3);
+        }
+
+        .persona-card.selective-fit .persona-title {
+            color: var(--cyan-soft);
+        }
+
+        .persona-card.purple-fit {
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .persona-card.purple-fit .persona-title {
+            color: #c4b5fd;
+        }
+
+        .persona-message {
+            background: rgba(251, 191, 36, 0.08);
+            border-left: 3px solid var(--amber-glow);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            font-size: 17px;
+            font-style: italic;
+            color: var(--text-primary);
             margin-bottom: 24px;
         }
 
-        .persona-box h4 {
-            font-size: 18px;
-            margin-bottom: 8px;
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
-        .persona-box .message {
+        .persona-column h5 {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--amber-glow);
+        }
+
+        .persona-column.avoid h5 {
+            color: #f87171;
+        }
+
+        .persona-column p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* FAQ Grid */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .faq-category h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            color: #e2e8f0;
-            font-style: italic;
-            margin: 16px 0;
-            padding: 16px;
-            background: rgba(102, 126, 234, 0.1);
-            border-left: 4px solid #667eea;
-            border-radius: 0 8px 8px 0;
+            font-weight: 600;
+            color: var(--amber-glow);
+            margin-bottom: 20px;
         }
 
         .faq-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             padding: 20px 24px;
             margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(251, 191, 36, 0.2);
         }
 
         .faq-item h4 {
             font-size: 16px;
-            color: #fff;
-            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
         .faq-item p {
-            color: #a0aec0;
+            color: var(--text-secondary);
             font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .faq-item strong {
+            color: var(--success-green);
+        }
+
+        /* Trust Signals */
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .trust-column h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .trust-column.phase-1 h3 {
+            color: var(--success-green);
+        }
+
+        .trust-column.phase-2 h3 {
+            color: var(--cyan-soft);
         }
 
         .trust-signal {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
             border-radius: 12px;
             padding: 20px 24px;
             margin-bottom: 16px;
         }
 
         .trust-signal h4 {
-            font-size: 16px;
-            color: #86efac;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--success-green);
             margin-bottom: 8px;
         }
 
         .trust-signal p {
-            color: #e2e8f0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .future-signal {
+            background: rgba(103, 232, 249, 0.08);
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .future-signal h4 {
             font-size: 15px;
+            font-weight: 600;
+            color: var(--cyan-soft);
+            margin-bottom: 8px;
+        }
+
+        .future-signal p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Universal Trust Icons */
+        .universal-trust {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .trust-icon-card {
+            background: rgba(52, 211, 153, 0.08);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            border-radius: 12px;
+            padding: 24px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .trust-icon-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(52, 211, 153, 0.4);
+        }
+
+        .trust-icon-card .icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .trust-icon-card p {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--success-green);
+        }
+
+        /* Data Table */
+        .data-table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 18px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .data-table th {
+            background: var(--space-mid);
+            color: var(--amber-glow);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Differentiator Cards */
+        .diff-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .diff-card {
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .diff-card:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .diff-card .icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .diff-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--amber-glow);
+            margin-bottom: 10px;
+        }
+
+        .diff-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Improvement List */
+        .improvement-list {
+            max-width: 900px;
         }
 
         .improvement-item {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             align-items: flex-start;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .improvement-item:last-child {
@@ -310,763 +778,927 @@
         }
 
         .improvement-number {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Syne', sans-serif;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
+            color: var(--space-deep);
             flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
         }
 
         .improvement-content h4 {
-            font-size: 16px;
-            margin-bottom: 6px;
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         .improvement-content p {
-            color: #a0aec0;
-            font-size: 14px;
+            color: var(--text-secondary);
+            font-size: 15px;
         }
 
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-card.before .comparison-header {
+            background: rgba(239, 68, 68, 0.15);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .comparison-card.before .comparison-header h4 {
+            color: #fca5a5;
+        }
+
+        .comparison-card.after .comparison-header {
+            background: rgba(52, 211, 153, 0.15);
+            border-bottom: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .comparison-card.after .comparison-header h4 {
+            color: var(--success-green);
+        }
+
+        .comparison-header {
+            padding: 16px 24px;
+        }
+
+        .comparison-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-body {
+            padding: 24px;
+        }
+
+        .comparison-body .quote {
+            font-size: 17px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .comparison-body p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Sources */
         .sources {
-            background: rgba(255,255,255,0.03);
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 32px;
-            margin-top: 40px;
+            margin-top: 48px;
         }
 
         .sources h3 {
+            font-family: 'Syne', sans-serif;
             font-size: 18px;
-            margin-bottom: 16px;
-            color: #a5b4fc;
+            font-weight: 600;
+            color: var(--amber-glow);
+            margin-bottom: 20px;
         }
 
-        .sources ul {
-            list-style: none;
+        .sources-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-        .sources li {
-            color: #64748b;
-            font-size: 14px;
-        }
-
         .sources a {
-            color: #667eea;
+            color: var(--text-muted);
             text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
         }
 
         .sources a:hover {
-            text-decoration: underline;
+            color: var(--amber-glow);
         }
 
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: #475569;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-        }
-
+        /* Step Navigation */
         .step-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 40px;
+            padding: 48px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 48px;
         }
 
-        .step-nav a {
+        .step-nav-link {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #a0aec0;
+            gap: 10px;
+            padding: 14px 24px;
+            background: var(--space-mid);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .step-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(102, 126, 234, 0.5);
-            color: #fff;
+        .step-nav-link:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .step-nav-link svg {
+            width: 18px;
+            height: 18px;
         }
 
         .step-nav-center {
             text-align: center;
         }
 
-        .step-nav-center a {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border: none;
-            color: #fff;
-        }
-
         .step-indicator {
             font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
-        }
-
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-
-        .before-after {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .before-after h4 {
-            padding: 16px 20px;
-            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
-        .before-after-content {
-            padding: 20px;
+        .step-nav-center a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--amber-glow) 0%, #d97706 100%);
+            border-radius: 10px;
+            color: var(--space-deep);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
         }
 
-        .before h4 {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
+        .step-nav-center a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.4);
         }
 
-        .after h4 {
-            background: rgba(34, 197, 94, 0.2);
-            color: #86efac;
+        /* Footer */
+        .footer {
+            padding: 48px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .value-cards-grid,
+            .faq-grid,
+            .trust-grid,
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .diff-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .universal-trust {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .persona-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .cards, .comparison-grid, .sources ul { grid-template-columns: 1fr; }
+            .hero {
+                padding: 120px 24px 60px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: -1px;
+            }
+
+            .main {
+                padding: 0 24px;
+            }
+
+            .nav-inner {
+                padding: 0 24px;
+            }
+
+            .primary-value-prop {
+                padding: 32px 24px;
+            }
+
+            .diff-grid,
+            .universal-trust {
+                grid-template-columns: 1fr;
+            }
+
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-nav {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .step-nav-link {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="container">
-            <a href="../../one-pager/index.html" class="nav-brand">Moonshot</a>
-            <div class="nav-links">
-                <a href="../index.html" class="active">Home</a>
-            </div>
-        </div>
-    </nav>
+    <div class="stars"></div>
+    <div class="grid-pattern"></div>
+    <div class="scanlines"></div>
 
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="../index.html">Home</a>
-            <span>></span>
-            <a href="../index.html">Phase 3: Go-to-Market</a>
-            <span>></span>
-            Step 12
-        </div>
-        <header>
-            <div class="logo">Moonshot Research</div>
-            <div class="badge">STEP 12</div>
-        </header>
-    </div>
-
-    <section class="hero">
-        <div class="container">
-            <h1>Landing Page & Positioning</h1>
-            <p class="tagline">Messaging framework, value propositions, and trust signals optimized for developer outreach.</p>
-            <p class="subtitle">Research Date: December 28, 2025 | Based on B2B Landing Page Best Practices & Developer Persona Research</p>
-        </div>
-    </section>
-
-    <!-- Value Proposition Framework -->
-    <section class="section" style="padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Value Proposition Framework</h2>
-            <p class="section-subtitle">Core messaging optimized for developer partnership outreach.</p>
-
-            <!-- Primary Value Prop -->
-            <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); border: 2px solid rgba(102, 126, 234, 0.4); border-radius: 20px; padding: 40px; margin-bottom: 40px;">
-                <h3 style="color: #a5b4fc; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Primary Value Proposition</h3>
-                <p style="font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: 16px;">Turn Your Indie App Into<br>Passive Income</p>
-                <p style="font-size: 20px; color: #a0aec0; margin-bottom: 24px;">We partner with indie developers (15K-1M users) to unlock hidden monetization potential. You keep ownership. We do the heavy lifting. Split the profits.</p>
-                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                    <span class="tag tag-green">No acquisition</span>
-                    <span class="tag tag-green">100% IP ownership retained</span>
-                    <span class="tag tag-green">Revenue share model</span>
-                    <span class="tag tag-green">Minimal time commitment</span>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🚀</span>
+                    Moonshot
+                </a>
+                <div class="nav-links">
+                    <a href="../index.html" class="nav-back">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Mission Control
+                    </a>
+                    <div class="step-badge">Step 12</div>
                 </div>
             </div>
+        </nav>
 
-            <!-- Value Prop Variants -->
-            <h3 style="font-size: 20px; margin-bottom: 24px; color: #a5b4fc;">Value Proposition Variants</h3>
-            <div class="cards">
-                <div class="card">
-                    <h3>For Burned Out Developers</h3>
-                    <p style="font-size: 18px; color: #fff; margin-bottom: 12px;">"Get your life back. We handle everything."</p>
-                    <p>Hand off the monetization burden. 2 hours/month max involvement. Start earning passive income from the app you built.</p>
-                </div>
-                <div class="card">
-                    <h3>For Under-Monetized Apps</h3>
-                    <p style="font-size: 18px; color: #fff; margin-bottom: 12px;">"Stop leaving money on the table."</p>
-                    <p>83% of indie apps make less than $1K/month. Our partners see 3-10x revenue improvements within 90 days.</p>
-                </div>
-                <div class="card">
-                    <h3>For Emerging Market Developers</h3>
-                    <p style="font-size: 18px; color: #fff; margin-bottom: 12px;">"Unlock Western market ARPU."</p>
-                    <p>Your 100K users make $300/month? Same users in Western markets = $1,200+. We help you bridge the gap.</p>
-                </div>
-                <div class="card">
-                    <h3>For Aspiring Entrepreneurs</h3>
-                    <p style="font-size: 18px; color: #fff; margin-bottom: 12px;">"Your business co-founder for growth."</p>
-                    <p>You built the product. We bring the business expertise. Learn marketing, pricing, and growth while we work together.</p>
-                </div>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>›</span>
+                <span>Phase 3: Go-to-Market</span>
+                <span>›</span>
+                <span>Step 12</span>
             </div>
-        </div>
-    </section>
+            <h1>
+                Landing Page &<br>
+                <span class="highlight">Positioning</span>
+            </h1>
+            <p class="hero-subtitle">
+                Messaging framework, value propositions, and trust signals optimized for developer outreach.
+            </p>
+            <p class="hero-meta">
+                Research Date: December 28, 2025 | Based on B2B Landing Page Best Practices & Developer Persona Research
+            </p>
+        </section>
 
-    <!-- Messaging Matrix by Persona -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Messaging Matrix by Persona</h2>
-            <p class="section-subtitle">Tailored messaging for each developer type identified in Step 4.</p>
-
-            <!-- Persona 1: Burned Out Solo Dev -->
-            <div class="persona-box" style="border-color: rgba(34, 197, 94, 0.4);">
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                    <span style="font-size: 32px;">&#128293;</span>
-                    <div>
-                        <h4 style="color: #86efac;">The Burned Out Solo Dev</h4>
-                        <span class="tag tag-green">Best Fit</span>
-                    </div>
+        <div class="main">
+            <!-- Value Proposition Framework -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Value Proposition Framework</h2>
+                    <p>Core messaging optimized for developer partnership outreach.</p>
                 </div>
-                <div class="message">"You've been carrying this alone for too long. Hand off the burden and get your life back."</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Lead With</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Freedom from operations, passive income, minimal time commitment</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Emphasize</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">"Set it and forget it", 2 hrs/month max, easy exit clause, we handle everything</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #fca5a5; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Avoid</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Development commitments, implying they should do more, complex structures</p>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Persona 2: Accidental Success -->
-            <div class="persona-box" style="border-color: rgba(245, 158, 11, 0.4);">
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                    <span style="font-size: 32px;">&#127912;</span>
-                    <div>
-                        <h4 style="color: #fcd34d;">The Accidental Success</h4>
-                        <span class="tag tag-yellow">Good Fit</span>
-                    </div>
-                </div>
-                <div class="message">"You built something people love, but you're leaving money on the table. We'll monetize it thoughtfully&mdash;without ruining what makes it special."</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Lead With</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Respect for their creation, user-friendly monetization, proof of competence</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Emphasize</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Case studies, transparent partnership, creative control retained, low-risk trial</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #fca5a5; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Avoid</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Aggressive revenue projections, pressure tactics, dismissing user concerns</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Persona 3: Aspiring Entrepreneur -->
-            <div class="persona-box" style="border-color: rgba(102, 126, 234, 0.4);">
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                    <span style="font-size: 32px;">&#128640;</span>
-                    <div>
-                        <h4 style="color: #a5b4fc;">The Aspiring Entrepreneur</h4>
-                        <span class="tag tag-primary">Selective Fit</span>
-                    </div>
-                </div>
-                <div class="message">"You're building a business, not just an app. Partner with us as your business co-founder&mdash;we handle growth while you perfect the product."</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Lead With</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Learning opportunity, collaborative partnership, complementary skills</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Emphasize</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Shared upside, regular strategy discussions, performance-based terms, track record</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #fca5a5; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Avoid</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Implying they can't succeed alone, one-size-fits-all terms, treating app as commodity</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Persona 4: Emerging Market Builder -->
-            <div class="persona-box" style="border-color: rgba(139, 92, 246, 0.4);">
-                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                    <span style="font-size: 32px;">&#127758;</span>
-                    <div>
-                        <h4 style="color: #c4b5fd;">The Emerging Market Builder</h4>
-                        <span class="tag tag-purple">Good Fit</span>
-                    </div>
-                </div>
-                <div class="message">"Your app already has users&mdash;we'll help you reach Western markets and 4x your revenue. Transparent partnership, USD payments."</div>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Lead With</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Market access, USD income, legitimate business relationship</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #a5b4fc; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Emphasize</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Respect for their creation, proven international transfer systems, verified identity</p>
-                    </div>
-                    <div>
-                        <h5 style="color: #fca5a5; font-size: 13px; text-transform: uppercase; margin-bottom: 8px;">Avoid</h5>
-                        <p style="color: #e2e8f0; font-size: 14px;">Implying their market is inferior, vague global reach promises, assumptions about capability</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Content -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">FAQ Content</h2>
-            <p class="section-subtitle">Addressing common developer concerns based on persona research.</p>
-
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
-                <div>
-                    <h3 style="color: #a5b4fc; font-size: 16px; margin-bottom: 20px;">Ownership & Control</h3>
-
-                    <div class="faq-item">
-                        <h4>Will I lose ownership of my app?</h4>
-                        <p><strong>No.</strong> You retain 100% IP ownership. We never take equity or ownership rights. Our partnership is purely operational&mdash;we help you monetize better, you stay the owner. This is non-negotiable.</p>
-                    </div>
-
-                    <div class="faq-item">
-                        <h4>Can I exit the partnership if it's not working?</h4>
-                        <p><strong>Yes.</strong> We include a 30-day exit clause in every partnership agreement. If you're not happy with the results or the relationship, you can walk away with no penalty. No lock-ins, no strings attached.</p>
-                    </div>
-
-                    <div class="faq-item">
-                        <h4>What decisions do I still control?</h4>
-                        <p>You control <strong>product direction, features, and user experience</strong>. We focus on monetization strategy, pricing optimization, and growth. Major changes always require your approval.</p>
+                <!-- Primary Value Prop -->
+                <div class="primary-value-prop animate-on-scroll">
+                    <div class="label">Primary Value Proposition</div>
+                    <h3>Turn Your Indie App Into<br>Passive Income</h3>
+                    <p class="description">
+                        We partner with indie developers (15K-1M users) to unlock hidden monetization potential. You keep ownership. We do the heavy lifting. Split the profits.
+                    </p>
+                    <div class="tag-row">
+                        <span class="tag tag-green">No acquisition</span>
+                        <span class="tag tag-green">100% IP ownership retained</span>
+                        <span class="tag tag-green">Revenue share model</span>
+                        <span class="tag tag-green">Minimal time commitment</span>
                     </div>
                 </div>
 
-                <div>
-                    <h3 style="color: #a5b4fc; font-size: 16px; margin-bottom: 20px;">Revenue & Economics</h3>
-
-                    <div class="faq-item">
-                        <h4>How does the revenue share work?</h4>
-                        <p>We use a 50/50 split on <strong>incremental revenue</strong>&mdash;meaning we only share the revenue we help generate above your current baseline. If we don't grow your revenue, we don't earn anything.</p>
+                <!-- Value Prop Variants -->
+                <h3 style="font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 600; color: var(--amber-glow); margin-bottom: 24px;" class="animate-on-scroll">Value Proposition Variants</h3>
+                <div class="value-cards-grid">
+                    <div class="value-card animate-on-scroll">
+                        <h3>For Burned Out Developers</h3>
+                        <p class="quote">"Get your life back. We handle everything."</p>
+                        <p>Hand off the monetization burden. 2 hours/month max involvement. Start earning passive income from the app you built.</p>
                     </div>
-
-                    <div class="faq-item">
-                        <h4>Are there any upfront costs?</h4>
-                        <p><strong>No.</strong> We don't charge setup fees or require upfront investment. Our incentives are aligned with yours&mdash;we only make money when you make more money.</p>
+                    <div class="value-card animate-on-scroll">
+                        <h3>For Under-Monetized Apps</h3>
+                        <p class="quote">"Stop leaving money on the table."</p>
+                        <p>83% of indie apps make less than $1K/month. Our partners see 3-10x revenue improvements within 90 days.</p>
                     </div>
-
-                    <div class="faq-item">
-                        <h4>What if my revenue doesn't increase?</h4>
-                        <p>If we don't increase your revenue within 90 days, you can exit with no penalty. We take on the risk, not you. Our track record shows 3-10x improvements for qualifying apps.</p>
+                    <div class="value-card animate-on-scroll">
+                        <h3>For Emerging Market Developers</h3>
+                        <p class="quote">"Unlock Western market ARPU."</p>
+                        <p>Your 100K users make $300/month? Same users in Western markets = $1,200+. We help you bridge the gap.</p>
                     </div>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 24px;">
-                <div>
-                    <h3 style="color: #a5b4fc; font-size: 16px; margin-bottom: 20px;">Process & Time</h3>
-
-                    <div class="faq-item">
-                        <h4>How much of my time will this take?</h4>
-                        <p><strong>2 hours per month maximum.</strong> We handle implementation, optimization, and operations. You're only involved for approvals and monthly check-ins. Perfect for developers with full-time jobs.</p>
-                    </div>
-
-                    <div class="faq-item">
-                        <h4>What will you actually do to my app?</h4>
-                        <p>We focus on <strong>monetization optimization</strong>: paywall testing, pricing strategy, ad placement, subscription funnel improvements. We can also help with ASO, analytics, and user retention&mdash;but never touch core features without your approval.</p>
+                    <div class="value-card animate-on-scroll">
+                        <h3>For Aspiring Entrepreneurs</h3>
+                        <p class="quote">"Your business co-founder for growth."</p>
+                        <p>You built the product. We bring the business expertise. Learn marketing, pricing, and growth while we work together.</p>
                     </div>
                 </div>
+            </section>
 
-                <div>
-                    <h3 style="color: #a5b4fc; font-size: 16px; margin-bottom: 20px;">Trust & Legitimacy</h3>
-
-                    <div class="faq-item">
-                        <h4>How do I know you're legitimate?</h4>
-                        <p>We're a registered business with verifiable founders. You can check our LinkedIn profiles, review our partnership agreements with legal counsel, and speak with current partners before committing.</p>
-                    </div>
-
-                    <div class="faq-item">
-                        <h4>Will you share my data or user information?</h4>
-                        <p><strong>Never.</strong> Your users, your data. We sign NDAs, implement strict data handling protocols, and never have access to user credentials or PII. Privacy is paramount.</p>
-                    </div>
+            <!-- Messaging Matrix by Persona -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Messaging Matrix by Persona</h2>
+                    <p>Tailored messaging for each developer type identified in Step 4.</p>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Trust Signals Strategy -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Trust Signals Strategy</h2>
-            <p class="section-subtitle">Building credibility as an early-stage partnership program.</p>
-
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;">
-                <!-- Left Column: What to Use Now -->
-                <div>
-                    <h3 style="color: #86efac; font-size: 18px; margin-bottom: 24px;">Phase 1: Pre-Launch (Use Now)</h3>
-
-                    <div class="trust-signal">
-                        <h4>Founder Credibility</h4>
-                        <p>Display founder LinkedIn profiles, past experience, and domain expertise. "Built by former [Company] growth lead with 10+ years in mobile monetization."</p>
+                <!-- Persona 1: Burned Out Solo Dev -->
+                <div class="persona-card best-fit animate-on-scroll">
+                    <div class="persona-header">
+                        <span class="persona-emoji">🔥</span>
+                        <div>
+                            <div class="persona-title">The Burned Out Solo Dev</div>
+                            <span class="tag tag-green" style="margin-top: 8px; display: inline-block;">Best Fit</span>
+                        </div>
                     </div>
-
-                    <div class="trust-signal">
-                        <h4>Problem Validation via Data</h4>
-                        <p>Cite market research prominently: "83% of indie apps make less than $1K/month" (RevenueCat). Shows deep problem understanding.</p>
+                    <div class="persona-message">
+                        "You've been carrying this alone for too long. Hand off the burden and get your life back."
                     </div>
-
-                    <div class="trust-signal">
-                        <h4>Transparent Process</h4>
-                        <p>Visual flowchart showing partnership stages. Sample revenue projections with clear assumptions. Full partnership agreement available on request.</p>
-                    </div>
-
-                    <div class="trust-signal">
-                        <h4>Risk Reversal Guarantees</h4>
-                        <p>"No upfront costs. 30-day exit clause. 100% IP ownership retained. We only win when you win."</p>
-                    </div>
-
-                    <div class="trust-signal">
-                        <h4>Pilot Program Positioning</h4>
-                        <p>"Join our founding cohort of 10 developers." Creates exclusivity and explains early-stage status honestly.</p>
+                    <div class="persona-grid">
+                        <div class="persona-column">
+                            <h5>Lead With</h5>
+                            <p>Freedom from operations, passive income, minimal time commitment</p>
+                        </div>
+                        <div class="persona-column">
+                            <h5>Emphasize</h5>
+                            <p>"Set it and forget it", 2 hrs/month max, easy exit clause, we handle everything</p>
+                        </div>
+                        <div class="persona-column avoid">
+                            <h5>Avoid</h5>
+                            <p>Development commitments, implying they should do more, complex structures</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Future Phases -->
-                <div>
-                    <h3 style="color: #a5b4fc; font-size: 18px; margin-bottom: 24px;">Phase 2-3: Post-Launch (Build Over Time)</h3>
-
-                    <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;">
-                        <h4 style="font-size: 16px; color: #a5b4fc; margin-bottom: 8px;">Case Studies with Metrics</h4>
-                        <p style="color: #e2e8f0; font-size: 15px;">"Increased [App Name]'s MRR from $500 to $2,100 in 4 months." Include app category, developer photo, and specific strategies used.</p>
+                <!-- Persona 2: Accidental Success -->
+                <div class="persona-card good-fit animate-on-scroll">
+                    <div class="persona-header">
+                        <span class="persona-emoji">🎨</span>
+                        <div>
+                            <div class="persona-title">The Accidental Success</div>
+                            <span class="tag tag-amber" style="margin-top: 8px; display: inline-block;">Good Fit</span>
+                        </div>
                     </div>
-
-                    <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;">
-                        <h4 style="font-size: 16px; color: #a5b4fc; margin-bottom: 8px;">Video Testimonials</h4>
-                        <p style="color: #e2e8f0; font-size: 15px;">79% more effective than text. Feature 1-2 minute clips of partners discussing results and experience.</p>
+                    <div class="persona-message">
+                        "You built something people love, but you're leaving money on the table. We'll monetize it thoughtfully—without ruining what makes it special."
                     </div>
-
-                    <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;">
-                        <h4 style="font-size: 16px; color: #a5b4fc; margin-bottom: 8px;">Partner Logo Strip</h4>
-                        <p style="color: #e2e8f0; font-size: 15px;">"Trusted by 20+ indie developers" with app icons. Only add after having real partners.</p>
-                    </div>
-
-                    <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px;">
-                        <h4 style="font-size: 16px; color: #a5b4fc; margin-bottom: 8px;">Interactive Revenue Calculator</h4>
-                        <p style="color: #e2e8f0; font-size: 15px;">Input current MRR and users, see projected revenue. Increases engagement by 58% and conversion by 40%.</p>
-                    </div>
-
-                    <div style="background: rgba(102, 126, 234, 0.1); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 20px 24px;">
-                        <h4 style="font-size: 16px; color: #a5b4fc; margin-bottom: 8px;">Press & Thought Leadership</h4>
-                        <p style="color: #e2e8f0; font-size: 15px;">"As featured in..." badges. Blog posts, Indie Hackers posts, Twitter presence.</p>
+                    <div class="persona-grid">
+                        <div class="persona-column">
+                            <h5>Lead With</h5>
+                            <p>Respect for their creation, user-friendly monetization, proof of competence</p>
+                        </div>
+                        <div class="persona-column">
+                            <h5>Emphasize</h5>
+                            <p>Case studies, transparent partnership, creative control retained, low-risk trial</p>
+                        </div>
+                        <div class="persona-column avoid">
+                            <h5>Avoid</h5>
+                            <p>Aggressive revenue projections, pressure tactics, dismissing user concerns</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Universal Trust Signals -->
-            <h3 style="font-size: 20px; margin-top: 48px; margin-bottom: 24px; color: #a5b4fc;">Universal Must-Haves (All Phases)</h3>
-            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px;">&#128274;</div>
-                    <p style="color: #86efac; font-size: 14px; font-weight: 600;">100% IP Ownership</p>
-                </div>
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px;">&#128176;</div>
-                    <p style="color: #86efac; font-size: 14px; font-weight: 600;">No Upfront Costs</p>
-                </div>
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px;">&#128275;</div>
-                    <p style="color: #86efac; font-size: 14px; font-weight: 600;">30-Day Exit Clause</p>
-                </div>
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px;">&#128200;</div>
-                    <p style="color: #86efac; font-size: 14px; font-weight: 600;">Transparent Reporting</p>
-                </div>
-                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px;">&#128101;</div>
-                    <p style="color: #86efac; font-size: 14px; font-weight: 600;">Verifiable Identity</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Competitive Positioning -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Competitive Positioning</h2>
-            <p class="section-subtitle">How Moonshot differentiates from alternatives.</p>
-
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Dimension</th>
-                        <th>Moonshot</th>
-                        <th>App Acquisition (Acquire.com)</th>
-                        <th>App Agencies</th>
-                        <th>DIY Monetization</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Model</strong></td>
-                        <td><span class="tag tag-green">Revenue share partnership</span></td>
-                        <td>Full sale, one-time payment</td>
-                        <td>Fee-for-service</td>
-                        <td>Self-managed</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ownership</strong></td>
-                        <td><span class="tag tag-green">Developer keeps 100%</span></td>
-                        <td>Transferred to buyer</td>
-                        <td>Developer keeps</td>
-                        <td>Developer keeps</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Upfront Cost</strong></td>
-                        <td><span class="tag tag-green">$0</span></td>
-                        <td>Broker fees (5-15%)</td>
-                        <td>$10K-$100K+</td>
-                        <td>Time investment only</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Developer Involvement</strong></td>
-                        <td><span class="tag tag-green">2 hrs/month</span></td>
-                        <td>None after sale</td>
-                        <td>High (project management)</td>
-                        <td>Full-time equivalent</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ongoing Revenue</strong></td>
-                        <td><span class="tag tag-green">50% of growth (passive)</span></td>
-                        <td>None</td>
-                        <td>100% (after project fees)</td>
-                        <td>100% (if successful)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Risk</strong></td>
-                        <td><span class="tag tag-green">Low (exit clause)</span></td>
-                        <td>High (loss of asset)</td>
-                        <td>Medium (sunk costs)</td>
-                        <td>High (opportunity cost)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Best For</strong></td>
-                        <td>Busy devs wanting passive income</td>
-                        <td>Devs wanting full exit</td>
-                        <td>Funded projects</td>
-                        <td>Full-time indie devs</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <!-- Key Differentiators -->
-            <h3 style="font-size: 20px; margin-top: 48px; margin-bottom: 24px; color: #a5b4fc;">Moonshot's Key Differentiators</h3>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 40px; margin-bottom: 16px;">&#129309;</div>
-                    <h3>Partnership, Not Acquisition</h3>
-                    <p>Keep ownership forever. No exit pressure. We're partners, not buyers.</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 40px; margin-bottom: 16px;">&#9201;</div>
-                    <h3>Minimal Time Commitment</h3>
-                    <p>2 hours/month max. Perfect for developers with full-time jobs.</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 40px; margin-bottom: 16px;">&#128176;</div>
-                    <h3>Zero Upfront Cost</h3>
-                    <p>No fees, no investment required. We take on all the risk.</p>
-                </div>
-                <div class="card" style="text-align: center;">
-                    <div style="font-size: 40px; margin-bottom: 16px;">&#128273;</div>
-                    <h3>Easy Exit</h3>
-                    <p>30-day exit clause. If it's not working, walk away with no penalty.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Landing Page Improvements -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <h2 class="section-title">Landing Page Improvements</h2>
-            <p class="section-subtitle">Specific recommendations for one-pager/index.html based on best practices research.</p>
-
-            <div class="comparison-grid">
-                <!-- Hero Section -->
-                <div class="before-after before">
-                    <h4>Current Hero</h4>
-                    <div class="before-after-content">
-                        <p style="font-size: 18px; color: #fff; margin-bottom: 12px;">"Turn Your App Into Passive Income"</p>
-                        <p style="color: #a0aec0; font-size: 14px;">Good headline but missing specificity about target audience (15K-1M users) and differentiation.</p>
+                <!-- Persona 3: Aspiring Entrepreneur -->
+                <div class="persona-card selective-fit animate-on-scroll">
+                    <div class="persona-header">
+                        <span class="persona-emoji">🚀</span>
+                        <div>
+                            <div class="persona-title">The Aspiring Entrepreneur</div>
+                            <span class="tag tag-cyan" style="margin-top: 8px; display: inline-block;">Selective Fit</span>
+                        </div>
+                    </div>
+                    <div class="persona-message">
+                        "You're building a business, not just an app. Partner with us as your business co-founder—we handle growth while you perfect the product."
+                    </div>
+                    <div class="persona-grid">
+                        <div class="persona-column">
+                            <h5>Lead With</h5>
+                            <p>Learning opportunity, collaborative partnership, complementary skills</p>
+                        </div>
+                        <div class="persona-column">
+                            <h5>Emphasize</h5>
+                            <p>Shared upside, regular strategy discussions, performance-based terms, track record</p>
+                        </div>
+                        <div class="persona-column avoid">
+                            <h5>Avoid</h5>
+                            <p>Implying they can't succeed alone, one-size-fits-all terms, treating app as commodity</p>
+                        </div>
                     </div>
                 </div>
-                <div class="before-after after">
-                    <h4>Recommended Hero</h4>
-                    <div class="before-after-content">
-                        <p style="font-size: 18px; color: #fff; margin-bottom: 12px;">"Turn Your Indie App Into Passive Income"</p>
-                        <p style="color: #a0aec0; font-size: 14px;">Add "indie" and clarify sub-headline: "We partner with developers (15K-1M users) to unlock hidden monetization. No acquisition. Just growth."</p>
+
+                <!-- Persona 4: Emerging Market Builder -->
+                <div class="persona-card purple-fit animate-on-scroll">
+                    <div class="persona-header">
+                        <span class="persona-emoji">🌎</span>
+                        <div>
+                            <div class="persona-title">The Emerging Market Builder</div>
+                            <span class="tag" style="background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); color: #c4b5fd; margin-top: 8px; display: inline-block;">Good Fit</span>
+                        </div>
+                    </div>
+                    <div class="persona-message">
+                        "Your app already has users—we'll help you reach Western markets and 4x your revenue. Transparent partnership, USD payments."
+                    </div>
+                    <div class="persona-grid">
+                        <div class="persona-column">
+                            <h5>Lead With</h5>
+                            <p>Market access, USD income, legitimate business relationship</p>
+                        </div>
+                        <div class="persona-column">
+                            <h5>Emphasize</h5>
+                            <p>Respect for their creation, proven international transfer systems, verified identity</p>
+                        </div>
+                        <div class="persona-column avoid">
+                            <h5>Avoid</h5>
+                            <p>Implying their market is inferior, vague global reach promises, assumptions about capability</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <h3 style="font-size: 20px; margin-top: 48px; margin-bottom: 24px; color: #a5b4fc;">Priority Improvements</h3>
-
-            <div class="improvement-item">
-                <div class="improvement-number">1</div>
-                <div class="improvement-content">
-                    <h4>Add Trust Signals Above the Fold</h4>
-                    <p>Include risk reversal messaging immediately visible: "100% IP ownership retained. No upfront costs. 30-day exit clause." Currently missing from hero section.</p>
+            <!-- FAQ Content -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>FAQ Content</h2>
+                    <p>Addressing common developer concerns based on persona research.</p>
                 </div>
-            </div>
 
-            <div class="improvement-item">
-                <div class="improvement-number">2</div>
-                <div class="improvement-content">
-                    <h4>Update CTA Button Text</h4>
-                    <p>Change "Partner With Us" to "See If You Qualify" or "Apply for Partnership". Lower commitment language increases conversions by 26%.</p>
+                <div class="faq-grid">
+                    <div class="faq-category animate-on-scroll">
+                        <h3>Ownership & Control</h3>
+                        <div class="faq-item">
+                            <h4>Will I lose ownership of my app?</h4>
+                            <p><strong>No.</strong> You retain 100% IP ownership. We never take equity or ownership rights. Our partnership is purely operational—we help you monetize better, you stay the owner. This is non-negotiable.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Can I exit the partnership if it's not working?</h4>
+                            <p><strong>Yes.</strong> We include a 30-day exit clause in every partnership agreement. If you're not happy with the results or the relationship, you can walk away with no penalty. No lock-ins, no strings attached.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What decisions do I still control?</h4>
+                            <p>You control <strong>product direction, features, and user experience</strong>. We focus on monetization strategy, pricing optimization, and growth. Major changes always require your approval.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-category animate-on-scroll">
+                        <h3>Revenue & Economics</h3>
+                        <div class="faq-item">
+                            <h4>How does the revenue share work?</h4>
+                            <p>We use a 50/50 split on <strong>incremental revenue</strong>—meaning we only share the revenue we help generate above your current baseline. If we don't grow your revenue, we don't earn anything.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Are there any upfront costs?</h4>
+                            <p><strong>No.</strong> We don't charge setup fees or require upfront investment. Our incentives are aligned with yours—we only make money when you make more money.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What if my revenue doesn't increase?</h4>
+                            <p>If we don't increase your revenue within 90 days, you can exit with no penalty. We take on the risk, not you. Our track record shows 3-10x improvements for qualifying apps.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-category animate-on-scroll">
+                        <h3>Process & Time</h3>
+                        <div class="faq-item">
+                            <h4>How much of my time will this take?</h4>
+                            <p><strong>2 hours per month maximum.</strong> We handle implementation, optimization, and operations. You're only involved for approvals and monthly check-ins. Perfect for developers with full-time jobs.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What will you actually do to my app?</h4>
+                            <p>We focus on <strong>monetization optimization</strong>: paywall testing, pricing strategy, ad placement, subscription funnel improvements. We can also help with ASO, analytics, and user retention—but never touch core features without your approval.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-category animate-on-scroll">
+                        <h3>Trust & Legitimacy</h3>
+                        <div class="faq-item">
+                            <h4>How do I know you're legitimate?</h4>
+                            <p>We're a registered business with verifiable founders. You can check our LinkedIn profiles, review our partnership agreements with legal counsel, and speak with current partners before committing.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Will you share my data or user information?</h4>
+                            <p><strong>Never.</strong> Your users, your data. We sign NDAs, implement strict data handling protocols, and never have access to user credentials or PII. Privacy is paramount.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="improvement-item">
-                <div class="improvement-number">3</div>
-                <div class="improvement-content">
-                    <h4>Add Market Validation Data</h4>
-                    <p>Include prominent stat: "83% of indie apps make less than $1K/month" with source. Shows problem understanding and validates target market.</p>
+            <!-- Trust Signals Strategy -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Trust Signals Strategy</h2>
+                    <p>Building credibility as an early-stage partnership program.</p>
                 </div>
-            </div>
 
-            <div class="improvement-item">
-                <div class="improvement-number">4</div>
-                <div class="improvement-content">
-                    <h4>Replace Stats Section</h4>
-                    <p>Current "10x Average Revenue Increase" needs proof. Before having case studies, replace with trust signals: "100% IP retained", "Zero upfront cost", "30-day exit clause".</p>
+                <div class="trust-grid">
+                    <div class="trust-column phase-1 animate-on-scroll">
+                        <h3>Phase 1: Pre-Launch (Use Now)</h3>
+                        <div class="trust-signal">
+                            <h4>Founder Credibility</h4>
+                            <p>Display founder LinkedIn profiles, past experience, and domain expertise. "Built by former [Company] growth lead with 10+ years in mobile monetization."</p>
+                        </div>
+                        <div class="trust-signal">
+                            <h4>Problem Validation via Data</h4>
+                            <p>Cite market research prominently: "83% of indie apps make less than $1K/month" (RevenueCat). Shows deep problem understanding.</p>
+                        </div>
+                        <div class="trust-signal">
+                            <h4>Transparent Process</h4>
+                            <p>Visual flowchart showing partnership stages. Sample revenue projections with clear assumptions. Full partnership agreement available on request.</p>
+                        </div>
+                        <div class="trust-signal">
+                            <h4>Risk Reversal Guarantees</h4>
+                            <p>"No upfront costs. 30-day exit clause. 100% IP ownership retained. We only win when you win."</p>
+                        </div>
+                        <div class="trust-signal">
+                            <h4>Pilot Program Positioning</h4>
+                            <p>"Join our founding cohort of 10 developers." Creates exclusivity and explains early-stage status honestly.</p>
+                        </div>
+                    </div>
+
+                    <div class="trust-column phase-2 animate-on-scroll">
+                        <h3>Phase 2-3: Post-Launch (Build Over Time)</h3>
+                        <div class="future-signal">
+                            <h4>Case Studies with Metrics</h4>
+                            <p>"Increased [App Name]'s MRR from $500 to $2,100 in 4 months." Include app category, developer photo, and specific strategies used.</p>
+                        </div>
+                        <div class="future-signal">
+                            <h4>Video Testimonials</h4>
+                            <p>79% more effective than text. Feature 1-2 minute clips of partners discussing results and experience.</p>
+                        </div>
+                        <div class="future-signal">
+                            <h4>Partner Logo Strip</h4>
+                            <p>"Trusted by 20+ indie developers" with app icons. Only add after having real partners.</p>
+                        </div>
+                        <div class="future-signal">
+                            <h4>Interactive Revenue Calculator</h4>
+                            <p>Input current MRR and users, see projected revenue. Increases engagement by 58% and conversion by 40%.</p>
+                        </div>
+                        <div class="future-signal">
+                            <h4>Press & Thought Leadership</h4>
+                            <p>"As featured in..." badges. Blog posts, Indie Hackers posts, Twitter presence.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="improvement-item">
-                <div class="improvement-number">5</div>
-                <div class="improvement-content">
-                    <h4>Add FAQ Section</h4>
-                    <p>Include 5-7 questions addressing key objections (ownership, time commitment, exit options). Place before final CTA. Use accordion style for mobile-friendliness.</p>
+                <!-- Universal Trust Signals -->
+                <h3 style="font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 600; color: var(--amber-glow); margin-top: 48px; margin-bottom: 24px;" class="animate-on-scroll">Universal Must-Haves (All Phases)</h3>
+                <div class="universal-trust animate-on-scroll">
+                    <div class="trust-icon-card">
+                        <div class="icon">🔐</div>
+                        <p>100% IP Ownership</p>
+                    </div>
+                    <div class="trust-icon-card">
+                        <div class="icon">💰</div>
+                        <p>No Upfront Costs</p>
+                    </div>
+                    <div class="trust-icon-card">
+                        <div class="icon">🔓</div>
+                        <p>30-Day Exit Clause</p>
+                    </div>
+                    <div class="trust-icon-card">
+                        <div class="icon">📈</div>
+                        <p>Transparent Reporting</p>
+                    </div>
+                    <div class="trust-icon-card">
+                        <div class="icon">👥</div>
+                        <p>Verifiable Identity</p>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="improvement-item">
-                <div class="improvement-number">6</div>
-                <div class="improvement-content">
-                    <h4>Improve Mobile CTA Placement</h4>
-                    <p>Add sticky CTA button at bottom of mobile view. Current design may push CTA below fold on smaller devices. 60%+ of traffic is mobile.</p>
+            <!-- Competitive Positioning -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Competitive Positioning</h2>
+                    <p>How Moonshot differentiates from alternatives.</p>
                 </div>
-            </div>
 
-            <div class="improvement-item">
-                <div class="improvement-number">7</div>
-                <div class="improvement-content">
-                    <h4>Add Founder/Team Section</h4>
-                    <p>Display founder LinkedIn, past experience, and domain expertise. Critical trust signal for early-stage: "Built by former [Company] growth lead."</p>
+                <div class="data-table-wrapper animate-on-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Moonshot</th>
+                                <th>App Acquisition (Acquire.com)</th>
+                                <th>App Agencies</th>
+                                <th>DIY Monetization</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Model</strong></td>
+                                <td><span class="tag tag-green">Revenue share partnership</span></td>
+                                <td>Full sale, one-time payment</td>
+                                <td>Fee-for-service</td>
+                                <td>Self-managed</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ownership</strong></td>
+                                <td><span class="tag tag-green">Developer keeps 100%</span></td>
+                                <td>Transferred to buyer</td>
+                                <td>Developer keeps</td>
+                                <td>Developer keeps</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Upfront Cost</strong></td>
+                                <td><span class="tag tag-green">$0</span></td>
+                                <td>Broker fees (5-15%)</td>
+                                <td>$10K-$100K+</td>
+                                <td>Time investment only</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Developer Involvement</strong></td>
+                                <td><span class="tag tag-green">2 hrs/month</span></td>
+                                <td>None after sale</td>
+                                <td>High (project management)</td>
+                                <td>Full-time equivalent</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ongoing Revenue</strong></td>
+                                <td><span class="tag tag-green">50% of growth (passive)</span></td>
+                                <td>None</td>
+                                <td>100% (after project fees)</td>
+                                <td>100% (if successful)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Risk</strong></td>
+                                <td><span class="tag tag-green">Low (exit clause)</span></td>
+                                <td>High (loss of asset)</td>
+                                <td>Medium (sunk costs)</td>
+                                <td>High (opportunity cost)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Best For</strong></td>
+                                <td>Busy devs wanting passive income</td>
+                                <td>Devs wanting full exit</td>
+                                <td>Funded projects</td>
+                                <td>Full-time indie devs</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
 
-            <div class="improvement-item">
-                <div class="improvement-number">8</div>
-                <div class="improvement-content">
-                    <h4>Simplify "How It Works"</h4>
-                    <p>Current 3-step process is good. Add visual flowchart/diagram showing partnership timeline with specific milestones: "Week 1-2: Audit | Week 3-8: Implementation | Month 3+: Optimization".</p>
+                <!-- Key Differentiators -->
+                <h3 style="font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 600; color: var(--amber-glow); margin-top: 48px; margin-bottom: 24px;" class="animate-on-scroll">Moonshot's Key Differentiators</h3>
+                <div class="diff-grid animate-on-scroll">
+                    <div class="diff-card">
+                        <div class="icon">🤝</div>
+                        <h3>Partnership, Not Acquisition</h3>
+                        <p>Keep ownership forever. No exit pressure. We're partners, not buyers.</p>
+                    </div>
+                    <div class="diff-card">
+                        <div class="icon">⏱</div>
+                        <h3>Minimal Time Commitment</h3>
+                        <p>2 hours/month max. Perfect for developers with full-time jobs.</p>
+                    </div>
+                    <div class="diff-card">
+                        <div class="icon">💰</div>
+                        <h3>Zero Upfront Cost</h3>
+                        <p>No fees, no investment required. We take on all the risk.</p>
+                    </div>
+                    <div class="diff-card">
+                        <div class="icon">🔑</div>
+                        <h3>Easy Exit</h3>
+                        <p>30-day exit clause. If it's not working, walk away with no penalty.</p>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="improvement-item">
-                <div class="improvement-number">9</div>
-                <div class="improvement-content">
-                    <h4>Add Revenue Model Visual</h4>
-                    <p>Create before/after comparison or simple calculator showing: "Your current: $500/mo -> With Moonshot: $2,000/mo (your take: $1,250)". Makes value concrete.</p>
+            <!-- Landing Page Improvements -->
+            <section class="section">
+                <div class="section-header animate-on-scroll">
+                    <h2>Landing Page Improvements</h2>
+                    <p>Specific recommendations for one-pager/index.html based on best practices research.</p>
                 </div>
-            </div>
 
-            <div class="improvement-item">
-                <div class="improvement-number">10</div>
-                <div class="improvement-content">
-                    <h4>Position as "Founding Cohort"</h4>
-                    <p>Add scarcity/exclusivity messaging: "Accepting 10 developers for our founding cohort." Explains early-stage honestly while creating urgency.</p>
+                <div class="comparison-grid animate-on-scroll">
+                    <div class="comparison-card before">
+                        <div class="comparison-header">
+                            <h4>Current Hero</h4>
+                        </div>
+                        <div class="comparison-body">
+                            <p class="quote">"Turn Your App Into Passive Income"</p>
+                            <p>Good headline but missing specificity about target audience (15K-1M users) and differentiation.</p>
+                        </div>
+                    </div>
+                    <div class="comparison-card after">
+                        <div class="comparison-header">
+                            <h4>Recommended Hero</h4>
+                        </div>
+                        <div class="comparison-body">
+                            <p class="quote">"Turn Your Indie App Into Passive Income"</p>
+                            <p>Add "indie" and clarify sub-headline: "We partner with developers (15K-1M users) to unlock hidden monetization. No acquisition. Just growth."</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Sources Section -->
-    <section class="section" style="border-top: 1px solid rgba(255,255,255,0.1);">
-        <div class="container">
-            <div class="sources">
-                <h3>Sources & References</h3>
-                <ul>
-                    <li><a href="https://www.leadfeeder.com/blog/landing-pages-convert/" target="_blank">Leadfeeder: Landing Page Best Practices 2025</a></li>
-                    <li><a href="https://databox.com/landing-page-best-practices" target="_blank">Databox: B2B SaaS Landing Page Practices</a></li>
-                    <li><a href="https://www.wix.com/studio/blog/cta-strategy" target="_blank">Wix: CTA Strategy Guide</a></li>
-                    <li><a href="https://www.nudgify.com/social-proof-landing-pages/" target="_blank">Nudgify: Social Proof Best Practices</a></li>
-                    <li><a href="https://swipepages.com/blog/7-proven-social-proof-types-to-build-trust-on-your-landing-page/" target="_blank">SwipePages: Trust Building Elements</a></li>
-                    <li><a href="https://business.daily.dev/resources/7-best-practices-for-developer-focused-ad-campaigns" target="_blank">Daily.dev: Developer Marketing Best Practices</a></li>
-                    <li><a href="https://www.invespcro.com/blog/above-the-fold/" target="_blank">Invesp: Above the Fold Best Practices</a></li>
-                    <li><a href="https://unbounce.com/average-conversion-rates-landing-pages/" target="_blank">Unbounce: Landing Page Conversion Benchmarks</a></li>
-                    <li><a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a></li>
-                    <li><a href="../step-04-developer-personas/step4-developer-personas.html" target="_blank">Moonshot Step 4: Developer Personas</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
+                <h3 style="font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 600; color: var(--amber-glow); margin-bottom: 24px;" class="animate-on-scroll">Priority Improvements</h3>
+                <div class="improvement-list">
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">1</div>
+                        <div class="improvement-content">
+                            <h4>Add Trust Signals Above the Fold</h4>
+                            <p>Include risk reversal messaging immediately visible: "100% IP ownership retained. No upfront costs. 30-day exit clause." Currently missing from hero section.</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">2</div>
+                        <div class="improvement-content">
+                            <h4>Update CTA Button Text</h4>
+                            <p>Change "Partner With Us" to "See If You Qualify" or "Apply for Partnership". Lower commitment language increases conversions by 26%.</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">3</div>
+                        <div class="improvement-content">
+                            <h4>Add Market Validation Data</h4>
+                            <p>Include prominent stat: "83% of indie apps make less than $1K/month" with source. Shows problem understanding and validates target market.</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">4</div>
+                        <div class="improvement-content">
+                            <h4>Replace Stats Section</h4>
+                            <p>Current "10x Average Revenue Increase" needs proof. Before having case studies, replace with trust signals: "100% IP retained", "Zero upfront cost", "30-day exit clause".</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">5</div>
+                        <div class="improvement-content">
+                            <h4>Add FAQ Section</h4>
+                            <p>Include 5-7 questions addressing key objections (ownership, time commitment, exit options). Place before final CTA. Use accordion style for mobile-friendliness.</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">6</div>
+                        <div class="improvement-content">
+                            <h4>Improve Mobile CTA Placement</h4>
+                            <p>Add sticky CTA button at bottom of mobile view. Current design may push CTA below fold on smaller devices. 60%+ of traffic is mobile.</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">7</div>
+                        <div class="improvement-content">
+                            <h4>Add Founder/Team Section</h4>
+                            <p>Display founder LinkedIn, past experience, and domain expertise. Critical trust signal for early-stage: "Built by former [Company] growth lead."</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">8</div>
+                        <div class="improvement-content">
+                            <h4>Simplify "How It Works"</h4>
+                            <p>Current 3-step process is good. Add visual flowchart/diagram showing partnership timeline with specific milestones: "Week 1-2: Audit | Week 3-8: Implementation | Month 3+: Optimization".</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">9</div>
+                        <div class="improvement-content">
+                            <h4>Add Revenue Model Visual</h4>
+                            <p>Create before/after comparison or simple calculator showing: "Your current: $500/mo -> With Moonshot: $2,000/mo (your take: $1,250)". Makes value concrete.</p>
+                        </div>
+                    </div>
+                    <div class="improvement-item animate-on-scroll">
+                        <div class="improvement-number">10</div>
+                        <div class="improvement-content">
+                            <h4>Position as "Founding Cohort"</h4>
+                            <p>Add scarcity/exclusivity messaging: "Accepting 10 developers for our founding cohort." Explains early-stage honestly while creating urgency.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <footer>
-        <div class="container">
+            <!-- Sources -->
+            <section class="section">
+                <div class="sources animate-on-scroll">
+                    <h3>Sources & References</h3>
+                    <div class="sources-grid">
+                        <a href="https://www.leadfeeder.com/blog/landing-pages-convert/" target="_blank">Leadfeeder: Landing Page Best Practices 2025</a>
+                        <a href="https://databox.com/landing-page-best-practices" target="_blank">Databox: B2B SaaS Landing Page Practices</a>
+                        <a href="https://www.wix.com/studio/blog/cta-strategy" target="_blank">Wix: CTA Strategy Guide</a>
+                        <a href="https://www.nudgify.com/social-proof-landing-pages/" target="_blank">Nudgify: Social Proof Best Practices</a>
+                        <a href="https://swipepages.com/blog/7-proven-social-proof-types-to-build-trust-on-your-landing-page/" target="_blank">SwipePages: Trust Building Elements</a>
+                        <a href="https://business.daily.dev/resources/7-best-practices-for-developer-focused-ad-campaigns" target="_blank">Daily.dev: Developer Marketing Best Practices</a>
+                        <a href="https://www.invespcro.com/blog/above-the-fold/" target="_blank">Invesp: Above the Fold Best Practices</a>
+                        <a href="https://unbounce.com/average-conversion-rates-landing-pages/" target="_blank">Unbounce: Landing Page Conversion Benchmarks</a>
+                        <a href="https://www.revenuecat.com/state-of-subscription-apps-2024/" target="_blank">RevenueCat: State of Subscription Apps 2024</a>
+                        <a href="../step-04-developer-personas/step4-developer-personas.html" target="_blank">Moonshot Step 4: Developer Personas</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step Navigation -->
             <div class="step-nav">
-                <a href="../step-11-infrastructure/step11-infrastructure.html">
-                    <span>&larr;</span>
-                    <span>Previous: Infrastructure</span>
+                <a href="../step-11-infrastructure/step11-infrastructure.html" class="step-nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Previous: Infrastructure
                 </a>
                 <div class="step-nav-center">
-                    <div class="step-indicator">Step 12 of 14</div>
-                    <a href="../index.html">Back to Home</a>
+                    <div class="step-indicator">Step 12 of 15</div>
+                    <a href="../index.html">Back to Mission Control</a>
                 </div>
-                <a href="../step-13-pilot-criteria/step13-pilot-criteria.html">
-                    <span>Next: Pilot Criteria</span>
-                    <span>&rarr;</span>
+                <a href="../step-13-pilot-criteria/step13-pilot-criteria.html" class="step-nav-link">
+                    Next: Pilot Criteria
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
                 </a>
             </div>
-            <p style="margin-top: 20px;">Moonshot Research | Step 12: Landing Page & Positioning | December 2025</p>
         </div>
-    </footer>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Moonshot Research | Step 12: Landing Page & Positioning | December 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 50);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
